@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/himanushi/music-client-svelte/issues"
   },
-  "homepage": "https://github.com/himanushi/music-client-svelte#readme"
+  "homepage": "https://github.com/himanushi/music-client-svelte#readme",
+  "devDependencies": {
+    "snowpack": "^3.0.13"
+  }
 }
