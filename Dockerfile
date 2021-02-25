@@ -11,10 +11,11 @@ ENV DEBCONF_NOWARNINGS yes
 RUN apt-get -qq update
 RUN apt-get -qq -y install curl
 
-# LTS 2023-04
-# ref: https://github.com/nodesource/distributions#installation-instructions-1
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
+# deno
+# ref: https://github.com/denoland/deno_install#known-issues
+RUN apt-get install -y unzip
+RUN curl -fsSL https://deno.land/x/install/install.sh | sh
+ENV PATH $PATH:~/.deno/bin
 
 # set locale
 # ref: https://qiita.com/n_oshiumi/items/cfe91c60730f602b38eb
