@@ -1,8 +1,7 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
   mount: {
-    public: '/',
-    src: '/dist',
+    src: '/',
   },
   plugins: [
     '@snowpack/plugin-svelte'
@@ -12,8 +11,10 @@ module.exports = {
     // {"match": "routes", "src": ".*", "dest": "/index.html"},
   ],
   optimize: {
-    /* Example: Bundle your final build: */
-    // "bundle": true,
+    // 1つの js にまとめる
+    bundle: true,
+    // js を圧縮する
+    minify: true,
   },
   packageOptions: {
     /* ... */
