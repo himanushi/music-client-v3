@@ -20,7 +20,11 @@
     "url": "https://github.com/himanushi/music-client-svelte/issues"
   },
   "homepage": "https://github.com/himanushi/music-client-svelte#readme",
+  "dependencies": {
+    "svelte": "^3.33.0"
+  },
   "devDependencies": {
+    "@snowpack/plugin-svelte": "^3.5.2",
     "snowpack": "^3.0.13"
   }
 }
