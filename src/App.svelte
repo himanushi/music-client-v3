@@ -1,4 +1,3 @@
-<!-- App.svelte -->
 <script>
   /* component logic will go here */
 </script>

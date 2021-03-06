@@ -1,20 +1,18 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
   mount: {
-    src: '/',
+    public: {url: '/', static: true},
+    src: {url: '/dist'},
   },
-  plugins: [
-    '@snowpack/plugin-svelte'
-  ],
+  plugins: ['@snowpack/plugin-svelte', '@snowpack/plugin-typescript'],
   routes: [
     /* Enable an SPA Fallback in development: */
     // {"match": "routes", "src": ".*", "dest": "/index.html"},
   ],
   optimize: {
-    // 1つの js にまとめる
     bundle: true,
-    // js を圧縮する
     minify: true,
+    target: 'es2018',
   },
   packageOptions: {
     /* ... */
