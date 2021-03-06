@@ -1,9 +1,8 @@
-<script>
-  /* component logic will go here */
+<script lang="ts">
+  const a:number = 1
+
 </script>
-<style>
-  /* css will go here */
-</style>
+
 <div class="App">
   <header class="App-header">
     <a
