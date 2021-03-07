@@ -1,0 +1,19 @@
+overwrite: true
+schema: http://localhost:3000/graphql
+documents: src/**/*.graphql
+generates:
+  src/graphql/types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typed-document-node
+    config:
+      # typescript
+      enumsAsTypes: true
+      immutableTypes: true
+      addUnderscoreToArgsType: true
+      scalars:
+        TTID: string
+        PositiveNumber: number
+        ISO8601DateTime: string
+      skipTypename: true

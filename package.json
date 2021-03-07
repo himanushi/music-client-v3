@@ -4,7 +4,8 @@
   "description": "app",
   "scripts": {
     "start": "snowpack dev",
-    "build": "snowpack build"
+    "build": "snowpack build",
+    "generate": "npx graphql-codegen --config=codegen.yml"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,16 @@
   },
   "homepage": "https://github.com/himanushi/music-client-svelte#readme",
   "dependencies": {
-    "svelte": "^3.33.0"
+    "@apollo/client": "^3.3.11",
+    "graphql": "^15.5.0",
+    "svelte": "^3.33.0",
+    "svelte-apollo": "^0.4.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.21.1",
+    "@graphql-codegen/typed-document-node": "^1.18.2",
+    "@graphql-codegen/typescript-operations": "^1.17.14",
+    "@graphql-typed-document-node/core": "^3.1.0",
     "@snowpack/plugin-svelte": "^3.5.2",
     "@snowpack/plugin-typescript": "^1.2.1",
     "@tsconfig/svelte": "^1.0.10",
