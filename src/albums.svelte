@@ -1,6 +1,7 @@
 <script lang="ts">
   import { query } from "svelte-apollo";
-  import { AlbumsDocument, AlbumsQuery, AlbumsQueryVariables } from "./graphql/types";
+  import { AlbumsDocument } from "./graphql/types";
+  import type { AlbumsQuery, AlbumsQueryVariables } from "./graphql/types";
   const albums = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument)
 </script>
 
