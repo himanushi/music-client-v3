@@ -1,14 +1,14 @@
 <script lang="ts">
   import { query } from "svelte-apollo";
-  import { AlbumsDocument } from "./graphql/types";
-  const albums = query(AlbumsDocument)
+  import { AlbumsDocument, AlbumsQuery, AlbumsQueryVariables } from "./graphql/types";
+  const albums = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument)
 </script>
 
 {#if $albums.loading}
   Loading...
 {:else if $albums.error}
-  Error: {$albums.error.message}
-{:else}
+  Error: {$albums.error}
+{:else if $albums.data}
   {#each $albums.data.albums as album}
     {album.name}
   {/each}
