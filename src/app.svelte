@@ -1,9 +1,7 @@
 <script lang="ts">
-  import client from "./graphql/client";
-  import { setClient } from "svelte-apollo";
-  import Albums from "./albums.svelte";
-
-  setClient(client)
+  import { MaterialApp } from 'svelte-materialify';
 </script>
 
-<Albums />
+<MaterialApp theme="dark">
+  <h1>Red</h1>
+</MaterialApp>

@@ -1,0 +1,6 @@
+@import 'svelte-materialify/src/styles/tools/colors';
+
+h1 {
+  color: material-color('red', 'base');
+  background-color: material-color('green', 'lighten-5');
+}

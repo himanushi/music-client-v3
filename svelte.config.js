@@ -5,5 +5,8 @@ module.exports = {
     defaults: {
       script: 'typescript',
     },
+    scss: {
+      includePaths: ['theme'],
+    },
   }),
 };
