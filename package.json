@@ -22,6 +22,7 @@
   "homepage": "https://github.com/himanushi/music-client-svelte#readme",
   "dependencies": {
     "@apollo/client": "^3.3.11",
+    "@mdi/js": "^5.9.55",
     "graphql": "^15.5.0",
     "svelte": "^3.33.0",
     "svelte-apollo": "^0.4.0"
