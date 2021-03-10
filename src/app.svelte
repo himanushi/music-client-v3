@@ -1,13 +1,12 @@
 <script lang="ts">
   import "./tailwind-styles.svelte";
+  import Text from "./bits/text.svelte";
 
-  const name: string = "world";
+  import Button from "./components/button.svelte";
+
+  const text = "world";
 </script>
 
-<h1 class="hello">Hello {name}!</h1>
+<Text {text} />
 
-<style>
-  .hello {
-    @apply text-center;
-  }
-</style>
+<Button />
