@@ -1,45 +1,39 @@
 {
-  "name": "app",
-  "version": "1.0.0",
-  "description": "app",
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
-    "generate": "npx graphql-codegen --config=codegen.yml"
+    "lint": "prettier --write . && eslint --fix ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/himanushi/music-client-svelte.git"
-  },
-  "keywords": [
-    "svelte"
-  ],
-  "author": "himanushi",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/himanushi/music-client-svelte/issues"
-  },
-  "homepage": "https://github.com/himanushi/music-client-svelte#readme",
   "dependencies": {
-    "@apollo/client": "^3.3.11",
-    "@mdi/js": "^5.9.55",
-    "graphql": "^15.5.0",
-    "svelte": "^3.33.0",
-    "svelte-apollo": "^0.4.0"
+    "svelte": "^3.35.0",
+    "tailwindcss": "^2.0.3"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.21.1",
-    "@graphql-codegen/typed-document-node": "^1.18.2",
-    "@graphql-codegen/typescript-operations": "^1.17.14",
-    "@graphql-typed-document-node/core": "^3.1.0",
+    "@snowpack/plugin-dotenv": "^2.0.5",
     "@snowpack/plugin-svelte": "^3.5.2",
     "@snowpack/plugin-typescript": "^1.2.1",
     "@tsconfig/svelte": "^1.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
+    "autoprefixer": "^10.2.5",
+    "eslint": "^7.21.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-sort-keys-fix": "^1.1.1",
+    "eslint-plugin-svelte3": "^3.1.2",
     "postcss": "^8.2.7",
-    "sass": "^1.32.8",
+    "postcss-load-config": "^3.0.1",
+    "prettier": "^2.2.1",
+    "prettier-plugin-svelte": "^2.2.0",
     "snowpack": "^3.0.13",
-    "svelte-materialify": "^0.3.6",
+    "stylelint": "^13.12.0",
+    "stylelint-config-recommended": "^4.0.0",
     "svelte-preprocess": "^4.6.9",
     "typescript": "^4.2.3"
+  },
+  "importSort": {
+    ".ts": {
+      "style": "module",
+      "parser": "typescript"
+    }
   }
 }

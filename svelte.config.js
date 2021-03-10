@@ -1,12 +1,13 @@
-const autoPreprocess = require('svelte-preprocess');
-
 module.exports = {
-  preprocess: autoPreprocess({
-    defaults: {
-      script: 'typescript',
+  "preprocess": require("svelte-preprocess")({
+    "defaults": {
+      "script": "typescript"
     },
-    scss: {
-      includePaths: ['theme'],
-    },
-  }),
+    "postcss": {
+      "plugins": [
+        require("tailwindcss"),
+        require("autoprefixer")
+      ]
+    }
+  })
 };

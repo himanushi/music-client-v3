@@ -1,3 +1,0 @@
-query AlbumsCount($conditions: AlbumsCountConditionsInputObject) {
-  albumsCount(conditions: $conditions)
-}
