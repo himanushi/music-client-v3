@@ -6,7 +6,7 @@
 </script>
 
 <a
-  class="text-blue-700 visited:text-purple-800 underline"
+  class="text-blue-700 visited_text-purple-800 underline"
   href={$url("./albums")}>Albums</a
 >
 <Content>
