@@ -1,7 +1,8 @@
 <script lang="ts">
   import "~/styles/base.svelte";
 
-  import Main from "~/pages/main.svelte";
+  import {Router} from "@roxi/routify";
+  import {routes} from "routify/routes";
 </script>
 
-<Main />
+<Router {routes} />

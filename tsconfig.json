@@ -10,7 +10,8 @@
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "routify/*": [".routify/*"]
     },
     "sourceMap": true,
     "noEmit": true,
