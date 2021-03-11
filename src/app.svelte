@@ -1,12 +1,11 @@
 <script lang="ts">
-  import "./tailwind-styles.svelte";
-  import Text from "./bits/text.svelte";
-
-  import Button from "./components/button.svelte";
-
-  const text = "world";
+  import Card from "~/components/card.svelte";
 </script>
 
-<Text {text} />
+<Card />
 
-<Button />
+<style global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+</style>
