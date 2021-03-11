@@ -3,13 +3,21 @@
     "start": "snowpack dev",
     "build": "routify -b && snowpack build",
     "lint": "prettier --write . && eslint --fix .",
-    "route": "routify -b"
+    "route": "routify -b",
+    "generate": "npx graphql-codegen --config=codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.11",
+    "graphql": "^15.5.0",
     "svelte": "^3.35.0",
     "tailwindcss": "^2.0.3"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.21.2",
+    "@graphql-codegen/typed-document-node": "^1.18.3",
+    "@graphql-codegen/typescript": "^1.21.1",
+    "@graphql-codegen/typescript-operations": "^1.17.15",
+    "@graphql-typed-document-node/core": "^3.1.0",
     "@roxi/routify": "^2.14.0",
     "@snowpack/plugin-dotenv": "^2.0.5",
     "@snowpack/plugin-svelte": "^3.5.2",
@@ -30,6 +38,7 @@
     "snowpack": "^3.0.13",
     "stylelint": "^13.12.0",
     "stylelint-config-recommended": "^4.0.0",
+    "svelte-apollo": "^0.4.0",
     "svelte-preprocess": "^4.6.9",
     "typescript": "^4.2.3"
   },
