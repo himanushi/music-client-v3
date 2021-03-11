@@ -1,7 +1,11 @@
-<!-- _layout.svelte -->
+<script lang="ts">
+  import Content from "~/components/content.svelte";
+  import Footer from "~/components/footer.svelte";
+  import Header from "~/components/header.svelte";
+</script>
 
-<slot>
-  <!-- pages in this folder and subfolders
-   will be rendered here -->
-</slot>
-<p>Copyright my website 2020</p>
+<Content>
+  <Header />
+  <slot><!-- content --></slot>
+  <Footer />
+</Content>
