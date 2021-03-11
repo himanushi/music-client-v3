@@ -10,7 +10,7 @@
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
-      // "~" : ["src"],
+      "~/*": ["src/*"]
     },
     "sourceMap": true,
     "noEmit": true,
