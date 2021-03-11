@@ -54,6 +54,8 @@ module.exports = {
     "max-lines": "off",
     "max-statements": "off",
 
+    "no-duplicate-imports": "off",
+
     // マジックナンバーを許可する
     "no-magic-numbers": "off",
 
@@ -68,9 +70,9 @@ module.exports = {
 
     // const 宣言をまとめない
     "one-var": "off",
-
     // object キーをソートする
     "sort-imports": 0,
+
     "sort-keys-fix/sort-keys-fix": "error",
 
     // "use strict" を強要しない
