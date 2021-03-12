@@ -1,5 +1,6 @@
 <script>
   import {query} from "svelte-apollo";
+  import Item from "./_item-card.svelte";
   import {AlbumsDocument} from "~/graphql/types";
   import type {AlbumsQuery} from "~/graphql/types";
 
@@ -12,6 +13,6 @@
   Error: {$albums.error}
 {:else if $albums.data?.albums}
   {#each $albums.data.albums as album}
-    {album.name}
+    <Item name={album.name} src={album.artworkM.url || ""} />
   {/each}
 {/if}

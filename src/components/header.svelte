@@ -11,7 +11,7 @@
     </IconButton>
   </div>
 
-  <h1>
+  <h1 class="title">
     <a>ゲーム音楽</a>
   </h1>
 
@@ -30,8 +30,7 @@
     @apply grid grid-cols-5 items-center;
   }
 
-  /* title */
-  h1 {
+  .title {
     @apply ml-0 text-center col-span-3;
   }
 
