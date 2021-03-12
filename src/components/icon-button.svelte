@@ -8,12 +8,12 @@
 
 <style>
   button {
-    @apply flex items-center justify-center rounded-full;
+    @apply flex items-center justify-center rounded-full bg-white bg-opacity-0;
 
     /* hover */
-    @apply transition duration-200 hover_bg-gray-600;
+    @apply transition duration-200 hover_bg-opacity-20;
 
     /* click */
-    @apply active_bg-gray-500 focus_outline-none;
+    @apply active_bg-opacity-50 focus_outline-none;
   }
 </style>

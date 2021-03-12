@@ -13,7 +13,8 @@ module.exports = {
   "theme": {},
   "variants": {
     "extend": {
-      "backgroundColor": ["active"]
+      "backgroundColor": ["active"],
+      "backgroundOpacity": ["active"]
     }
   }
 };

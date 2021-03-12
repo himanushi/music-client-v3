@@ -34,7 +34,11 @@
     @apply ml-0 text-center col-span-3;
   }
 
+  .menu {
+    @apply px-2;
+  }
+
   .user {
-    @apply flex justify-end;
+    @apply px-2 flex justify-end;
   }
 </style>
