@@ -1,65 +1,41 @@
-<header>
-  <button class="menu">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M4 6h16M4 12h16M4 18h16"
-      />
-    </svg>
-  </button>
+<script lang="ts">
+  import IconButton from "~/components/icon-button.svelte";
+  import MenuIcon from "~/icons/menu.svelte";
+  import UserIcon from "~/icons/user.svelte";
+</script>
 
-  <button class="user">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-        clip-rule="evenodd"
-      />
-    </svg>
-  </button>
+<header>
+  <div class="menu">
+    <IconButton>
+      <MenuIcon />
+    </IconButton>
+  </div>
 
   <h1>
     <a>ゲーム音楽</a>
   </h1>
+
+  <div class="user">
+    <IconButton>
+      <UserIcon />
+    </IconButton>
+  </div>
 </header>
 
 <style>
   header {
-    @apply bg-gray-700 text-white;
-    @apply fixed inset-x-0 top-0 py-3;
+    @apply bg-gray-900 text-white;
+    @apply fixed inset-x-0 top-0 py-2;
+
+    @apply grid grid-cols-5 items-center;
   }
 
   /* title */
   h1 {
-    @apply ml-0 text-center;
+    @apply ml-0 text-center col-span-3;
   }
 
-  button {
-    @apply absolute top-0 bottom-0 inline-block;
-  }
-
-  svg {
-    @apply h-5 w-5 text-white;
-  }
-
-  /* menu */
-  button.menu {
-    @apply left-3;
-  }
-
-  /* user */
-  button.user {
-    @apply right-3;
+  .user {
+    @apply flex justify-end;
   }
 </style>

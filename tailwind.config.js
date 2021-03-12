@@ -11,5 +11,9 @@ module.exports = {
    */
   "separator": "_",
   "theme": {},
-  "variants": {}
+  "variants": {
+    "extend": {
+      "backgroundColor": ["active"]
+    }
+  }
 };
