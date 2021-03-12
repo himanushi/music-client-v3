@@ -4,6 +4,6 @@
 
 <style>
   div {
-    @apply py-12;
+    @apply py-16;
   }
 </style>

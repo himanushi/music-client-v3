@@ -7,7 +7,7 @@
 <header>
   <div class="menu">
     <IconButton>
-      <MenuIcon />
+      <MenuIcon size={7} />
     </IconButton>
   </div>
 
@@ -17,7 +17,7 @@
 
   <div class="user">
     <IconButton>
-      <UserIcon />
+      <UserIcon size={9} />
     </IconButton>
   </div>
 </header>
@@ -25,20 +25,21 @@
 <style>
   header {
     @apply bg-gray-900 text-white;
-    @apply fixed inset-x-0 top-0 py-2;
+    @apply fixed inset-x-0 top-0 py-3;
 
     @apply grid grid-cols-5 items-center;
   }
 
   .title {
+    @apply text-center text-lg;
     @apply ml-0 text-center col-span-3;
   }
 
   .menu {
-    @apply px-2;
+    @apply px-1;
   }
 
   .user {
-    @apply px-2 flex justify-end;
+    @apply px-1 flex justify-end;
   }
 </style>
