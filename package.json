@@ -4,6 +4,7 @@
     "build": "routify -b && snowpack build",
     "lint": "prettier --write . && eslint --fix .",
     "route": "routify -b",
+    "routing": "routify",
     "generate": "npx graphql-codegen --config=codegen.yml"
   },
   "dependencies": {

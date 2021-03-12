@@ -8,8 +8,8 @@
   setClient(client);
 </script>
 
+<Header />
 <Content>
-  <Header />
   <slot><!-- content --></slot>
-  <Footer />
 </Content>
+<Footer />
