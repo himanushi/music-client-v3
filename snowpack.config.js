@@ -19,12 +19,18 @@ module.exports = {
   },
   "optimize": {
     "bundle": true,
-    "minify": true,
-    "target": "es2018"
+    "minify": true
   },
   "plugins": [
     "@snowpack/plugin-svelte",
     "@snowpack/plugin-dotenv",
     "@snowpack/plugin-typescript"
+  ],
+  "routes": [
+    {
+      "dest": "/index.html",
+      "match": "routes",
+      "src": ".*"
+    }
   ]
 };
