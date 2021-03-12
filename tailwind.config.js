@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors");
+
 module.exports = {
   "plugins": [],
   "purge": {
@@ -10,7 +12,14 @@ module.exports = {
    * @apply focus:outline-non → @apply focus_outline-non
    */
   "separator": "_",
-  "theme": {},
+  "theme": {
+    "colors": {
+      "black": colors.black,
+      "gray": colors.coolGray,
+      "teal": colors.teal,
+      "white": colors.white
+    }
+  },
   "variants": {
     "extend": {
       "backgroundColor": ["active"],

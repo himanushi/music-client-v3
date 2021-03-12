@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let size = 8;
+  export let size = 10;
 </script>
 
 <button class="h-{size} w-{size}">
