@@ -25,21 +25,20 @@
 <style>
   header {
     @apply bg-gray-900 text-white;
-    @apply fixed inset-x-0 top-0 py-3;
-
-    @apply grid grid-cols-5 items-center;
+    @apply fixed inset-x-0 top-0;
+    @apply flex flex-row items-center p-3;
   }
 
   .title {
     @apply text-center text-lg;
-    @apply ml-0 text-center col-span-3;
+    @apply flex-1;
   }
 
   .menu {
-    @apply px-1;
+    @apply flex-shrink-0;
   }
 
   .user {
-    @apply px-1 flex justify-end;
+    @apply flex-shrink-0;
   }
 </style>

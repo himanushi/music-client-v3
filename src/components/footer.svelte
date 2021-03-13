@@ -27,14 +27,14 @@
 <style>
   footer {
     @apply bg-teal-500;
-    @apply fixed inset-x-0 bottom-0 p-2;
+    @apply fixed inset-x-0 bottom-0 p-2.5;
     @apply flex flex-row items-center space-x-2;
   }
 
   .track-info {
     @apply bg-white bg-opacity-0 hover_bg-opacity-20;
     @apply flex-1 truncate rounded;
-    @apply m-1;
+    @apply cursor-pointer;
   }
 
   .title {
