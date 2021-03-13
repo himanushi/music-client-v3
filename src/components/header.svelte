@@ -25,7 +25,7 @@
 <style>
   header {
     @apply bg-gray-900 text-white;
-    @apply fixed inset-x-0 top-0;
+    /* @apply fixed inset-x-0 top-0; */
     @apply flex flex-row items-center p-3;
   }
 

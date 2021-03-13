@@ -27,7 +27,7 @@
 <style>
   footer {
     @apply bg-teal-500;
-    @apply fixed inset-x-0 bottom-0 p-2.5;
+    /* @apply fixed inset-x-0 bottom-0 p-2.5; */
     @apply flex flex-row items-center space-x-2;
   }
 
