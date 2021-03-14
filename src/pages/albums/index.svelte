@@ -1,18 +1,13 @@
 <script>
-  import {query} from "svelte-apollo";
-  import Item from "./_item-card.svelte";
-  import {AlbumsDocument} from "~/graphql/types";
-  import type {AlbumsQuery} from "~/graphql/types";
-
-  const albums = query<AlbumsQuery>(AlbumsDocument);
+  import Albums from "./_albums.svelte";
 </script>
 
-{#if $albums.loading}
-  Loading...
-{:else if $albums.error}
-  Error: {$albums.error}
-{:else if $albums.data?.albums}
-  {#each $albums.data.albums as album}
-    <Item name={album.name} src={album.artworkM.url || ""} />
-  {/each}
-{/if}
+<div class="albums">
+  <Albums />
+</div>
+
+<style>
+  .albums {
+    @apply flex flex-wrap justify-around content-around;
+  }
+</style>
