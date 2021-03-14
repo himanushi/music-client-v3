@@ -6,7 +6,7 @@
 </script>
 
 <footer>
-  <div class="track-info">
+  <div class="track-info text-button">
     <Image size={11} />
     <span class="title">
       タイトルタイトルタタイトルタイトルタタイトルタイトルタタイトルタイトルタタイトルタイトルタタイトルタイトルタ
@@ -26,23 +26,29 @@
 
 <style>
   footer {
+    /* 子要素の位置 */
+    @apply flex flex-row items-center;
+    /* padding */
+    @apply p-2.5 space-x-2;
+    /* color */
     @apply bg-teal-500;
-    /* @apply fixed inset-x-0 bottom-0 p-2.5; */
-    @apply flex flex-row items-center space-x-2;
   }
 
   .track-info {
-    @apply bg-white bg-opacity-0 hover_bg-opacity-20;
-    @apply flex-1 truncate rounded;
-    @apply cursor-pointer;
+    /* サイズ可変 */
+    @apply flex-1;
+    /* 形 */
+    @apply truncate rounded;
   }
 
   .title {
+    /* フォント */
     @apply text-sm;
   }
 
   .play-or-pause,
   .skip {
+    /* サイズ固定 */
     @apply flex-shrink-0;
   }
 </style>

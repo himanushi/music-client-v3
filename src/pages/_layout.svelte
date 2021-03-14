@@ -12,11 +12,13 @@
   <div class="header">
     <Header />
   </div>
+
   <div class="content">
     <Content>
       <slot><!-- content --></slot>
     </Content>
   </div>
+
   <div class="footer">
     <Footer />
   </div>
@@ -24,34 +26,20 @@
 
 <style>
   .page {
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    position: absolute;
-    flex-direction: column;
-    /* justify-content: space-between; */
-    /* contain: layout size style; */
-    overflow: hidden;
+    /* 子要素の位置 */
+    @apply flex flex-col inset-0 absolute;
   }
 
-  .header {
-    display: block;
-    position: relative;
+  .header,
+  .footer {
+    /* サイズ固定 */
+    @apply flex-shrink-0;
   }
 
   .content {
-    contain: size;
-    flex-basis: 0%;
-    flex-grow: 1;
-    flex-shrink: 1;
-    height: 100%;
+    /* サイズ */
+    @apply flex-grow;
+    /* スクロールバー有効 */
     @apply overflow-y-auto;
-  }
-
-  .footer {
-    display: block;
-    position: relative;
   }
 </style>

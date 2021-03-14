@@ -24,21 +24,26 @@
 
 <style>
   header {
-    @apply bg-gray-900 text-white;
-    /* @apply fixed inset-x-0 top-0; */
+    /* 子要素の並び */
     @apply flex flex-row items-center p-3;
+    /* color */
+    @apply bg-gray-900 text-white;
   }
 
   .title {
+    /* font setting */
     @apply text-center text-lg;
+    /* サイズ */
     @apply flex-1;
   }
 
   .menu {
+    /* サイズ */
     @apply flex-shrink-0;
   }
 
   .user {
+    /* サイズ */
     @apply flex-shrink-0;
   }
 </style>
