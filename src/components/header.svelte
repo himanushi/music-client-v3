@@ -11,9 +11,11 @@
     </IconButton>
   </div>
 
-  <h1 class="title">
-    <a>ゲーム音楽</a>
-  </h1>
+  <div class="title">
+    <h1 class="text-button">
+      <a>ゲーム音楽</a>
+    </h1>
+  </div>
 
   <div class="user">
     <IconButton>
@@ -31,19 +33,19 @@
   }
 
   .title {
-    /* font setting */
-    @apply text-center text-lg;
+    /* フォント */
+    @apply text-lg;
     /* サイズ */
     @apply flex-1;
   }
 
-  .menu {
-    /* サイズ */
-    @apply flex-shrink-0;
+  h1 {
+    @apply inline-block rounded;
   }
 
-  .user {
-    /* サイズ */
+  .user,
+  .menu {
+    /* サイズ固定 */
     @apply flex-shrink-0;
   }
 </style>
