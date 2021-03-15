@@ -29,16 +29,19 @@ module.exports = {
     // デフォルト値がある引数は最後にしなくても良い
     "default-param-last": "off",
 
+    // function がズレるので無効
+    "function-call-argument-newline": "off",
+
     // 1文字の変数を許可しない
     "id-length": [
       "error",
-      {"exceptions": ["_"]}
+      { "exceptions": ["_"] }
     ],
 
     // import 文はソートする
     "import/order": [
       2,
-      {"alphabetize": {"order": "asc"}}
+      { "alphabetize": { "order": "asc" } }
     ],
 
     // インデントはスペース2個分
@@ -52,6 +55,7 @@ module.exports = {
 
     // ファイルの最大行数を制限しない
     "max-lines": "off",
+
     "max-statements": "off",
 
     "no-duplicate-imports": "off",
@@ -68,8 +72,15 @@ module.exports = {
     // undefined 使える
     "no-undefined": "off",
 
+    // object の隙間を開ける
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+
     // const 宣言をまとめない
     "one-var": "off",
+
     // object キーをソートする
     "sort-imports": 0,
 
