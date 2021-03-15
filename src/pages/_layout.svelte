@@ -1,10 +1,8 @@
 <script lang="ts">
   import {setClient} from "svelte-apollo";
-
   import Content from "./_content.svelte";
   import Footer from "./_footer.svelte";
   import Header from "./_header.svelte";
-
   import client from "~/graphql/client";
 
   setClient(client);
@@ -15,7 +13,7 @@
     <Header />
   </div>
 
-  <div class="content">
+  <div class="content" data-routify="scroll-lock">
     <Content>
       <slot><!-- content --></slot>
     </Content>
