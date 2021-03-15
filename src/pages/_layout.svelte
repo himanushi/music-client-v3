@@ -28,6 +28,8 @@
   .page {
     /* 子要素の位置 */
     @apply flex flex-col inset-0 absolute;
+    /* スクロールバー無効 */
+    @apply overflow-hidden;
   }
 
   .header,
@@ -37,9 +39,8 @@
   }
 
   .content {
-    /* サイズ */
     @apply flex-grow;
     /* スクロールバー有効 */
-    @apply overflow-y-auto;
+    @apply overflow-y-scroll;
   }
 </style>
