@@ -3,6 +3,7 @@
   import Content from "./_content.svelte";
   import Footer from "./_footer.svelte";
   import Header from "./_header.svelte";
+  import ScrollLock from "./_scroll-lock.svelte";
   import client from "~/graphql/client";
 
   setClient(client);
@@ -14,6 +15,7 @@
   </div>
 
   <div class="content" data-routify="scroll-lock">
+    <ScrollLock />
     <Content>
       <slot><!-- content --></slot>
     </Content>
