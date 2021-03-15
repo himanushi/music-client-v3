@@ -1,8 +1,8 @@
 <script>
   // ページ遷移による scrollTop: 0 対策
-  import {afterPageLoad, beforeUrlChange} from "@roxi/routify";
-  import {currentPath} from "~/store/history";
-  import {scrollLock} from "~/store/scroll-lock";
+  import { afterPageLoad, beforeUrlChange } from "@roxi/routify";
+  import { currentPath } from "~/store/history";
+  import { scrollLock } from "~/store/scroll-lock";
 
   let content: HTMLElement;
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {url} from "@roxi/routify";
+  import { url } from "@roxi/routify";
   import Image from "~/components/square-image.svelte";
 
   export let id = "";

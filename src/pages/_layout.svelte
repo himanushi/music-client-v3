@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {setClient} from "svelte-apollo";
+  import { setClient } from "svelte-apollo";
   import Content from "./_content.svelte";
   import Footer from "./_footer.svelte";
   import Header from "./_header.svelte";
