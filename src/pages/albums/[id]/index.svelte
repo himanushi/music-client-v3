@@ -1,0 +1,1 @@
+<div>album info</div>

@@ -1,16 +1,22 @@
 <script lang="ts">
+  import {url} from "@roxi/routify";
   import Image from "~/components/square-image.svelte";
 
+  export let id = "";
   export let src = "";
   export let name = "";
   export let size = 40;
+
+  const path = `./${id}`;
 </script>
 
-<div class="card w-{size}">
-  <div class="image w-{size}">
-    <Image {src} alt={name} {size} />
-  </div>
-  <span class="name">{name}</span>
+<div class="w-{size}">
+  <a class="card" href={$url(path)}>
+    <div class="image w-{size}">
+      <Image {src} alt={name} {size} />
+    </div>
+    <span class="name">{name}</span>
+  </a>
 </div>
 
 <style>

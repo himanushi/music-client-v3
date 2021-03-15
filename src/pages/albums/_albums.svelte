@@ -7,12 +7,8 @@
   const albums = query<AlbumsQuery>(AlbumsDocument);
 </script>
 
-{#if $albums.loading}
-  Loading...
-{:else if $albums.error}
-  Error: {$albums.error}
-{:else if $albums.data?.albums}
+{#if $albums.data?.albums}
   {#each $albums.data.albums as album}
-    <Item name={album.name} src={album.artworkM.url || ""} />
+    <Item id={album.id} name={album.name} src={album.artworkM.url || ""} />
   {/each}
 {/if}
