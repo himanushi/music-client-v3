@@ -1,8 +1,10 @@
 <script lang="ts">
   import {setClient} from "svelte-apollo";
-  import Content from "~/components/content.svelte";
-  import Footer from "~/components/footer.svelte";
-  import Header from "~/components/header.svelte";
+
+  import Content from "./_content.svelte";
+  import Footer from "./_footer.svelte";
+  import Header from "./_header.svelte";
+
   import client from "~/graphql/client";
 
   setClient(client);
