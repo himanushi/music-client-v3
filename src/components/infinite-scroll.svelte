@@ -4,6 +4,7 @@
 
   export let threshold = 0;
   export let hasMore = true;
+  export let elementScroll: HTMLElement | null = null;
 
   const dispatch = createEventDispatcher();
 
@@ -73,7 +74,15 @@
 
   onMount(() => {
 
-    element = component.parentNode as HTMLElement;
+    if (elementScroll) {
+
+      element = elementScroll;
+  
+    } else {
+
+      element = component.parentNode as HTMLElement;
+  
+    }
 
   });
 
@@ -89,4 +98,6 @@
   });
 </script>
 
-<span bind:this={component} style="display: none;" />
+{#if !elementScroll}
+  <span bind:this={component} style="display: none;" />
+{/if}
