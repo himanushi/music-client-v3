@@ -3,7 +3,6 @@
   import Content from "./_content.svelte";
   import Footer from "./_footer.svelte";
   import Header from "./_header.svelte";
-  import ScrollLock from "./_scroll-lock.svelte";
   import client from "~/graphql/client";
 
   setClient(client);
@@ -14,8 +13,7 @@
     <Header />
   </div>
 
-  <div class="content" data-routify="scroll-lock">
-    <ScrollLock />
+  <div class="content">
     <Content>
       <slot><!-- content --></slot>
     </Content>
@@ -34,15 +32,21 @@
     @apply overflow-hidden;
   }
 
-  .header,
-  .footer {
+  .header {
     /* サイズ固定 */
-    @apply flex-shrink-0;
+    @apply relative flex-shrink-0;
+    @apply order-first;
   }
 
   .content {
-    @apply flex-grow;
-    /* スクロールバー有効 */
-    @apply overflow-y-scroll;
+    /* サイズ可変 */
+    @apply relative flex-1 h-0;
+    @apply order-1;
+  }
+
+  .footer {
+    /* サイズ固定 */
+    @apply relative flex-shrink-0;
+    @apply order-last;
   }
 </style>

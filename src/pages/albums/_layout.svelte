@@ -1,4 +1,0 @@
-<!-- searchbar -->
-<slot>
-  <!-- albums -->
-</slot>
