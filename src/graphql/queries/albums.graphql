@@ -3,7 +3,7 @@ query Albums(
   $sort: AlbumsSortInputObject
   $conditions: AlbumsConditionsInputObject
 ) {
-  albums(cursor: $cursor, sort: $sort, conditions: $conditions) {
+  items: albums(cursor: $cursor, sort: $sort, conditions: $conditions) {
     id
     name
     status
