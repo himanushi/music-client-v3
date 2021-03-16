@@ -72,6 +72,9 @@ module.exports = {
     // process.env 使用許可
     "no-process-env": "off",
 
+    // return の時に変数に代入できる
+    "no-return-assign": "off",
+
     // 三項演算子有効
     "no-ternary": "off",
 

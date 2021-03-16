@@ -10,7 +10,7 @@
     AlbumsQueryVariables
   } from "~/graphql/types";
 
-  const limit = 30;
+  const limit = 50;
   let albums: Album[] = [];
 
   const albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
@@ -23,48 +23,24 @@
     }
   });
 
-  $: if ($albumsQuery.data) {
-
-    albums = $albumsQuery.data.items as Album[];
-
-  }
-
   const loadMore = async () => {
 
-    console.log("load");
-
-    const result = await albumsQuery.fetchMore({
-      "updateQuery": (prev: any, options: any) => {
-
-        if (!options.fetchMoreResult) {
-
-          return prev;
-  
-        }
-
-        return {
-          ...prev,
-          ...{ "items": [
-            ...prev.items,
-            ...options.fetchMoreResult.items
-          ] }
-        };
-  
-      },
+    await albumsQuery.fetchMore({
       "variables": {
         "cursor": {
+          limit,
           "offset": albums.length
         }
       }
     });
 
-    if (result.data) {
-
-      albums = albums.concat(result.data.items as Album[]);
-  
-    }
-
   };
+
+  $: if ($albumsQuery.data) {
+
+    albums = $albumsQuery.data.albums as Album[];
+
+  }
 
   const { getElement } = getContext("content");
   const elementScroll: HTMLElement = getElement();
@@ -73,4 +49,4 @@
 {#each albums as album}
   <Item id={album.id} name={album.name} src={album.artworkM.url || ""} />
 {/each}
-<InfiniteScroll {elementScroll} on:loadMore={loadMore} />
+<InfiniteScroll threshold={300} {elementScroll} on:loadMore={loadMore} />

@@ -17,7 +17,28 @@ const link = ApolloLink.from([
   httpLink
 ]);
 
+const cache = new InMemoryCache({
+  "typePolicies": {
+    "Query": {
+      "fields": {
+        "albums": {
+          "keyArgs": ["conditions"],
+
+          merge (existing = [], incoming = []) {
+
+            return [
+              ...existing,
+              ...incoming
+            ];
+
+          }
+        }
+      }
+    }
+  }
+});
+
 export default new ApolloClient({
-  "cache": new InMemoryCache(),
+  cache,
   link
 });
