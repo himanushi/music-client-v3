@@ -12,7 +12,7 @@
     @apply bg-gray-800;
   }
 
-  .text-button {
+  .clickable {
     /* color */
     @apply bg-white bg-opacity-0;
     /* animation */
