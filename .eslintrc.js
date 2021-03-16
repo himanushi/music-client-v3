@@ -53,6 +53,12 @@ module.exports = {
     // 初期化するときに初期値がなくても良い
     "init-declarations": "off",
 
+    // コメントのみ最大列無視
+    "max-len": [
+      "error",
+      { "ignoreComments": true }
+    ],
+
     // ファイルの最大行数を制限しない
     "max-lines": "off",
 

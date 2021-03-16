@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Albums from "./_albums.svelte";
 </script>
 
@@ -8,6 +8,6 @@
 
 <style>
   .albums {
-    @apply flex flex-wrap justify-around content-around;
+    @apply flex flex-wrap;
   }
 </style>

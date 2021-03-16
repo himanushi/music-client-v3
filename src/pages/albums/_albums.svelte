@@ -1,10 +1,12 @@
-<script>
+<script lang="ts">
   import { query } from "svelte-apollo";
   import Item from "./_item-card.svelte";
   import { AlbumsDocument } from "~/graphql/types";
   import type { AlbumsQuery } from "~/graphql/types";
 
-  const albums = query<AlbumsQuery>(AlbumsDocument);
+  const albums = query<AlbumsQuery>(AlbumsDocument, {
+    "fetchPolicy": "cache-first"
+  });
 </script>
 
 {#if $albums.data?.albums}

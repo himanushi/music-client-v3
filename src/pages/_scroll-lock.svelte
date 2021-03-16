@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   // ページ遷移による scrollTop: 0 対策
   import { afterPageLoad, beforeUrlChange } from "@roxi/routify";
   import { currentPath } from "~/store/history";
