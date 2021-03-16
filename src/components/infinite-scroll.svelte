@@ -89,10 +89,4 @@
   });
 </script>
 
-<div bind:this={component} />
-
-<style>
-  div {
-    width: 0;
-  }
-</style>
+<span bind:this={component} style="display: none;" />

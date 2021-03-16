@@ -38,4 +38,4 @@
   });
 </script>
 
-<div bind:this={content} />
+<span bind:this={content} style="display: none;" />

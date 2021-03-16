@@ -8,45 +8,36 @@
   setClient(client);
 </script>
 
-<div class="page">
-  <div class="header">
-    <Header />
-  </div>
-
-  <div class="content">
-    <Content>
-      <slot><!-- content --></slot>
-    </Content>
-  </div>
-
-  <div class="footer">
-    <Footer />
-  </div>
-</div>
+<Header />
+<Content><slot /></Content>
+<Footer />
 
 <style>
-  .page {
+  :global(body) {
     /* 子要素の位置 */
     @apply flex flex-col inset-0 absolute;
     /* スクロールバー無効 */
     @apply overflow-hidden;
   }
 
-  .header {
+  :global(body > header) {
     /* サイズ固定 */
     @apply relative flex-shrink-0;
+    /* 表示順 */
     @apply order-first;
   }
 
-  .content {
+  :global(body > content) {
     /* サイズ可変 */
     @apply relative flex-1 h-0;
+    /* 表示順 */
     @apply order-1;
   }
 
-  .footer {
+  :global(body > footer) {
     /* サイズ固定 */
     @apply relative flex-shrink-0;
+    /* 表示順 */
     @apply order-last;
   }
 </style>

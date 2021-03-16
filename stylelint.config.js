@@ -9,6 +9,12 @@ module.exports = {
           "tailwind"
         ]
       }
+    ],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
     ]
   }
 };

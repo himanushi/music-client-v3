@@ -1,9 +1,14 @@
-<div>
+<script lang="ts">
+  import ScrollLock from "./_scroll-lock.svelte";
+</script>
+
+<main data-routify="scroll-lock">
+  <ScrollLock />
   <slot>contetnt</slot>
-</div>
+</main>
 
 <style>
-  div {
+  main {
     @apply h-full overflow-auto;
   }
 </style>
