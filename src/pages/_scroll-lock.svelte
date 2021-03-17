@@ -12,17 +12,11 @@
 
     dispatch("pageChange");
 
-    scrollLock.update((object) => {
+    if (content.parentElement) {
 
-      if (content.parentElement) {
-
-        object[$currentPath] = content.parentElement.scrollTop;
+      scrollLock.update($currentPath, content.parentElement.scrollTop);
   
-      }
-
-      return object;
-  
-    });
+    }
 
     return true;
 
