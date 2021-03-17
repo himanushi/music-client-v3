@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import { query } from "svelte-apollo";
   import Item from "./_item-card.svelte";
-  import InfiniteScroll from "~/components/infinite-scroll.svelte";
+  import Waypoint from "~/components/waypoint.svelte";
   import { AlbumsDocument } from "~/graphql/types";
   import type {
     Album,
@@ -49,4 +49,4 @@
 {#each albums as album}
   <Item id={album.id} name={album.name} src={album.artworkM.url || ""} />
 {/each}
-<InfiniteScroll threshold={300} {elementScroll} on:loadMore={loadMore} />
+<Waypoint threshold={300} {elementScroll} on:loadMore={loadMore} />
