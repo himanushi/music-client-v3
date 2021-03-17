@@ -3,10 +3,13 @@
   import IconButton from "~/components/icon-button.svelte";
   import MenuIcon from "~/icons/menu.svelte";
   import UserIcon from "~/icons/user.svelte";
+  import { sidebarHidden } from "~/store/page";
+
+  const showSidebar = () => sidebarHidden.set(false);
 </script>
 
 <header>
-  <IconButton>
+  <IconButton on:click={showSidebar}>
     <MenuIcon size={7} />
   </IconButton>
 

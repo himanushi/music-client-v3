@@ -98,6 +98,4 @@
   });
 </script>
 
-{#if !elementScroll}
-  <span bind:this={component} style="display: none;" />
-{/if}
+<span bind:this={component} style="display: none;" />

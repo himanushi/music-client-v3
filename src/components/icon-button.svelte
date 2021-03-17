@@ -2,7 +2,7 @@
   export let size = 10;
 </script>
 
-<button class="h-{size} w-{size}">
+<button class="h-{size} w-{size}" on:click>
   <slot><!-- icon --></slot>
 </button>
 

@@ -6,7 +6,8 @@ module.exports = {
       {
         "ignoreAtRules": [
           "extends",
-          "tailwind"
+          "tailwind",
+          "layer"
         ]
       }
     ],

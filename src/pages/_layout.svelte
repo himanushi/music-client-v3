@@ -3,6 +3,7 @@
   import Content from "./_content.svelte";
   import Footer from "./_footer.svelte";
   import Header from "./_header.svelte";
+  import Sidebar from "./_sidebar.svelte";
   import client from "~/graphql/client";
 
   setClient(client);
@@ -11,6 +12,7 @@
 <Header />
 <Content><slot /></Content>
 <Footer />
+<Sidebar />
 
 <style lang="scss">
   :global(body) {
@@ -18,26 +20,26 @@
     @apply flex flex-col inset-0 absolute;
     /* スクロールバー無効 */
     @apply overflow-hidden;
+  }
 
-    :global(header) {
-      /* サイズ固定 */
-      @apply relative flex-shrink-0;
-      /* 表示順 */
-      @apply order-first;
-    }
+  :global(body > header) {
+    /* サイズ固定 */
+    @apply relative flex-shrink-0;
+    /* 表示順 */
+    @apply order-first;
+  }
 
-    :global(main) {
-      /* サイズ可変 */
-      @apply relative flex-1 h-0;
-      /* 表示順 */
-      @apply order-1;
-    }
+  :global(body > main) {
+    /* サイズ可変 */
+    @apply relative flex-1 h-0;
+    /* 表示順 */
+    @apply order-1;
+  }
 
-    :global(footer) {
-      /* サイズ固定 */
-      @apply relative flex-shrink-0;
-      /* 表示順 */
-      @apply order-last;
-    }
+  :global(body > footer) {
+    /* サイズ固定 */
+    @apply relative flex-shrink-0;
+    /* 表示順 */
+    @apply order-last;
   }
 </style>
