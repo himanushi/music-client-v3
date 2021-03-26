@@ -47,13 +47,13 @@
     /* 位置 */
     @apply absolute w-full h-full z-50;
     /* 透過 */
-    background: rgba(0, 0, 0, 0.3);
+    @apply bg-black bg-opacity-30;
 
     nav {
       /* サイズ */
       @apply w-72 h-full;
       /* 透過 */
-      background: rgba(0, 0, 0, 1);
+      @apply bg-opacity-100;
 
       header {
         @apply h-16 flex items-center bg-teal-500 px-2;
