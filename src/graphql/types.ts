@@ -1069,6 +1069,56 @@ export type User = {
   readonly username: Scalars["String"];
 };
 
+export type AlbumQueryVariables = Exact<{
+  id: Scalars["TTID"];
+}>;
+
+export type AlbumQuery = {
+  readonly album?: Maybe<
+    Pick<
+      Album,
+      | "id"
+      | "totalTracks"
+      | "name"
+      | "releaseDate"
+      | "recordLabel"
+      | "copyright"
+    > & {
+      readonly artworkL: Pick<Artwork, "url" | "width" | "height">;
+      readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
+      readonly appleMusicAlbum?: Maybe<
+        Pick<AppleMusicAlbum, "id" | "appleMusicId">
+      >;
+      readonly itunesAlbum?: Maybe<
+        Pick<AppleMusicAlbum, "id" | "appleMusicId">
+      >;
+      readonly spotifyAlbum?: Maybe<Pick<SpotifyAlbum, "id" | "spotifyId">>;
+      readonly tracks: ReadonlyArray<
+        Pick<
+          Track,
+          | "id"
+          | "isrc"
+          | "name"
+          | "discNumber"
+          | "trackNumber"
+          | "durationMs"
+          | "previewUrl"
+          | "popularity"
+        > & {
+          readonly artworkL: Pick<Artwork, "url" | "width" | "height">;
+          readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
+          readonly appleMusicTracks?: Maybe<
+            ReadonlyArray<Pick<AppleMusicTrack, "id" | "name" | "appleMusicId">>
+          >;
+          readonly spotifyTracks?: Maybe<
+            ReadonlyArray<Pick<SpotifyTrack, "id" | "name" | "spotifyId">>
+          >;
+        }
+      >;
+    }
+  >;
+};
+
 export type AlbumsQueryVariables = Exact<{
   cursor?: Maybe<CursorInputObject>;
   sort?: Maybe<AlbumsSortInputObject>;
@@ -1086,6 +1136,244 @@ export type AlbumsQuery = {
   >;
 };
 
+export const AlbumDocument: DocumentNode<AlbumQuery, AlbumQueryVariables> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Album" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "TTID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "album" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "totalTracks" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "releaseDate" } },
+                { kind: "Field", name: { kind: "Name", value: "recordLabel" } },
+                { kind: "Field", name: { kind: "Name", value: "copyright" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "artworkL" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "url" } },
+                      { kind: "Field", name: { kind: "Name", value: "width" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "artworkM" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "url" } },
+                      { kind: "Field", name: { kind: "Name", value: "width" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "appleMusicAlbum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "appleMusicId" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "itunesAlbum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "appleMusicId" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "spotifyAlbum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "spotifyId" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "tracks" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "isrc" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "discNumber" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "trackNumber" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "durationMs" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "previewUrl" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "popularity" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "artworkL" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "url" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "width" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "artworkM" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "url" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "width" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "appleMusicTracks" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "appleMusicId" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "spotifyTracks" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "spotifyId" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
 export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
   kind: "Document",
   definitions: [
