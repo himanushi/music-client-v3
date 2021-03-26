@@ -13,11 +13,10 @@ module.exports = {
    */
   "separator": "_",
   "theme": {
-    "colors": {
-      "black": colors.black,
-      "gray": colors.coolGray,
-      "teal": colors.teal,
-      "white": colors.white
+    "extend": {
+      "colors": {
+        "teal": colors.teal
+      }
     }
   },
   "variants": {
