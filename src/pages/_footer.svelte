@@ -40,12 +40,15 @@
 
     .track-info {
       /* サイズ可変 */
-      @apply flex flex-col flex-1 w-0;
+      @apply flex flex-row flex-1 w-0;
 
       div {
-        @apply items-center;
         /* 形 */
         @apply p-1 truncate rounded;
+
+        :global(div) {
+          @apply inline-flex;
+        }
 
         .title {
           /* フォント */
