@@ -22,7 +22,7 @@
 
 <style lang="scss">
   div {
-    @apply block rounded bg-gray-600;
+    @apply flex justify-center place-items-center rounded bg-gray-600;
 
     /* img */
     @apply bg-cover bg-center bg-no-repeat;
