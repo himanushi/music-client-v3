@@ -26,4 +26,7 @@
 
 <style lang="scss">
   /* デザインはあとで */
+  footer {
+    @apply bg-green-800;
+  }
 </style>

@@ -23,5 +23,8 @@
 </header>
 
 <style lang="scss">
+  header {
+    @apply bg-blue-800;
+  }
   /* デザインはあとで */
 </style>
