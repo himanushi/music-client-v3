@@ -1136,6 +1136,20 @@ export type AlbumsQuery = {
   >;
 };
 
+export type ArtistsQueryVariables = Exact<{
+  cursor?: Maybe<CursorInputObject>;
+  sort?: Maybe<ArtistsSortInputObject>;
+  conditions?: Maybe<ArtistsConditionsInputObject>;
+}>;
+
+export type ArtistsQuery = {
+  readonly artists: ReadonlyArray<
+    Pick<Artist, "id" | "name" | "status"> & {
+      readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
+    }
+  >;
+};
+
 export const AlbumDocument: DocumentNode<AlbumQuery, AlbumQueryVariables> = {
   kind: "Document",
   definitions: [
@@ -1493,6 +1507,109 @@ export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
+export const ArtistsDocument: DocumentNode<
+  ArtistsQuery,
+  ArtistsQueryVariables
+> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Artists" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "cursor" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "CursorInputObject" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "ArtistsSortInputObject" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "conditions" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "ArtistsConditionsInputObject" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "artists" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cursor" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cursor" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "sort" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "sort" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "conditions" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "conditions" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "status" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "artworkM" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "url" } },
+                      { kind: "Field", name: { kind: "Name", value: "width" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
                     ],
                   },
                 },
