@@ -25,32 +25,5 @@
 </footer>
 
 <style lang="scss">
-  footer {
-    /* 子要素の位置 */
-    @apply flex flex-row items-center;
-    /* padding */
-    @apply p-2;
-    /* color */
-    @apply bg-teal-500;
-
-    :global(button) {
-      /* サイズ固定 */
-      @apply flex-shrink-0;
-    }
-
-    .track-info {
-      /* サイズ可変 */
-      @apply flex-1 w-0;
-
-      div {
-        /* 形 */
-        @apply flex flex-row p-1 truncate rounded;
-
-        .title {
-          /* フォント */
-          @apply text-sm;
-        }
-      }
-    }
-  }
+  /* デザインはあとで */
 </style>

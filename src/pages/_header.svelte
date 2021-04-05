@@ -23,27 +23,5 @@
 </header>
 
 <style lang="scss">
-  header {
-    /* 子要素の並び */
-    @apply flex flex-row items-center p-3;
-    /* color */
-    @apply bg-gray-900 text-white;
-
-    :global(button) {
-      /* サイズ固定 */
-      @apply flex-shrink-0;
-    }
-  }
-
-  h1 {
-    /* フォント */
-    @apply text-lg;
-    /* サイズ */
-    @apply flex-1;
-
-    a {
-      /* 形 */
-      @apply rounded p-2;
-    }
-  }
+  /* デザインはあとで */
 </style>
