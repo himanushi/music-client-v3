@@ -28,10 +28,9 @@
 
     if (content.parentElement) {
 
-      content.parentElement.scrollTop =
-        $scrollLock[window.location.pathname] || 0;
+      content.parentElement.scrollTop = $scrollLock[window.location.href] || 0;
 
-      currentPath.set(window.location.pathname);
+      currentPath.set(window.location.href);
   
     }
 
