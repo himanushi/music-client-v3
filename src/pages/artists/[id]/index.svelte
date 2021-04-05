@@ -2,31 +2,26 @@
   import { query } from "svelte-apollo";
   import Image from "~/components/square-image.svelte";
   import Text from "~/components/text.svelte";
-  import { AlbumDocument } from "~/graphql/types";
-  import type { Album, AlbumQuery } from "~/graphql/types";
+  import { ArtistDocument } from "~/graphql/types";
+  import type { Artist, ArtistQuery } from "~/graphql/types";
 
   export let id = "";
 
-  const albumQuery = query<AlbumQuery>(AlbumDocument, {
+  const artistQuery = query<ArtistQuery>(ArtistDocument, {
     "fetchPolicy": "cache-first",
     "variables": { id }
   });
 
-  let album: Album | undefined;
+  let artist: Artist | undefined;
 
-  $: if ($albumQuery.data) {
+  $: if ($artistQuery.data) {
 
-    album = $albumQuery.data.album as Album;
+    artist = $artistQuery.data.artist as Artist;
 
   }
 </script>
 
-{#if album && album.artworkL.url}
-  <Image src={album.artworkL.url} alt={album.name} size={16} />
-  <Text>{album.name}</Text>
-  <Text>{album.copyright}</Text>
-
-  {#each album.tracks as track (track.id)}
-    <Text>{track.name}</Text>
-  {/each}
+{#if artist && artist.artworkL.url}
+  <Image src={artist.artworkL.url} alt={artist.name} size={16} />
+  <Text>{artist.name}</Text>
 {/if}
