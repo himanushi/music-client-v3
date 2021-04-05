@@ -1136,6 +1136,18 @@ export type AlbumsQuery = {
   >;
 };
 
+export type ArtistQueryVariables = Exact<{
+  id: Scalars["TTID"];
+}>;
+
+export type ArtistQuery = {
+  readonly artist?: Maybe<
+    Pick<Artist, "id" | "name"> & {
+      readonly artworkL: Pick<Artwork, "url" | "width" | "height">;
+    }
+  >;
+};
+
 export type ArtistsQueryVariables = Exact<{
   cursor?: Maybe<CursorInputObject>;
   sort?: Maybe<ArtistsSortInputObject>;
@@ -1507,6 +1519,67 @@ export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
+export const ArtistDocument: DocumentNode<ArtistQuery, ArtistQueryVariables> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Artist" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "TTID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "artist" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "artworkL" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "url" } },
+                      { kind: "Field", name: { kind: "Name", value: "width" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
                     ],
                   },
                 },
