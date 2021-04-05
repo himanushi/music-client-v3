@@ -1,5 +1,3 @@
-<svelte:options immutable={true} />
-
 <script lang="ts">
   import { url } from "@roxi/routify";
   import Image from "~/components/square-image.svelte";

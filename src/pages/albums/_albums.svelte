@@ -16,8 +16,8 @@
   let albums: Album[] = [];
 
   let name: string;
+
   $: name = $params[SearchParams.albums.name];
-  $: console.dir(name);
 
   $: albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
     "fetchPolicy": "cache-first",
@@ -55,7 +55,7 @@
   const elementScroll: HTMLElement = getElement();
 </script>
 
-{#each albums as album}
+{#each albums as album (album.id)}
   <Item id={album.id} name={album.name} src={album.artworkM.url || ""} />
 {/each}
 <Waypoint threshold={300} {elementScroll} on:loadMore={loadMore} />

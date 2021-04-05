@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { goto } from "@roxi/routify";
+  import { goto, params } from "@roxi/routify";
   import { SearchParams } from "~/lib/params";
   import type { SearchParamsType } from "~/lib/params";
 
-  let value: string;
+  let value: string = $params[SearchParams.albums.name];
 
   const search = () => {
 
-    const params: SearchParamsType = {};
-    params[SearchParams.albums.name] = value;
+    const parameters: SearchParamsType = {};
+    parameters[SearchParams.albums.name] = value;
 
-    $goto("./", params);
+    $goto("./", parameters);
 
   };
 </script>
