@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { params } from "@roxi/routify";
   import { getContext } from "svelte";
   import { query } from "svelte-apollo";
   import Item from "./_item-card.svelte";
@@ -9,13 +10,21 @@
     AlbumsQuery,
     AlbumsQueryVariables
   } from "~/graphql/types";
+  import { SearchParams } from "~/lib/params";
 
   const limit = 50;
   let albums: Album[] = [];
 
-  const albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
+  let name: string;
+  $: name = $params[SearchParams.albums.name];
+  $: console.dir(name);
+
+  $: albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
     "fetchPolicy": "cache-first",
     "variables": {
+      "conditions": {
+        name
+      },
       "cursor": {
         limit,
         "offset": 0

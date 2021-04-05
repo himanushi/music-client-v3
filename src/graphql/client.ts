@@ -22,7 +22,10 @@ const cache = new InMemoryCache({
     "Query": {
       "fields": {
         "albums": {
-          "keyArgs": ["conditions"],
+          "keyArgs": [
+            "conditions",
+            ["name"]
+          ],
 
           merge (existing = [], incoming = []) {
 
