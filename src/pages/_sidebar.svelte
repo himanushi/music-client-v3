@@ -33,7 +33,9 @@
         <section>
           <h5>検索</h5>
           <ul>
-            <li class="clickable" on:click={go("/albums")}>アーティスト検索</li>
+            <li class="clickable" on:click={go("/artists")}>
+              アーティスト検索
+            </li>
             <li class="clickable" on:click={go("/albums")}>アルバム検索</li>
           </ul>
         </section>
