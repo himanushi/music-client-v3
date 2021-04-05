@@ -16,7 +16,6 @@
   let albums: Album[] = [];
 
   let name: string;
-
   $: name = $params[SearchParams.albums.name];
 
   $: albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
