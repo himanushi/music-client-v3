@@ -1,3 +1,13 @@
+<script lang="ts" context="module">
+  // ↓ これどうにかしたい
+  // eslint-disable-next-line import/order
+  import type { ArtistsConditionsInputObject } from "~/graphql/types";
+  // eslint-disable-next-line import/order
+  import type { Mutable } from "~/@types/extends";
+
+  export type conditonsType = Mutable<ArtistsConditionsInputObject>;
+</script>
+
 <script lang="ts">
   import { params } from "@roxi/routify";
   import { getContext } from "svelte";
@@ -12,6 +22,8 @@
   } from "~/graphql/types";
   import { SearchParams } from "~/lib/params";
 
+  export let conditions: conditonsType = {};
+
   const limit = 50;
   let artists: Artist[] = [];
 
@@ -23,9 +35,7 @@
     {
       "fetchPolicy": "cache-first",
       "variables": {
-        "conditions": {
-          name
-        },
+        conditions,
         "cursor": {
           limit,
           "offset": 0

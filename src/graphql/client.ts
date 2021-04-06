@@ -17,25 +17,28 @@ const link = ApolloLink.from([
   httpLink
 ]);
 
+const offsetLimitPagination = {
+  "keyArgs": [
+    "conditions",
+    ["name"]
+  ],
+
+  merge (existing = [], incoming = []) {
+
+    return [
+      ...existing,
+      ...incoming
+    ];
+
+  }
+};
+
 const cache = new InMemoryCache({
   "typePolicies": {
     "Query": {
       "fields": {
-        "albums": {
-          "keyArgs": [
-            "conditions",
-            ["name"]
-          ],
-
-          merge (existing = [], incoming = []) {
-
-            return [
-              ...existing,
-              ...incoming
-            ];
-
-          }
-        }
+        "albums": offsetLimitPagination,
+        "artists": offsetLimitPagination
       }
     }
   }
