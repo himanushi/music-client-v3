@@ -7,7 +7,7 @@
   export let name = "";
   export let size = 40;
 
-  const path = `./${id}`;
+  const path = `/artists/${id}`;
 </script>
 
 <div class="w-{size}">

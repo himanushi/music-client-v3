@@ -20,7 +20,11 @@ const link = ApolloLink.from([
 const offsetLimitPagination = {
   "keyArgs": [
     "conditions",
-    ["name"]
+    [
+      "name",
+      "artists",
+      ["id"]
+    ]
   ],
 
   merge (existing = [], incoming = []) {

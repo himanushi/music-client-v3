@@ -4,6 +4,7 @@
   import Text from "~/components/text.svelte";
   import { ArtistDocument } from "~/graphql/types";
   import type { Artist, ArtistQuery } from "~/graphql/types";
+  import Albums from "~/pages/albums/_albums.svelte";
 
   export let id = "";
 
@@ -21,7 +22,14 @@
   }
 </script>
 
-{#if artist && artist.artworkL.url}
-  <Image src={artist.artworkL.url} alt={artist.name} size={16} />
+{#if artist}
+  {#if artist.artworkL.url}
+    <Image src={artist.artworkL.url} alt={artist.name} size={16} />
+  {/if}
   <Text>{artist.name}</Text>
+  <Albums
+    conditions={{
+      "artists": { "id": [id] }
+    }}
+  />
 {/if}
