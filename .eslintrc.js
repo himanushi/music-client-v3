@@ -75,11 +75,23 @@ module.exports = {
     // return の時に変数に代入できる
     "no-return-assign": "off",
 
+    // typescript で nest した [key in object] をするため
+    "no-shadow": [
+      "error",
+      { "allow": ["key"] }
+    ],
+
     // 三項演算子有効
     "no-ternary": "off",
 
     // undefined 使える
     "no-undefined": "off",
+
+    // typescript で [key in object] をするため
+    "no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "key" }
+    ],
 
     // object の隙間を開ける
     "object-curly-spacing": [
