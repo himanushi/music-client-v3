@@ -9,7 +9,6 @@
 </script>
 
 <script lang="ts">
-  import { params } from "@roxi/routify";
   import { getContext } from "svelte";
   import { query } from "svelte-apollo";
   import Item from "./_item-card.svelte";
@@ -20,15 +19,11 @@
     ArtistsQuery,
     ArtistsQueryVariables
   } from "~/graphql/types";
-  import { SearchParams } from "~/lib/params";
 
   export let conditions: conditonsType = {};
 
   const limit = 50;
   let artists: Artist[] = [];
-
-  let name: string;
-  $: name = $params[SearchParams.album.keyword];
 
   $: artistsQuery = query<ArtistsQuery, ArtistsQueryVariables>(
     ArtistsDocument,
