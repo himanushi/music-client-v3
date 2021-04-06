@@ -20,6 +20,10 @@
     artist = $artistQuery.data.artist as Artist;
 
   }
+
+  const albumConditions = {
+    "artists": { "id": [id] }
+  };
 </script>
 
 {#if artist}
@@ -27,9 +31,5 @@
     <Image src={artist.artworkL.url} alt={artist.name} size={16} />
   {/if}
   <Text>{artist.name}</Text>
-  <Albums
-    conditions={{
-      "artists": { "id": [id] }
-    }}
-  />
+  <Albums conditions={albumConditions} />
 {/if}

@@ -4,6 +4,7 @@
   import Text from "~/components/text.svelte";
   import { AlbumDocument } from "~/graphql/types";
   import type { Album, AlbumQuery } from "~/graphql/types";
+  import Artists from "~/pages/artists/_artists.svelte";
 
   export let id = "";
 
@@ -19,6 +20,10 @@
     album = $albumQuery.data.album as Album;
 
   }
+
+  const artistConditions = {
+    "albums": { "id": [id] }
+  };
 </script>
 
 {#if album && album.artworkL.url}
@@ -29,4 +34,6 @@
   {#each album.tracks as track (track.id)}
     <Text>{track.name}</Text>
   {/each}
+
+  <Artists conditions={artistConditions} />
 {/if}
