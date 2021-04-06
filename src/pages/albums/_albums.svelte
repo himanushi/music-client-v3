@@ -1,5 +1,14 @@
+<script lang="ts" context="module">
+  // ↓ これどうにかしたい
+  // eslint-disable-next-line import/order
+  import type { AlbumsConditionsInputObject } from "~/graphql/types";
+  // eslint-disable-next-line import/order
+  import type { Mutable } from "~/@types/extends";
+
+  export type conditonsType = Mutable<AlbumsConditionsInputObject>;
+</script>
+
 <script lang="ts">
-  import { params } from "@roxi/routify";
   import { getContext } from "svelte";
   import { query } from "svelte-apollo";
   import Item from "./_item-card.svelte";
@@ -10,20 +19,16 @@
     AlbumsQuery,
     AlbumsQueryVariables
   } from "~/graphql/types";
-  import { SearchParams } from "~/lib/params";
+
+  export let conditions: conditonsType = {};
 
   const limit = 50;
   let albums: Album[] = [];
 
-  let name: string;
-  $: name = $params[SearchParams.album.keyword];
-
   $: albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
     "fetchPolicy": "cache-first",
     "variables": {
-      "conditions": {
-        name
-      },
+      conditions,
       "cursor": {
         limit,
         "offset": 0

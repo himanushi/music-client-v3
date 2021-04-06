@@ -40,8 +40,10 @@ module.exports = {
 
     // import 文はソートする
     "import/order": [
-      2,
-      { "alphabetize": { "order": "asc" } }
+      "error",
+      {
+        "alphabetize": { "order": "asc" }
+      }
     ],
 
     // インデントはスペース2個分
