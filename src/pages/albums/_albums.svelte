@@ -16,7 +16,7 @@
   let albums: Album[] = [];
 
   let name: string;
-  $: name = $params[SearchParams.albums.name];
+  $: name = $params[SearchParams.album.keyword];
 
   $: albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
     "fetchPolicy": "cache-first",

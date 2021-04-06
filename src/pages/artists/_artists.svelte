@@ -16,7 +16,7 @@
   let artists: Artist[] = [];
 
   let name: string;
-  $: name = $params[SearchParams.albums.name];
+  $: name = $params[SearchParams.album.keyword];
 
   $: artistsQuery = query<ArtistsQuery, ArtistsQueryVariables>(
     ArtistsDocument,

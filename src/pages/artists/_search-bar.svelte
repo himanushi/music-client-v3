@@ -3,12 +3,12 @@
   import { SearchParams } from "~/lib/params";
   import type { SearchParamsType } from "~/lib/params";
 
-  let value: string = $params[SearchParams.albums.name];
+  let value: string = $params[SearchParams.artist.keyword];
 
   const search = () => {
 
     const parameters: SearchParamsType = {};
-    parameters[SearchParams.albums.name] = value;
+    parameters[SearchParams.artist.keyword] = value;
 
     $goto("./", parameters);
 
