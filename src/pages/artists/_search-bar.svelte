@@ -10,7 +10,7 @@
     const parameters: SearchParamsType = {};
     parameters[SearchParams.artist.keyword] = value;
 
-    $goto("./", parameters);
+    $goto("/artists", parameters);
 
   };
 </script>

@@ -10,7 +10,7 @@
     const parameters: SearchParamsType = {};
     parameters[SearchParams.album.keyword] = value;
 
-    $goto("./", parameters);
+    $goto("/albums", parameters);
 
   };
 </script>
