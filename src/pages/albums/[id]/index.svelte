@@ -1,5 +1,6 @@
 <script lang="ts">
   import { query } from "svelte-apollo";
+  import PlaylistButton from "./_playlist-button.svelte";
   import Image from "~/components/square-image.svelte";
   import Text from "~/components/text.svelte";
   import { AlbumDocument } from "~/graphql/types";
@@ -32,6 +33,7 @@
   <Text>{album.copyright}</Text>
 
   {#each album.tracks as track (track.id)}
+    <PlaylistButton />
     <Text>{track.name}</Text>
   {/each}
 
