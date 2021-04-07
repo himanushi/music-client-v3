@@ -1,9 +1,16 @@
+<script context="module" lang="ts">
+  import { SvelteComponent } from "svelte";
+  import { writable } from "svelte/store";
+
+  export const modal = writable<null | typeof SvelteComponent>(null);
+</script>
+
 <script lang="ts">
-  import { modal } from "~/store/page";
+  const close = () => modal.set(null);
 </script>
 
 {#if $modal}
-  <div>
+  <div on:click={close}>
     <svelte:component this={$modal} />
   </div>
 {/if}

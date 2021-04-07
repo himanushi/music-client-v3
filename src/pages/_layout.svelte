@@ -3,18 +3,16 @@
   import Content from "./_content.svelte";
   import Footer from "./_footer.svelte";
   import Header from "./_header.svelte";
-  import Sidebar from "./_sidebar.svelte";
   import Modal from "~/components/modal.svelte";
   import client from "~/graphql/client";
 
   setClient(client);
 </script>
 
-<Modal />
 <Header />
 <Content><slot /></Content>
 <Footer />
-<Sidebar />
+<Modal />
 
 <style lang="scss">
   :global(body) {

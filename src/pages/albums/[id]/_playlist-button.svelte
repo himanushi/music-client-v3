@@ -1,6 +1,6 @@
 <script lang="ts">
   import AddPlaylistItems from "./_add-playlist-items.svelte";
-  import { modal } from "~/store/page";
+  import { modal } from "~/components/modal.svelte";
 
   const onClick = () => modal.set(AddPlaylistItems);
 </script>

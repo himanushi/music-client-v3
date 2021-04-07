@@ -1,11 +1,12 @@
 <script lang="ts">
   import { url } from "@roxi/routify";
+  import Sidebar from "./_sidebar.svelte";
   import IconButton from "~/components/icon-button.svelte";
+  import { modal } from "~/components/modal.svelte";
   import MenuIcon from "~/icons/menu.svelte";
   import UserIcon from "~/icons/user.svelte";
-  import { sidebarHidden } from "~/store/page";
 
-  const showSidebar = () => sidebarHidden.set(false);
+  const showSidebar = () => modal.set(Sidebar);
 </script>
 
 <header>
