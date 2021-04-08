@@ -5,16 +5,13 @@ import Image from "~/components/square-image.svelte";
 export let id = "";
 export let src = "";
 export let name = "";
-export let size = 40;
 
 const path = `/playlist/${id}`;
 </script>
 
-<div class="w-{size}">
+<div class="w-40">
   <a class="card" href={$url(path)}>
-    <div class="image w-{size}">
-      <Image {src} alt={name} {size} />
-    </div>
+    <Image {src} alt={name} class="h-40 w-40" />
     <span class="name">{name}</span>
   </a>
 </div>

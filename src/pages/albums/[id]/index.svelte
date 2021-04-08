@@ -28,7 +28,7 @@ const artistConditions = {
 </script>
 
 {#if album && album.artworkL.url}
-  <Image src={album.artworkL.url} alt={album.name} size={16} />
+  <Image src={album.artworkL.url} alt={album.name} class="h-16 w-16" />
   <Text>{album.name}</Text>
   <Text>{album.copyright}</Text>
 

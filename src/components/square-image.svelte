@@ -1,7 +1,8 @@
 <script lang="ts">
 export let src: string | null | undefined = null;
 export let alt = "no description";
-export let size = 10;
+let className = "";
+export { className as class };
 
 let style = "";
 
@@ -12,7 +13,7 @@ if (src) {
 }
 </script>
 
-<div {style} {alt} class="h-{size} w-{size}" />
+<div {style} {alt} class={className} />
 
 <style lang="scss">
 div {

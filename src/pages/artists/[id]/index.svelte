@@ -28,7 +28,7 @@ const albumConditions = {
 
 {#if artist}
   {#if artist.artworkL.url}
-    <Image src={artist.artworkL.url} alt={artist.name} size={16} />
+    <Image src={artist.artworkL.url} alt={artist.name} class="h-16 w-16" />
   {/if}
   <Text>{artist.name}</Text>
   <Albums conditions={albumConditions} />

@@ -9,7 +9,7 @@ export let color = defaultColor;
   fill="none"
   viewBox="0 0 24 24"
   stroke="currentColor"
-  class="text-{color} h-{size} w-{size}"
+  class="{color} {size}"
 >
   <path
     stroke-linecap="round"

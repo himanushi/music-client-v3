@@ -23,8 +23,8 @@ const go = (path: string) => () => {
   }}
 >
   <header>
-    <IconButton size={10} on:click={close}>
-      <ChevronLeft color="black" size={5} />
+    <IconButton class="h-10 w-10" on:click={close}>
+      <ChevronLeft color="text-black" size="h-5 w-5" />
     </IconButton>
     <h4>メニュー</h4>
   </header>

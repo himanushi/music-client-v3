@@ -8,7 +8,7 @@ import SkipIcon from "~/icons/skip.svelte";
 <footer>
   <div class="track-info">
     <div class="clickable">
-      <Image size={10} />
+      <Image class="h-10 w-10" />
       <span class="title">
         タイトルタイトルタタイトルタイトルタタイトルタイトルタタイトルタイトルタタイトルタイトルタタイトルタイトルタ
       </span>
@@ -16,11 +16,11 @@ import SkipIcon from "~/icons/skip.svelte";
   </div>
 
   <IconButton>
-    <PlayIcon color="gray-900" />
+    <PlayIcon color="text-gray-900" />
   </IconButton>
 
   <IconButton>
-    <SkipIcon color="gray-900" />
+    <SkipIcon color="text-gray-900" />
   </IconButton>
 </footer>
 

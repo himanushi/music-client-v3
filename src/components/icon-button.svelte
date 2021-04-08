@@ -1,8 +1,9 @@
 <script lang="ts">
-export let size = 10;
+let className = "";
+export { className as class };
 </script>
 
-<button class="h-{size} w-{size}" on:click>
+<button class={className} on:click>
   <slot><!-- icon --></slot>
 </button>
 

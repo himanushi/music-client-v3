@@ -8,7 +8,7 @@ export let color = defaultColor;
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 20 20"
   fill="currentColor"
-  class="text-{color} h-{size} w-{size}"
+  class="{color} {size}"
 >
   <path
     fill-rule="evenodd"

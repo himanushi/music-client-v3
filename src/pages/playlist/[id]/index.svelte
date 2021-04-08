@@ -25,7 +25,7 @@ $: if ($playlistQuery.data) {
   <Image
     src={playlist.track.artworkL.url}
     alt={playlist.track.name}
-    size={16}
+    class="h-16 w-16"
   />
   <Text>{playlist.name}</Text>
 

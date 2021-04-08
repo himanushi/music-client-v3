@@ -11,7 +11,7 @@ const showSidebar = () => modal.set(Sidebar);
 
 <header>
   <IconButton on:click={showSidebar}>
-    <MenuIcon size={7} />
+    <MenuIcon size="h-7 w-7" />
   </IconButton>
 
   <h1>
@@ -19,7 +19,7 @@ const showSidebar = () => modal.set(Sidebar);
   </h1>
 
   <IconButton>
-    <UserIcon size={9} />
+    <UserIcon size="h-9 w-9" />
   </IconButton>
 </header>
 
