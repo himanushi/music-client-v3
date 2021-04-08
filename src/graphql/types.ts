@@ -1069,6 +1069,40 @@ export type User = {
   readonly username: Scalars["String"];
 };
 
+export type UpsertPlaylistMutationVariables = Exact<{
+  input: UpsertPlaylistInput;
+}>;
+
+export type UpsertPlaylistMutation = {
+  readonly upsertPlaylist?: Maybe<
+    Pick<UpsertPlaylistPayload, "error"> & {
+      readonly playlist?: Maybe<
+        Pick<
+          Playlist,
+          | "id"
+          | "name"
+          | "description"
+          | "publicType"
+          | "createdAt"
+          | "updatedAt"
+        > & {
+          readonly author?: Maybe<Pick<User, "name" | "username">>;
+          readonly track: Pick<Track, "name"> & {
+            readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
+          };
+          readonly items: ReadonlyArray<
+            Pick<PlaylistItem, "trackNumber"> & {
+              readonly track: Pick<Track, "name"> & {
+                readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
+              };
+            }
+          >;
+        }
+      >;
+    }
+  >;
+};
+
 export type AlbumQueryVariables = Exact<{
   id: Scalars["TTID"];
 }>;
@@ -1222,6 +1256,191 @@ export type PlaylistsQuery = {
   >;
 };
 
+export const UpsertPlaylistDocument: DocumentNode<
+  UpsertPlaylistMutation,
+  UpsertPlaylistMutationVariables
+> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpsertPlaylist" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "UpsertPlaylistInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "upsertPlaylist" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "error" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "playlist" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "author" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "track" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "artworkM" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "url" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "width" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "height" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "publicType" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "updatedAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "items" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "track" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "artworkM" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "url" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "width",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "height",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "trackNumber" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
 export const AlbumDocument: DocumentNode<AlbumQuery, AlbumQueryVariables> = {
   kind: "Document",
   definitions: [

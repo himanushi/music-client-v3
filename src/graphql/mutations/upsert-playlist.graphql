@@ -1,0 +1,36 @@
+mutation UpsertPlaylist($input: UpsertPlaylistInput!) {
+  upsertPlaylist(input: $input) {
+    error
+    playlist {
+      id
+      author {
+        name
+        username
+      }
+      track {
+        name
+        artworkM {
+          url
+          width
+          height
+        }
+      }
+      name
+      description
+      publicType
+      createdAt
+      updatedAt
+      items {
+        track {
+          name
+          artworkM {
+            url
+            width
+            height
+          }
+        }
+        trackNumber
+      }
+    }
+  }
+}
