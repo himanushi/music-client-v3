@@ -32,11 +32,8 @@ module.exports = {
     // function がズレるので無効
     "function-call-argument-newline": "off",
 
-    // function の括弧内に引数がある場合は改行する
-    "function-paren-newline": [
-      "error",
-      { "minItems": 1 }
-    ],
+    // function の括弧内での改行を強制しない
+    "function-paren-newline": "off",
 
     // 1文字の変数を許可しない
     "id-length": [
