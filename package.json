@@ -11,7 +11,7 @@
     "@apollo/client": "^3.3.11",
     "graphql": "^15.5.0",
     "svelte": "^3.35.0",
-    "tailwindcss": "^2.0.3"
+    "tailwindcss": "^2.1.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.21.2",
