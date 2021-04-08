@@ -108,7 +108,7 @@ module.exports = {
     "one-var": "off",
 
     // import をソートする
-    "sort-imports": 0,
+    "sort-imports": "off",
 
     // object key をソートする
     "sort-keys-fix/sort-keys-fix": "error",
