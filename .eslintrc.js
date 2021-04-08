@@ -32,6 +32,12 @@ module.exports = {
     // function がズレるので無効
     "function-call-argument-newline": "off",
 
+    // function の括弧内に引数がある場合は改行する
+    "function-paren-newline": [
+      "error",
+      { "minItems": 1 }
+    ],
+
     // 1文字の変数を許可しない
     "id-length": [
       "error",
@@ -104,9 +110,10 @@ module.exports = {
     // const 宣言をまとめない
     "one-var": "off",
 
-    // object キーをソートする
+    // import をソートする
     "sort-imports": 0,
 
+    // object key をソートする
     "sort-keys-fix/sort-keys-fix": "error",
 
     // "use strict" を強要しない
