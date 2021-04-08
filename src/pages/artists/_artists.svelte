@@ -1,65 +1,62 @@
 <script lang="ts" context="module">
-  // ↓ これどうにかしたい
-  // eslint-disable-next-line import/order
-  import type { ArtistsConditionsInputObject } from "~/graphql/types";
-  // eslint-disable-next-line import/order
-  import type { Mutable } from "~/@types/extends";
+// ↓ これどうにかしたい
+// eslint-disable-next-line import/order
+import type { ArtistsConditionsInputObject } from "~/graphql/types";
+// eslint-disable-next-line import/order
+import type { Mutable } from "~/@types/extends";
 
-  export type conditonsType = Mutable<ArtistsConditionsInputObject>;
+export type conditonsType = Mutable<ArtistsConditionsInputObject>;
 </script>
 
 <script lang="ts">
-  import { getContext } from "svelte";
-  import { query } from "svelte-apollo";
-  import Item from "./_item-card.svelte";
-  import Waypoint from "~/components/waypoint.svelte";
-  import { ArtistsDocument } from "~/graphql/types";
-  import type {
-    Artist,
-    ArtistsQuery,
-    ArtistsQueryVariables
-  } from "~/graphql/types";
+import { getContext } from "svelte";
+import { query } from "svelte-apollo";
+import Item from "./_item-card.svelte";
+import Waypoint from "~/components/waypoint.svelte";
+import { ArtistsDocument } from "~/graphql/types";
+import type {
+  Artist,
+  ArtistsQuery,
+  ArtistsQueryVariables
+} from "~/graphql/types";
 
-  export let conditions: conditonsType = {};
+export let conditions: conditonsType = {};
 
-  const limit = 50;
-  let artists: Artist[] = [];
+const limit = 50;
+let artists: Artist[] = [];
 
-  $: artistsQuery = query<ArtistsQuery, ArtistsQueryVariables>(
-    ArtistsDocument,
-    {
-      "fetchPolicy": "cache-first",
-      "variables": {
-        conditions,
-        "cursor": {
-          limit,
-          "offset": 0
-        }
+$: artistsQuery = query<ArtistsQuery, ArtistsQueryVariables>(ArtistsDocument, {
+  "fetchPolicy": "cache-first",
+  "variables": {
+    conditions,
+    "cursor": {
+      limit,
+      "offset": 0
+    }
+  }
+});
+
+const loadMore = async () => {
+
+  await artistsQuery.fetchMore({
+    "variables": {
+      "cursor": {
+        limit,
+        "offset": artists.length
       }
     }
-  );
+  });
 
-  const loadMore = async () => {
+};
 
-    await artistsQuery.fetchMore({
-      "variables": {
-        "cursor": {
-          limit,
-          "offset": artists.length
-        }
-      }
-    });
+$: if ($artistsQuery.data) {
 
-  };
+  artists = $artistsQuery.data.artists as Artist[];
 
-  $: if ($artistsQuery.data) {
+}
 
-    artists = $artistsQuery.data.artists as Artist[];
-
-  }
-
-  const { getElement } = getContext("content");
-  const elementScroll: HTMLElement = getElement();
+const { getElement } = getContext("content");
+const elementScroll: HTMLElement = getElement();
 </script>
 
 {#each artists as artist (artist.id)}

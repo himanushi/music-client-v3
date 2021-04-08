@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { goto } from "@roxi/routify";
-  import { fly } from "svelte/transition";
-  import IconButton from "~/components/icon-button.svelte";
-  import { modal } from "~/components/modal.svelte";
-  import ChevronLeft from "~/icons/chevron-left.svelte";
+import { goto } from "@roxi/routify";
+import { fly } from "svelte/transition";
+import IconButton from "~/components/icon-button.svelte";
+import { modal } from "~/components/modal.svelte";
+import ChevronLeft from "~/icons/chevron-left.svelte";
 
-  const close = () => modal.set(null);
-  const go = (path: string) => () => {
+const close = () => modal.set(null);
+const go = (path: string) => () => {
 
-    $goto(path);
-    modal.set(null);
+  $goto(path);
+  modal.set(null);
 
-  };
+};
 </script>
 
 <nav
@@ -41,24 +41,24 @@
 </nav>
 
 <style lang="scss">
-  nav {
-    /* サイズ */
-    @apply w-72 h-full;
-    /* 透過 */
-    @apply bg-opacity-100;
+nav {
+  /* サイズ */
+  @apply w-72 h-full;
+  /* 透過 */
+  @apply bg-opacity-100;
 
-    header {
-      @apply h-16 flex items-center bg-teal-500 px-2;
+  header {
+    @apply h-16 flex items-center bg-teal-500 px-2;
 
-      h4 {
-        /* 位置 */
-        /* フォント */
-        @apply text-black text-lg;
-      }
-    }
-
-    main {
-      @apply bg-gray-900 text-white h-full;
+    h4 {
+      /* 位置 */
+      /* フォント */
+      @apply text-black text-lg;
     }
   }
+
+  main {
+    @apply bg-gray-900 text-white h-full;
+  }
+}
 </style>

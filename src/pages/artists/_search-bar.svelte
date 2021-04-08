@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { goto, params } from "@roxi/routify";
-  import { SearchParams } from "~/lib/params";
-  import type { SearchParamsType } from "~/lib/params";
+import { goto, params } from "@roxi/routify";
+import { SearchParams } from "~/lib/params";
+import type { SearchParamsType } from "~/lib/params";
 
-  let value: string = $params[SearchParams.artist.keyword];
+let value: string = $params[SearchParams.artist.keyword];
 
-  const search = () => {
+const search = () => {
 
-    const parameters: SearchParamsType = {};
-    parameters[SearchParams.artist.keyword] = value;
+  const parameters: SearchParamsType = {};
+  parameters[SearchParams.artist.keyword] = value;
 
-    $goto("/artists", parameters);
+  $goto("/artists", parameters);
 
-  };
+};
 </script>
 
 <form on:submit|preventDefault>

@@ -1,12 +1,12 @@
 <script context="module" lang="ts">
-  import { SvelteComponent } from "svelte";
-  import { writable } from "svelte/store";
+import { SvelteComponent } from "svelte";
+import { writable } from "svelte/store";
 
-  export const modal = writable<null | typeof SvelteComponent>(null);
+export const modal = writable<null | typeof SvelteComponent>(null);
 </script>
 
 <script lang="ts">
-  const close = () => modal.set(null);
+const close = () => modal.set(null);
 </script>
 
 {#if $modal}
@@ -16,8 +16,8 @@
 {/if}
 
 <style lang="scss">
-  div {
-    @apply absolute w-full h-full z-50;
-    @apply bg-black bg-opacity-30;
-  }
+div {
+  @apply absolute w-full h-full z-50;
+  @apply bg-black bg-opacity-30;
+}
 </style>

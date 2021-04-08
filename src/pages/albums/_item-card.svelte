@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { url } from "@roxi/routify";
-  import Image from "~/components/square-image.svelte";
+import { url } from "@roxi/routify";
+import Image from "~/components/square-image.svelte";
 
-  export let id = "";
-  export let src = "";
-  export let name = "";
-  export let size = 40;
+export let id = "";
+export let src = "";
+export let name = "";
+export let size = 40;
 
-  const path = `/albums/${id}`;
+const path = `/albums/${id}`;
 </script>
 
 <div class="w-{size}">
@@ -20,15 +20,15 @@
 </div>
 
 <style>
-  .card {
-    /* 子要素の位置 */
-    @apply flex flex-col;
-  }
+.card {
+  /* 子要素の位置 */
+  @apply flex flex-col;
+}
 
-  .name {
-    /* フォント */
-    @apply truncate text-gray-400 text-xs;
-    /* レイアウト */
-    @apply p-1;
-  }
+.name {
+  /* フォント */
+  @apply truncate text-gray-400 text-xs;
+  /* レイアウト */
+  @apply p-1;
+}
 </style>

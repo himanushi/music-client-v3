@@ -1,24 +1,24 @@
 <script lang="ts">
-  import { query } from "svelte-apollo";
-  import Image from "~/components/square-image.svelte";
-  import Text from "~/components/text.svelte";
-  import { PlaylistDocument } from "~/graphql/types";
-  import type { Playlist, PlaylistQuery } from "~/graphql/types";
+import { query } from "svelte-apollo";
+import Image from "~/components/square-image.svelte";
+import Text from "~/components/text.svelte";
+import { PlaylistDocument } from "~/graphql/types";
+import type { Playlist, PlaylistQuery } from "~/graphql/types";
 
-  export let id = "";
+export let id = "";
 
-  const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
-    "fetchPolicy": "cache-first",
-    "variables": { id }
-  });
+const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
+  "fetchPolicy": "cache-first",
+  "variables": { id }
+});
 
-  let playlist: Playlist | undefined;
+let playlist: Playlist | undefined;
 
-  $: if ($playlistQuery.data) {
+$: if ($playlistQuery.data) {
 
-    playlist = $playlistQuery.data.playlist as Playlist;
+  playlist = $playlistQuery.data.playlist as Playlist;
 
-  }
+}
 </script>
 
 {#if playlist}

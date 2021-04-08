@@ -1,8 +1,8 @@
 <script lang="ts">
-  import IconButton from "~/components/icon-button.svelte";
-  import Image from "~/components/square-image.svelte";
-  import PlayIcon from "~/icons/play.svelte";
-  import SkipIcon from "~/icons/skip.svelte";
+import IconButton from "~/components/icon-button.svelte";
+import Image from "~/components/square-image.svelte";
+import PlayIcon from "~/icons/play.svelte";
+import SkipIcon from "~/icons/skip.svelte";
 </script>
 
 <footer>
@@ -25,8 +25,8 @@
 </footer>
 
 <style lang="scss">
-  /* デザインはあとで */
-  footer {
-    @apply bg-green-800;
-  }
+/* デザインはあとで */
+footer {
+  @apply bg-green-800;
+}
 </style>

@@ -1,101 +1,101 @@
 <script>
-  // ref: https://github.com/andrelmlins/svelte-infinite-scroll/blob/master/src/lib/InfiniteScroll.svelte
-  import { onMount, onDestroy, createEventDispatcher } from "svelte";
+// ref: https://github.com/andrelmlins/svelte-infinite-scroll/blob/master/src/lib/InfiniteScroll.svelte
+import { onMount, onDestroy, createEventDispatcher } from "svelte";
 
-  export let threshold = 0;
-  export let hasMore = true;
-  export let elementScroll: HTMLElement | null = null;
+export let threshold = 0;
+export let hasMore = true;
+export let elementScroll: HTMLElement | null = null;
 
-  const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-  let isLoadMore = false;
-  let component: HTMLElement;
-  let beforeScrollHeight: number;
-  let beforeScrollTop: number;
-  let element: HTMLElement;
+let isLoadMore = false;
+let component: HTMLElement;
+let beforeScrollHeight: number;
+let beforeScrollTop: number;
+let element: HTMLElement;
 
-  const calcOffset = (event: Event) => {
+const calcOffset = (event: Event) => {
 
-    const targetElement = event.target as HTMLElement;
+  const targetElement = event.target as HTMLElement;
 
-    return (
-      targetElement.scrollHeight -
-      targetElement.clientHeight -
-      targetElement.scrollTop
-    );
+  return (
+    targetElement.scrollHeight -
+    targetElement.clientHeight -
+    targetElement.scrollTop
+  );
 
-  };
+};
 
-  const onScroll = (event: Event) => {
+const onScroll = (event: Event) => {
 
-    if (!hasMore) {
+  if (!hasMore) {
 
-      return;
-  
-    }
-
-    const offset = calcOffset(event);
-
-    if (offset <= threshold) {
-
-      if (!isLoadMore && hasMore) {
-
-        dispatch("loadMore");
-
-        const targetElement = event.target as HTMLElement;
-
-        beforeScrollHeight = targetElement.scrollHeight;
-        beforeScrollTop = targetElement.scrollTop;
-  
-      }
-      isLoadMore = true;
-  
-    } else {
-
-      isLoadMore = false;
-  
-    }
-
-  };
-
-  $: if (element) {
-
-    element.addEventListener("scroll", onScroll);
-    element.addEventListener("resize", onScroll);
+    return;
 
   }
 
-  $: if (isLoadMore) {
+  const offset = calcOffset(event);
 
-    element.scrollTop =
-      element.scrollHeight - beforeScrollHeight + beforeScrollTop;
+  if (offset <= threshold) {
+
+    if (!isLoadMore && hasMore) {
+
+      dispatch("loadMore");
+
+      const targetElement = event.target as HTMLElement;
+
+      beforeScrollHeight = targetElement.scrollHeight;
+      beforeScrollTop = targetElement.scrollTop;
+
+    }
+    isLoadMore = true;
+
+  } else {
+
+    isLoadMore = false;
 
   }
 
-  onMount(() => {
+};
 
-    if (elementScroll) {
+$: if (element) {
 
-      element = elementScroll;
-  
-    } else {
+  element.addEventListener("scroll", onScroll);
+  element.addEventListener("resize", onScroll);
 
-      element = component.parentNode as HTMLElement;
-  
-    }
+}
 
-  });
+$: if (isLoadMore) {
 
-  onDestroy(() => {
+  element.scrollTop =
+    element.scrollHeight - beforeScrollHeight + beforeScrollTop;
 
-    if (element) {
+}
 
-      element.removeEventListener("scroll", onScroll);
-      element.removeEventListener("resize", onScroll);
-  
-    }
+onMount(() => {
 
-  });
+  if (elementScroll) {
+
+    element = elementScroll;
+
+  } else {
+
+    element = component.parentNode as HTMLElement;
+
+  }
+
+});
+
+onDestroy(() => {
+
+  if (element) {
+
+    element.removeEventListener("scroll", onScroll);
+    element.removeEventListener("resize", onScroll);
+
+  }
+
+});
 </script>
 
 <span bind:this={component} style="display: none;" />

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { params } from "@roxi/routify";
-  import Albums from "./_albums.svelte";
-  import type { conditonsType } from "./_albums.svelte";
-  import SearchBar from "./_search-bar.svelte";
-  import { SearchParams } from "~/lib/params";
+import { params } from "@roxi/routify";
+import Albums from "./_albums.svelte";
+import type { conditonsType } from "./_albums.svelte";
+import SearchBar from "./_search-bar.svelte";
+import { SearchParams } from "~/lib/params";
 
-  const conditions: conditonsType = {};
-  $: conditions.name = $params[SearchParams.album.keyword];
+const conditions: conditonsType = {};
+$: conditions.name = $params[SearchParams.album.keyword];
 </script>
 
 <SearchBar />
@@ -16,7 +16,7 @@
 </div>
 
 <style>
-  .albums {
-    @apply flex flex-wrap;
-  }
+.albums {
+  @apply flex flex-wrap;
+}
 </style>

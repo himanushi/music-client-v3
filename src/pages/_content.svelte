@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { setContext } from "svelte";
-  import ScrollLock from "./_scroll-lock.svelte";
+import { setContext } from "svelte";
+import ScrollLock from "./_scroll-lock.svelte";
 
-  let content: HTMLElement;
+let content: HTMLElement;
 
-  setContext("content", {
-    "getElement": () => content
-  });
+setContext("content", {
+  "getElement": () => content
+});
 
-  // 一瞬だけスクロールの一番上が表示されるのを回避する
-  let invisible = true;
+// 一瞬だけスクロールの一番上が表示されるのを回避する
+let invisible = true;
 </script>
 
 <main data-routify="scroll-lock" bind:this={content} class:invisible>
@@ -21,7 +21,7 @@
 </main>
 
 <style>
-  main {
-    @apply h-full overflow-auto;
-  }
+main {
+  @apply h-full overflow-auto;
+}
 </style>

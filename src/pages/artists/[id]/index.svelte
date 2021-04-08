@@ -1,29 +1,29 @@
 <script lang="ts">
-  import { query } from "svelte-apollo";
-  import Image from "~/components/square-image.svelte";
-  import Text from "~/components/text.svelte";
-  import { ArtistDocument } from "~/graphql/types";
-  import type { Artist, ArtistQuery } from "~/graphql/types";
-  import Albums from "~/pages/albums/_albums.svelte";
+import { query } from "svelte-apollo";
+import Image from "~/components/square-image.svelte";
+import Text from "~/components/text.svelte";
+import { ArtistDocument } from "~/graphql/types";
+import type { Artist, ArtistQuery } from "~/graphql/types";
+import Albums from "~/pages/albums/_albums.svelte";
 
-  export let id = "";
+export let id = "";
 
-  const artistQuery = query<ArtistQuery>(ArtistDocument, {
-    "fetchPolicy": "cache-first",
-    "variables": { id }
-  });
+const artistQuery = query<ArtistQuery>(ArtistDocument, {
+  "fetchPolicy": "cache-first",
+  "variables": { id }
+});
 
-  let artist: Artist | undefined;
+let artist: Artist | undefined;
 
-  $: if ($artistQuery.data) {
+$: if ($artistQuery.data) {
 
-    artist = $artistQuery.data.artist as Artist;
+  artist = $artistQuery.data.artist as Artist;
 
-  }
+}
 
-  const albumConditions = {
-    "artists": { "id": [id] }
-  };
+const albumConditions = {
+  "artists": { "id": [id] }
+};
 </script>
 
 {#if artist}

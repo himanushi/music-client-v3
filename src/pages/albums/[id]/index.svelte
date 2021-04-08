@@ -1,30 +1,30 @@
 <script lang="ts">
-  import { query } from "svelte-apollo";
-  import PlaylistButton from "./_playlist-button.svelte";
-  import Image from "~/components/square-image.svelte";
-  import Text from "~/components/text.svelte";
-  import { AlbumDocument } from "~/graphql/types";
-  import type { Album, AlbumQuery } from "~/graphql/types";
-  import Artists from "~/pages/artists/_artists.svelte";
+import { query } from "svelte-apollo";
+import PlaylistButton from "./_playlist-button.svelte";
+import Image from "~/components/square-image.svelte";
+import Text from "~/components/text.svelte";
+import { AlbumDocument } from "~/graphql/types";
+import type { Album, AlbumQuery } from "~/graphql/types";
+import Artists from "~/pages/artists/_artists.svelte";
 
-  export let id = "";
+export let id = "";
 
-  const albumQuery = query<AlbumQuery>(AlbumDocument, {
-    "fetchPolicy": "cache-first",
-    "variables": { id }
-  });
+const albumQuery = query<AlbumQuery>(AlbumDocument, {
+  "fetchPolicy": "cache-first",
+  "variables": { id }
+});
 
-  let album: Album | undefined;
+let album: Album | undefined;
 
-  $: if ($albumQuery.data) {
+$: if ($albumQuery.data) {
 
-    album = $albumQuery.data.album as Album;
+  album = $albumQuery.data.album as Album;
 
-  }
+}
 
-  const artistConditions = {
-    "albums": { "id": [id] }
-  };
+const artistConditions = {
+  "albums": { "id": [id] }
+};
 </script>
 
 {#if album && album.artworkL.url}

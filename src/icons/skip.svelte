@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { size as defaultSize, color as defaultColor } from "./default";
-  export let size = defaultSize;
-  export let color = defaultColor;
+import { size as defaultSize, color as defaultColor } from "./default";
+export let size = defaultSize;
+export let color = defaultColor;
 </script>
 
 <svg
