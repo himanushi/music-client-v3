@@ -1069,6 +1069,18 @@ export type User = {
   readonly username: Scalars["String"];
 };
 
+export type AddPlaylistItemsMutationVariables = Exact<{
+  input: AddPlaylistItemsInput;
+}>;
+
+export type AddPlaylistItemsMutation = {
+  readonly addPlaylistItems?: Maybe<
+    Pick<AddPlaylistItemsPayload, "error"> & {
+      readonly playlist?: Maybe<Pick<Playlist, "id" | "name">>;
+    }
+  >;
+};
+
 export type UpsertPlaylistMutationVariables = Exact<{
   input: UpsertPlaylistInput;
 }>;
@@ -1256,6 +1268,71 @@ export type PlaylistsQuery = {
   >;
 };
 
+export const AddPlaylistItemsDocument: DocumentNode<
+  AddPlaylistItemsMutation,
+  AddPlaylistItemsMutationVariables
+> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AddPlaylistItems" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AddPlaylistItemsInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "addPlaylistItems" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "playlist" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "error" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
 export const UpsertPlaylistDocument: DocumentNode<
   UpsertPlaylistMutation,
   UpsertPlaylistMutationVariables
