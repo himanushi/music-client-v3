@@ -640,7 +640,7 @@ export type Playlist = {
   /** 公開種別 */
   readonly publicType: Scalars["String"];
   /** ジャケットトラック */
-  readonly track: Track;
+  readonly track?: Maybe<Track>;
   /** 更新日 */
   readonly updatedAt: Scalars["ISO8601DateTime"];
 };
@@ -1014,7 +1014,7 @@ export type UpsertPlaylistInput = {
   /** IDがない場合は作成 */
   readonly playlistId?: Maybe<Scalars["TTID"]>;
   /** ジャケットトラックID */
-  readonly trackId: Scalars["TTID"];
+  readonly trackId?: Maybe<Scalars["TTID"]>;
   /** タイトル */
   readonly name: Scalars["String"];
   /** 説明 */
@@ -1099,9 +1099,11 @@ export type UpsertPlaylistMutation = {
           | "updatedAt"
         > & {
           readonly author?: Maybe<Pick<User, "name" | "username">>;
-          readonly track: Pick<Track, "name"> & {
-            readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
-          };
+          readonly track?: Maybe<
+            Pick<Track, "name"> & {
+              readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
+            }
+          >;
           readonly items: ReadonlyArray<
             Pick<PlaylistItem, "trackNumber"> & {
               readonly track: Pick<Track, "name"> & {
@@ -1218,9 +1220,11 @@ export type PlaylistQuery = {
       Playlist,
       "id" | "name" | "description" | "publicType" | "createdAt" | "updatedAt"
     > & {
-      readonly track: Pick<Track, "id"> & {
-        readonly artworkL: Pick<Artwork, "url" | "width" | "height">;
-      };
+      readonly track?: Maybe<
+        Pick<Track, "id"> & {
+          readonly artworkL: Pick<Artwork, "url" | "width" | "height">;
+        }
+      >;
       readonly author?: Maybe<Pick<User, "id" | "name" | "username">>;
       readonly items: ReadonlyArray<
         Pick<PlaylistItem, "trackNumber"> & {
@@ -1260,9 +1264,11 @@ export type PlaylistsQueryVariables = Exact<{
 export type PlaylistsQuery = {
   readonly playlists: ReadonlyArray<
     Pick<Playlist, "id" | "name" | "createdAt" | "updatedAt"> & {
-      readonly track: Pick<Track, "id"> & {
-        readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
-      };
+      readonly track?: Maybe<
+        Pick<Track, "id"> & {
+          readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
+        }
+      >;
       readonly author?: Maybe<Pick<User, "id" | "name">>;
     }
   >;
