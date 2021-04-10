@@ -1,5 +1,6 @@
 <script lang="ts">
 import { goto, params } from "@roxi/routify";
+import NewButton from "./_new-button.svelte";
 import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
 
@@ -18,4 +19,5 @@ const search = () => {
 <form on:submit|preventDefault>
   <input type="text" bind:value placeholder="検索したいこと..." />
   <button on:click={search}>検索</button>
+  <NewButton />
 </form>

@@ -66,7 +66,7 @@ const elementScroll: HTMLElement = getElement();
   <Item
     id={playlist.id}
     name={playlist.name}
-    src={playlist.track.artworkM.url || ""}
+    src={playlist.track?.artworkM.url || undefined}
   />
 {/each}
 <Waypoint threshold={300} {elementScroll} on:loadMore={loadMore} />

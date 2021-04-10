@@ -22,11 +22,13 @@ $: if ($playlistQuery.data) {
 </script>
 
 {#if playlist}
-  <Image
-    src={playlist.track.artworkL.url}
-    alt={playlist.track.name}
-    class="h-16 w-16"
-  />
+  {#if playlist.track}
+    <Image
+      src={playlist.track.artworkL.url}
+      alt={playlist.track.name}
+      class="h-16 w-16"
+    />
+  {/if}
   <Text>{playlist.name}</Text>
 
   {#each playlist.items as item, index ((item.id, index))}
