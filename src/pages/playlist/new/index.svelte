@@ -50,7 +50,7 @@ const create = async () => {
   <select id="public-option" bind:value={publicType}>
     <option value="NON_OPEN">非公開</option>
     <option value="OPEN">公開</option>
-    <option value="NO_NAME_OPEN">匿名公開</option>
+    <option value="ANONYMOUS_OPEN">匿名公開</option>
   </select>
 
   <button on:click={create}>保存</button>
