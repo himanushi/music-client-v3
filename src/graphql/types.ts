@@ -1022,7 +1022,7 @@ export type UpsertPlaylistInput = {
   /** 公開種別 */
   readonly publicType: PlaylistPublicTypeEnum;
   /** トラックID */
-  readonly trackIds: ReadonlyArray<Scalars["TTID"]>;
+  readonly trackIds?: Maybe<ReadonlyArray<Scalars["TTID"]>>;
   /** A unique identifier for the client performing the mutation. */
   readonly clientMutationId?: Maybe<Scalars["String"]>;
 };
