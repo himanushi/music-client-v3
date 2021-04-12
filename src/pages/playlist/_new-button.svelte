@@ -3,7 +3,7 @@ import { goto } from "@roxi/routify";
 
 const create = () => {
 
-  $goto("/playlist/edit");
+  $goto("/playlist/new");
 
 };
 </script>
