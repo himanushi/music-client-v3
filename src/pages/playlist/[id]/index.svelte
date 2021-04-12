@@ -1,4 +1,5 @@
 <script lang="ts">
+import { goto } from "@roxi/routify";
 import { query } from "svelte-apollo";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
@@ -13,12 +14,20 @@ const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
 });
 
 let playlist: Playlist | undefined;
+let isMyPlaylist = false;
 
 $: if ($playlistQuery.data) {
 
   playlist = $playlistQuery.data.playlist as Playlist;
+  isMyPlaylist = playlist.isMine || false;
 
 }
+
+const edit = () => {
+
+  $goto(`/playlist/${id}/edit`);
+
+};
 </script>
 
 {#if playlist}
@@ -29,7 +38,12 @@ $: if ($playlistQuery.data) {
       class="h-16 w-16"
     />
   {/if}
+
   <Text>{playlist.name}</Text>
+
+  {#if isMyPlaylist}
+    <button on:click={edit}>編集</button>
+  {/if}
 
   {#each playlist.items as item, index ((item.id, index))}
     <Text>{item.track.name}</Text>
