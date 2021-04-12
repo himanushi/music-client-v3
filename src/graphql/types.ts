@@ -633,6 +633,8 @@ export type Playlist = {
   readonly description: Scalars["String"];
   /** ID */
   readonly id: Scalars["TTID"];
+  /** 自身のプレイリストか判定 */
+  readonly isMine?: Maybe<Scalars["Boolean"]>;
   /** 曲一覧 */
   readonly items: ReadonlyArray<PlaylistItem>;
   /** タイトル */
@@ -1218,7 +1220,13 @@ export type PlaylistQuery = {
   readonly playlist?: Maybe<
     Pick<
       Playlist,
-      "id" | "name" | "description" | "publicType" | "createdAt" | "updatedAt"
+      | "id"
+      | "name"
+      | "description"
+      | "isMine"
+      | "publicType"
+      | "createdAt"
+      | "updatedAt"
     > & {
       readonly track?: Maybe<
         Pick<Track, "id"> & {
@@ -2098,6 +2106,7 @@ export const PlaylistDocument: DocumentNode<
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
+                { kind: "Field", name: { kind: "Name", value: "isMine" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "track" },

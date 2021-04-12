@@ -3,6 +3,7 @@ query Playlist($id: TTID!) {
     id
     name
     description
+    isMine
     track {
       id
       artworkL {
