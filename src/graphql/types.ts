@@ -640,7 +640,7 @@ export type Playlist = {
   /** タイトル */
   readonly name: Scalars["String"];
   /** 公開種別 */
-  readonly publicType: Scalars["String"];
+  readonly publicType: PlaylistPublicTypeEnum;
   /** ジャケットトラック */
   readonly track?: Maybe<Track>;
   /** 更新日 */
@@ -662,8 +662,8 @@ export type PlaylistPublicTypeEnum =
   | "OPEN"
   /** 非公開 */
   | "NON_OPEN"
-  /** 名前なし公開 */
-  | "NO_NAME_OPEN";
+  /** 匿名公開 */
+  | "ANONYMOUS_OPEN";
 
 export type PlaylistsConditionsInputObject = {
   /** プレイリスト名( like 検索) */

@@ -25,7 +25,7 @@ $: if ($playlistQuery.data) {
 
 const edit = () => {
 
-  $goto(`/playlist/${id}/edit`);
+  $goto("/playlist/:id/edit", { id });
 
 };
 </script>
