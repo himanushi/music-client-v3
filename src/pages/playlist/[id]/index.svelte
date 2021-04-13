@@ -19,7 +19,7 @@ let isMyPlaylist = false;
 $: if ($playlistQuery.data) {
 
   playlist = $playlistQuery.data.playlist as Playlist;
-  isMyPlaylist = playlist.isMine || false;
+  isMyPlaylist = playlist?.isMine || false;
 
 }
 
