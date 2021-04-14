@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",
+    "@xstate/svelte": "^0.1.0",
     "graphql": "^15.5.0",
     "svelte": "^3.35.0",
     "tailwindcss": "^2.1.1",
