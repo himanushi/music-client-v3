@@ -35,6 +35,7 @@ const go = (path: string) => () => {
         <li class="clickable" on:click={go("/artists")}>アーティスト検索</li>
         <li class="clickable" on:click={go("/albums")}>アルバム検索</li>
         <li class="clickable" on:click={go("/playlist")}>プレイリスト検索</li>
+        <li class="clickable" on:click={go("/me")}>設定</li>
       </ul>
     </section>
   </main>

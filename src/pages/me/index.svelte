@@ -1,0 +1,22 @@
+<script lang="ts">
+import { query } from "svelte-apollo";
+import Text from "~/components/text.svelte";
+import { MeDocument } from "~/graphql/types";
+import type { CurrentUser, MeQuery } from "~/graphql/types";
+
+$: meQuery = query<MeQuery>(MeDocument, {
+  "fetchPolicy": "cache-first"
+});
+
+let me: CurrentUser;
+$: me = $meQuery?.data?.me as CurrentUser;
+</script>
+
+{#if me}
+  <Text>名前 : {me.name}</Text>
+  <Text>ユーザー名 : {me.username}</Text>
+  <Text>権限 : {me.role.name}</Text>
+
+  <Text>Spotify</Text>
+  <button>ログイン</button>
+{/if}
