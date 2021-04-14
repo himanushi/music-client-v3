@@ -1,5 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
+import AppleMusicButton from "./_apple-music-button.svelte";
 import Text from "~/components/text.svelte";
 import { MeDocument } from "~/graphql/types";
 import type { CurrentUser, MeQuery } from "~/graphql/types";
@@ -17,6 +18,5 @@ $: me = $meQuery?.data?.me as CurrentUser;
   <Text>ユーザー名 : {me.username}</Text>
   <Text>権限 : {me.role.name}</Text>
 
-  <Text>Spotify</Text>
-  <button>ログイン</button>
+  <AppleMusicButton />
 {/if}
