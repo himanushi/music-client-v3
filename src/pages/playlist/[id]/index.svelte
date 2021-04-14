@@ -40,6 +40,7 @@ const edit = () => {
   {/if}
 
   <Text>{playlist.name}</Text>
+  <Text>{playlist.description}</Text>
 
   {#if isMyPlaylist}
     <button on:click={edit}>編集</button>

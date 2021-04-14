@@ -1,7 +1,6 @@
 <script lang="ts">
-import { params } from "@roxi/routify";
+import { goto, params } from "@roxi/routify";
 import { mutation, query } from "svelte-apollo";
-import { modal } from "~/components/modal.svelte";
 import { PlaylistDocument, UpsertPlaylistDocument } from "~/graphql/types";
 import type {
   Playlist,
@@ -52,7 +51,7 @@ const update = async () => {
       }
     });
 
-    modal.set(null);
+    $goto("/playlist/:id", { id });
 
   } catch (error) {
     // console.error({ error });
