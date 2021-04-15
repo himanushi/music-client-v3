@@ -12,4 +12,4 @@ $: meta = $accountService.meta[`appleMusicAccount.${$accountService.value}`];
 </script>
 
 <Text>Apple Music</Text>
-<button on:click={onClick}>{meta.buttonLabel}</button>
+<button on:click={onClick}>{meta.label}</button>

@@ -3,6 +3,7 @@ import { setClient } from "svelte-apollo";
 import Content from "./_content.svelte";
 import Footer from "./_footer.svelte";
 import Header from "./_header.svelte";
+import Initializer from "~/components/initializers/initializer.svelte";
 import Modal from "~/components/modal.svelte";
 import client from "~/graphql/client";
 
@@ -13,6 +14,7 @@ setClient(client);
 <Content><slot /></Content>
 <Footer />
 <Modal />
+<Initializer />
 
 <style lang="scss">
 :global(body) {
