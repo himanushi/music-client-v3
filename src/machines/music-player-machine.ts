@@ -127,12 +127,21 @@ export const MusicPlayerMachine = machine<
         ],
         "invoke": {
           "id": "seekTimer",
-          "src": (_) => (callback) => {
+          "src": (_) => {
 
-            const interval = setInterval(() => callback("TICK"), 1000);
-            return () => {
+            return (callback) => {
 
-              clearInterval(interval);
+              const interval = setInterval(() => {
+
+                return callback("TICK");
+
+              }, 1000);
+
+              return () => {
+
+                clearInterval(interval);
+
+              };
 
             };
 
@@ -186,7 +195,11 @@ export const MusicPlayerMachine = machine<
       ),
 
       "initPlayers": assign({
-        "previewPlayerRef": (_) => spawn(PreviewPlayerMachine, "preview")
+        "previewPlayerRef": (_) => {
+
+          return spawn(PreviewPlayerMachine, "preview");
+
+        }
       }),
 
       "loadPreview": send("LOAD", { "to": "preview" }),
@@ -195,7 +208,13 @@ export const MusicPlayerMachine = machine<
 
       "playPreview": send("PLAY", { "to": "preview" }),
 
-      "resetSeek": assign({ "seek": (_) => 0 }),
+      "resetSeek": assign({
+        "seek": (_) => {
+
+          return 0;
+
+        }
+      }),
 
       "setDuration": assign({
         "duration": ({ track }) => {

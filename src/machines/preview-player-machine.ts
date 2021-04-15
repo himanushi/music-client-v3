@@ -85,8 +85,12 @@ export const PreviewPlayerMachine = machine<
       "TICK": {
         "actions": [
           "tick",
-          sendParent(({ seek }) => ({ seek,
-            "type": "SET_SEEK" }))
+          sendParent(({ seek }) => {
+
+            return { seek,
+              "type": "SET_SEEK" };
+
+          })
         ]
       }
     },
@@ -118,78 +122,91 @@ export const PreviewPlayerMachine = machine<
           "id": "playingListener",
 
           // eslint-disable-next-line max-lines-per-function
-          "src": ({ player }: PreviewPlayerContext) => (callback) => {
+          "src": ({ player }: PreviewPlayerContext) => {
 
-            if (player) {
+            // eslint-disable-next-line max-lines-per-function
+            return (callback) => {
 
-              player.on("pause", () => callback("PAUSED"));
+              if (player) {
 
-              player.on("end", () => callback("FINISHED"));
+                player.on("pause", () => {
 
-              let timeoutID: number;
-              const volume = 0.5;
-              const fadeouttime = 2000;
+                  return callback("PAUSED");
 
-              const fadeIn = () => {
+                });
 
-                if (player.volume() === 0) {
+                player.on("end", () => {
 
-                  player.fade(0, volume, fadeouttime);
+                  return callback("FINISHED");
 
-                } else {
+                });
 
-                  player.volume(volume);
+                let timeoutID: number;
+                const volume = 0.5;
+                const fadeouttime = 2000;
 
-                }
+                const fadeIn = () => {
 
-              };
+                  if (player.volume() === 0) {
 
-              const setScheduleFadeOut = () => {
+                    player.fade(0, volume, fadeouttime);
 
-                const seek = player.seek() as number;
+                  } else {
 
-                const time = (player.duration() - seek) as number;
+                    player.volume(volume);
 
-                const ms = time * 1000;
+                  }
 
-                const timeout = ms - fadeouttime;
+                };
 
-                timeoutID = setTimeout(() => {
+                const setScheduleFadeOut = () => {
 
-                  player.fade(volume, 0, fadeouttime);
+                  const seek = player.seek() as number;
 
-                }, timeout);
+                  const time = (player.duration() - seek) as number;
 
-              };
+                  const ms = time * 1000;
 
-              player.on("play", () => {
+                  const timeout = ms - fadeouttime;
 
-                fadeIn();
-                setScheduleFadeOut();
+                  timeoutID = setTimeout(() => {
 
-              });
+                    player.fade(volume, 0, fadeouttime);
 
-              player.on("seek", () => {
+                  }, timeout);
 
-                clearTimeout(timeoutID);
-                setScheduleFadeOut();
+                };
 
-              });
+                player.on("play", () => {
+
+                  fadeIn();
+                  setScheduleFadeOut();
+
+                });
+
+                player.on("seek", () => {
+
+                  clearTimeout(timeoutID);
+                  setScheduleFadeOut();
+
+                });
+
+                return () => {
+
+                  clearTimeout(timeoutID);
+                  player.off("play");
+                  player.off("pause");
+                  player.off("end");
+                  player.off("seek");
+
+                };
+
+              }
 
               return () => {
-
-                clearTimeout(timeoutID);
-                player.off("play");
-                player.off("pause");
-                player.off("end");
-                player.off("seek");
-
+                // 何もしない
               };
 
-            }
-
-            return () => {
-              // 何もしない
             };
 
           }
