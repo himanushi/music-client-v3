@@ -41,27 +41,37 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
         "invoke": {
           "id": "unauthorize",
 
-          "src": (_, _event) => (callback) => {
+          "src": (_, _event) => {
 
-            const changeStatus = (result: { authorizationStatus: number }) => {
+            return (callback) => {
 
-              if (result.authorizationStatus === 0) {
+              const changeStatus = (result: {
+                authorizationStatus: number;
+              }) => {
 
-                callback("LOGOUT");
+                if (result.authorizationStatus === 0) {
 
-              }
+                  callback("LOGOUT");
+
+                }
+
+              };
+
+              MusicKit.getInstance().addEventListener(
+                MusicKit.Events.authorizationStatusDidChange,
+                changeStatus
+              );
+
+              return () => {
+
+                return MusicKit.getInstance().removeEventListener(
+                  MusicKit.Events.authorizationStatusDidChange,
+                  changeStatus
+                );
+
+              };
 
             };
-
-            MusicKit.getInstance().addEventListener(
-              MusicKit.Events.authorizationStatusDidChange,
-              changeStatus
-            );
-
-            return () => MusicKit.getInstance().removeEventListener(
-              MusicKit.Events.authorizationStatusDidChange,
-              changeStatus
-            );
 
           }
         },
@@ -80,27 +90,37 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
         "invoke": {
           "id": "unauthorize",
 
-          "src": (_, _event) => (callback) => {
+          "src": (_, _event) => {
 
-            const changeStatus = (result: { authorizationStatus: number }) => {
+            return (callback) => {
 
-              if (result.authorizationStatus !== 0) {
+              const changeStatus = (result: {
+                authorizationStatus: number;
+              }) => {
 
-                callback("LOGIN");
+                if (result.authorizationStatus !== 0) {
 
-              }
+                  callback("LOGIN");
+
+                }
+
+              };
+
+              MusicKit.getInstance().addEventListener(
+                MusicKit.Events.authorizationStatusDidChange,
+                changeStatus
+              );
+
+              return () => {
+
+                return MusicKit.getInstance().removeEventListener(
+                  MusicKit.Events.authorizationStatusDidChange,
+                  changeStatus
+                );
+
+              };
 
             };
-
-            MusicKit.getInstance().addEventListener(
-              MusicKit.Events.authorizationStatusDidChange,
-              changeStatus
-            );
-
-            return () => MusicKit.getInstance().removeEventListener(
-              MusicKit.Events.authorizationStatusDidChange,
-              changeStatus
-            );
 
           }
         },
@@ -118,9 +138,17 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
   },
   {
     "actions": {
-      "login": () => MusicKit.getInstance().authorize(),
+      "login": () => {
 
-      "logout": () => MusicKit.getInstance().unauthorize(),
+        return MusicKit.getInstance().authorize();
+
+      },
+
+      "logout": () => {
+
+        return MusicKit.getInstance().unauthorize();
+
+      },
 
       "setToken": send((_, event) => {
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
-import PlaylistButton from "./_playlist-button.svelte";
+import PlayButton from "./_play-button.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { AlbumDocument } from "~/graphql/types";
@@ -32,8 +32,8 @@ const artistConditions = {
   <Text>{album.name}</Text>
   <Text>{album.copyright}</Text>
 
-  {#each album.tracks as track (track.id)}
-    <PlaylistButton />
+  {#each album.tracks as track, index (track.id)}
+    <PlayButton {index} name={album.name} tracks={album.tracks} />
     <Text>{track.name}</Text>
   {/each}
 
