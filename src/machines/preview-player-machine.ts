@@ -1,5 +1,5 @@
 import { Howl } from "howler";
-import { Machine as machine, assign, send, sendParent } from "xstate";
+import { Machine as machine, assign, send, sendParent, State } from "xstate";
 import { Track } from "~/graphql/types";
 
 const setPlayer = (track: Track) => {
@@ -293,3 +293,13 @@ export const PreviewPlayerMachine = machine<
     }
   }
 );
+
+export type PreviewPlayerState = State<
+  PreviewPlayerContext,
+  PreviewPlayerStateEvent,
+  PreviewPlayerStateSchema,
+  {
+    value: any;
+    context: PreviewPlayerContext;
+  }
+>;
