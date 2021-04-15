@@ -1,10 +1,13 @@
 <script lang="ts">
 import IconButton from "~/components/icon-button.svelte";
 import Image from "~/components/square-image.svelte";
+import Text from "~/components/text.svelte";
 import PuaseIcon from "~/icons/pause.svelte";
 import PlayIcon from "~/icons/play.svelte";
 import SkipIcon from "~/icons/skip.svelte";
 import { playerService } from "~/machines/jukebox-machine";
+
+$: track = $playerService.context.currentTrack;
 
 const play_or_pause = () => {
 
@@ -20,14 +23,16 @@ const skip = () => {
 </script>
 
 <footer>
-  <div class="track-info">
-    <div class="clickable">
-      <Image class="h-10 w-10" />
-      <span class="title">
-        タイトルタイトルタタイトルタイトルタタイトルタイトルタタイトルタイトルタタイトルタイトルタタイトルタイトルタ
-      </span>
+  {#if track}
+    <div class="track-info">
+      <div class="clickable">
+        <Image src={track.artworkM.url} class="h-10 w-10" />
+        <span class="title">
+          <Text>{track.name}</Text>
+        </span>
+      </div>
     </div>
-  </div>
+  {/if}
 
   <IconButton on:click={play_or_pause}>
     {#if $playerService.value === "playing"}

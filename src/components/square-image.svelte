@@ -1,6 +1,5 @@
 <script lang="ts">
 export let src: string | null | undefined = null;
-export let alt = "no description";
 let className = "";
 export { className as class };
 
@@ -13,7 +12,7 @@ if (src) {
 }
 </script>
 
-<div {style} {alt} class={className} />
+<div {style} class={className} />
 
 <style lang="scss">
 div {
