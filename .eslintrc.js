@@ -95,7 +95,7 @@ module.exports = {
     // typescript で [key in object] をするため
     "no-unused-vars": [
       "error",
-      { "argsIgnorePattern": "^_$",
+      { "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^key$" }
     ],
 
