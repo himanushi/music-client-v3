@@ -5,6 +5,9 @@ module.exports = {
     "node": true
   },
   "extends": ["eslint:all"],
+  "globals": {
+    "MediaMetadata": "writable"
+  },
   "overrides": [
     {
       "extends": "./linter/.eslintrc.javascript.js",
@@ -20,6 +23,12 @@ module.exports = {
     }
   ],
   "rules": {
+    // アロー関数のワンライナーを許可しない
+    "arrow-body-style": [
+      "error",
+      "always"
+    ],
+
     // キャメルケースを強要しない
     "camelcase": "off",
 
@@ -30,7 +39,10 @@ module.exports = {
     "default-param-last": "off",
 
     // function がズレるので無効
-    "function-call-argument-newline": "off",
+    "function-call-argument-newline": [
+      "error",
+      "consistent"
+    ],
 
     // function の括弧内での改行を強制しない
     "function-paren-newline": "off",
