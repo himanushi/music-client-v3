@@ -1186,6 +1186,10 @@ export type AlbumsQuery = {
   >;
 };
 
+export type AppleMusicTokenQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AppleMusicTokenQuery = Pick<Query, "appleMusicToken">;
+
 export type ArtistQueryVariables = Exact<{
   id: Scalars["TTID"];
 }>;
@@ -1910,6 +1914,25 @@ export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
               ],
             },
           },
+        ],
+      },
+    },
+  ],
+};
+export const AppleMusicTokenDocument: DocumentNode<
+  AppleMusicTokenQuery,
+  AppleMusicTokenQueryVariables
+> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AppleMusicToken" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "appleMusicToken" } },
         ],
       },
     },
