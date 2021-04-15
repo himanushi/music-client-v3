@@ -1,5 +1,7 @@
 <script lang="ts">
 import IconButton from "~/components/icon-button.svelte";
+import { modal } from "~/components/modal.svelte";
+import Player from "~/components/music-player/index.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import PuaseIcon from "~/icons/pause.svelte";
@@ -20,12 +22,18 @@ const skip = () => {
   playerService.send("NEXT_PLAY");
 
 };
+
+const showPlayer = () => {
+
+  modal.set(Player);
+
+};
 </script>
 
 <footer>
   {#if track}
     <div class="track-info">
-      <div class="clickable">
+      <div class="clickable" on:click={showPlayer}>
         <Image src={track.artworkM.url} class="h-10 w-10" />
         <span class="title">
           <Text>{track.name}</Text>
