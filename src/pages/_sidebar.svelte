@@ -3,15 +3,19 @@ import { goto } from "@roxi/routify";
 import { fly } from "svelte/transition";
 import IconButton from "~/components/icon-button.svelte";
 import { modal } from "~/components/modal.svelte";
+import Player from "~/components/music-player/index.svelte";
 import ChevronLeft from "~/icons/chevron-left.svelte";
 
 const close = () => modal.set(null);
+
 const go = (path: string) => () => {
 
   $goto(path);
   modal.set(null);
 
 };
+
+const showPlayer = () => modal.set(Player);
 </script>
 
 <nav
@@ -36,6 +40,7 @@ const go = (path: string) => () => {
         <li class="clickable" on:click={go("/albums")}>アルバム検索</li>
         <li class="clickable" on:click={go("/playlist")}>プレイリスト検索</li>
         <li class="clickable" on:click={go("/me")}>設定</li>
+        <li class="clickable" on:click={showPlayer}>音楽プレイヤー</li>
       </ul>
     </section>
   </main>
