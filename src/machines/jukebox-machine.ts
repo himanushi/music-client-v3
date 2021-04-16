@@ -75,36 +75,21 @@ export const JukeboxMachine = machine<
 
     "invoke": {
       "id": "mediaController",
-      "src": (_) => {
+      "src": (_) => (callback) => {
 
-        return (callback) => {
+        const cb = (type: string) => () => callback({ type });
 
-          const cb = (type: string) => {
+        if (navigator.mediaSession) {
 
-            return () => {
+          navigator.mediaSession.setActionHandler("play", cb("PLAY"));
+          navigator.mediaSession.setActionHandler("pause", cb("PAUSE"));
+          navigator.mediaSession.setActionHandler("nexttrack", cb("NEXT_PLAY"));
+          navigator.mediaSession.setActionHandler(
+            "previoustrack",
+            cb("PREVIOUS_PLAY")
+          );
 
-              return callback({ type });
-
-            };
-
-          };
-
-          if (navigator.mediaSession) {
-
-            navigator.mediaSession.setActionHandler("play", cb("PLAY"));
-            navigator.mediaSession.setActionHandler("pause", cb("PAUSE"));
-            navigator.mediaSession.setActionHandler(
-              "nexttrack",
-              cb("NEXT_PLAY")
-            );
-            navigator.mediaSession.setActionHandler(
-              "previoustrack",
-              cb("PREVIOUS_PLAY")
-            );
-
-          }
-
-        };
+        }
 
       }
     },
@@ -173,18 +158,14 @@ export const JukeboxMachine = machine<
     },
 
     "states": {
-      "idle": {
-        "entry": ["initMusicPlayer"]
-      },
+      "idle": { "entry": ["initMusicPlayer"] },
 
       "loading": {
         "entry": [
           "setTrack",
           "load"
         ],
-        "on": {
-          "PLAYING": "playing"
-        }
+        "on": { "PLAYING": "playing" }
       },
 
       "paused": {
@@ -215,13 +196,9 @@ export const JukeboxMachine = machine<
   },
   {
     "actions": {
-      "changeCurrentTrack": assign(({ tracks, currentPlaybackNo }) => {
-
-        return {
-          "currentTrack": tracks[currentPlaybackNo]
-        };
-
-      }),
+      "changeCurrentTrack": assign(({ tracks, currentPlaybackNo }) => ({
+        "currentTrack": tracks[currentPlaybackNo]
+      })),
 
       "changePlaybackNo": assign((_, event) => {
 
@@ -235,11 +212,7 @@ export const JukeboxMachine = machine<
       }),
 
       "initMusicPlayer": assign({
-        "musicPlayerRef": (_) => {
-
-          return spawn(MusicPlayerMachine, "musicPlayer");
-
-        }
+        "musicPlayerRef": (_) => spawn(MusicPlayerMachine, "musicPlayer")
       }),
 
       "load": send("LOAD", { "to": "musicPlayer" }),
@@ -274,13 +247,7 @@ export const JukeboxMachine = machine<
         }
       }),
 
-      "repeat": assign({
-        "repeat": ({ repeat }) => {
-
-          return !repeat;
-
-        }
-      }),
+      "repeat": assign({ "repeat": ({ repeat }) => !repeat }),
 
       "replaceTracks": assign({
         "tracks": (_, event) => {
@@ -332,12 +299,10 @@ export const JukeboxMachine = machine<
       }),
 
       "setTrack": send(
-        ({ currentTrack }) => {
-
-          return { "track": currentTrack,
-            "type": "SET_TRACK" };
-
-        },
+        ({ currentTrack }) => ({
+          "track": currentTrack,
+          "type": "SET_TRACK"
+        }),
         { "to": "musicPlayer" }
       ),
 
@@ -347,14 +312,16 @@ export const JukeboxMachine = machine<
     "guards": {
       "canNextPlay": ({ repeat, tracks, currentPlaybackNo }) => {
 
-        return repeat || currentPlaybackNo + 1 !== tracks.length;
+        if (repeat) {
+
+          return true;
+
+        }
+
+        return currentPlaybackNo + 1 !== tracks.length;
 
       },
-      "canPreviousPlay": ({ currentPlaybackNo }) => {
-
-        return currentPlaybackNo !== 0;
-
-      }
+      "canPreviousPlay": ({ currentPlaybackNo }) => currentPlaybackNo !== 0
     }
   }
 );
@@ -369,6 +336,4 @@ export type JukeboxState = State<
   }
 >;
 
-export const playerService = interpret(JukeboxMachine, {
-  "devTools": true
-}).start();
+export const playerService = interpret(JukeboxMachine).start();

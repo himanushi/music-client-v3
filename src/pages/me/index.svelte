@@ -5,9 +5,7 @@ import Text from "~/components/text.svelte";
 import { MeDocument } from "~/graphql/types";
 import type { CurrentUser, MeQuery } from "~/graphql/types";
 
-$: meQuery = query<MeQuery>(MeDocument, {
-  "fetchPolicy": "cache-first"
-});
+$: meQuery = query<MeQuery>(MeDocument, { "fetchPolicy": "cache-first" });
 
 let me: CurrentUser;
 $: me = $meQuery?.data?.me as CurrentUser;

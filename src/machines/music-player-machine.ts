@@ -68,13 +68,17 @@ export const MusicPlayerMachine = machine<
     "initial": "idle",
 
     "on": {
-      "CHANGE_SEEK": { "actions": [
-        "changeSeek",
-        "changeSeekPreview"
-      ] },
+      "CHANGE_SEEK": {
+        "actions": [
+          "changeSeek",
+          "changeSeekPreview"
+        ]
+      },
 
-      "LOAD": { "actions": ["loadPreview"],
-        "target": "loading" },
+      "LOAD": {
+        "actions": ["loadPreview"],
+        "target": "loading"
+      },
 
       "SET_SEEK": { "actions": ["setSeek"] },
 
@@ -87,10 +91,12 @@ export const MusicPlayerMachine = machine<
         ]
       },
 
-      "STOP": { "actions": [
-        "stopPreview",
-        "resetSeek"
-      ] },
+      "STOP": {
+        "actions": [
+          "stopPreview",
+          "resetSeek"
+        ]
+      },
 
       "STOPPED": "stopped"
     },
@@ -102,15 +108,9 @@ export const MusicPlayerMachine = machine<
         ]
       },
 
-      "idle": {
-        "entry": ["initPlayers"]
-      },
+      "idle": { "entry": ["initPlayers"] },
 
-      "loading": {
-        "on": {
-          "PLAYING": "playing"
-        }
-      },
+      "loading": { "on": { "PLAYING": "playing" } },
 
       "paused": {
         "entry": [sendParent("PAUSED")],
@@ -127,21 +127,13 @@ export const MusicPlayerMachine = machine<
         ],
         "invoke": {
           "id": "seekTimer",
-          "src": (_) => {
+          "src": (_) => (callback) => {
 
-            return (callback) => {
+            const interval = setInterval(() => callback("TICK"), 1000);
 
-              const interval = setInterval(() => {
+            return () => {
 
-                return callback("TICK");
-
-              }, 1000);
-
-              return () => {
-
-                clearInterval(interval);
-
-              };
+              clearInterval(interval);
 
             };
 
@@ -184,8 +176,10 @@ export const MusicPlayerMachine = machine<
 
           if ("seek" in event) {
 
-            return { "seek": event.seek,
-              "type": "CHANGE_SEEK" };
+            return {
+              "seek": event.seek,
+              "type": "CHANGE_SEEK"
+            };
 
           }
           return { "type": "" };
@@ -195,11 +189,7 @@ export const MusicPlayerMachine = machine<
       ),
 
       "initPlayers": assign({
-        "previewPlayerRef": (_) => {
-
-          return spawn(PreviewPlayerMachine, "preview");
-
-        }
+        "previewPlayerRef": (_) => spawn(PreviewPlayerMachine, "preview")
       }),
 
       "loadPreview": send("LOAD", { "to": "preview" }),
@@ -208,13 +198,7 @@ export const MusicPlayerMachine = machine<
 
       "playPreview": send("PLAY", { "to": "preview" }),
 
-      "resetSeek": assign({
-        "seek": (_) => {
-
-          return 0;
-
-        }
-      }),
+      "resetSeek": assign({ "seek": (_) => 0 }),
 
       "setDuration": assign({
         "duration": ({ track }) => {
@@ -266,8 +250,10 @@ export const MusicPlayerMachine = machine<
 
           if ("track" in event) {
 
-            return { "track": event.track,
-              "type": "SET_TRACK" };
+            return {
+              "track": event.track,
+              "type": "SET_TRACK"
+            };
 
           }
 

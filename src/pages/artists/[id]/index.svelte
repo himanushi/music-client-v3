@@ -21,14 +21,12 @@ $: if ($artistQuery.data) {
 
 }
 
-const albumConditions = {
-  "artists": { "id": [id] }
-};
+const albumConditions = { "artists": { "id": [id] } };
 </script>
 
 {#if artist}
   {#if artist.artworkL.url}
-    <Image src={artist.artworkL.url} alt={artist.name} class="h-16 w-16" />
+    <Image src={artist.artworkL.url} class="h-16 w-16" />
   {/if}
   <Text>{artist.name}</Text>
   <Albums conditions={albumConditions} />

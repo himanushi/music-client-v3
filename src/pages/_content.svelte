@@ -4,9 +4,7 @@ import ScrollLock from "./_scroll-lock.svelte";
 
 let content: HTMLElement;
 
-setContext("content", {
-  "getElement": () => content
-});
+setContext("content", { "getElement": () => content });
 
 // 一瞬だけスクロールの一番上が表示されるのを回避する
 let invisible = true;

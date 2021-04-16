@@ -11,7 +11,7 @@ const path = `/albums/${id}`;
 
 <div class="w-40">
   <a class="card" href={$url(path)}>
-    <Image {src} alt={name} class="h-40 w-40" />
+    <Image {src} class="h-40 w-40" />
     <span class="name">{name}</span>
   </a>
 </div>

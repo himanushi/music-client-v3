@@ -32,11 +32,7 @@ const edit = () => {
 
 {#if playlist}
   {#if playlist.track}
-    <Image
-      src={playlist.track.artworkL.url}
-      alt={playlist.track.name}
-      class="h-16 w-16"
-    />
+    <Image src={playlist.track.artworkL.url} class="h-16 w-16" />
   {/if}
 
   <Text>{playlist.name}</Text>
