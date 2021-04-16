@@ -1,3 +1,8 @@
-<!-- font 使うかもしないので text を噛ませる -->
+<script lang="ts">
+let className = "";
+export { className as class };
+</script>
 
-<p><slot /></p>
+<!-- webfont 使うかもしないので text を噛ませる -->
+
+<p class={className}><slot /></p>

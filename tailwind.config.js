@@ -7,7 +7,13 @@ module.exports = {
     "content": [
       "./public/*.html",
       "./src/**/*.{js,ts,svelte}"
-    ]
+    ],
+    "options": {
+      "safelist": [
+        /^h-/u,
+        /^w-/u
+      ]
+    }
   },
 
   /*
