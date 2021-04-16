@@ -1,7 +1,7 @@
 <script lang="ts">
 import IconButton from "~/components/icon-button.svelte";
 import { modal } from "~/components/modal.svelte";
-import Player from "~/components/music-player/index.svelte";
+import Player from "~/components/player.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import PuaseIcon from "~/icons/pause.svelte";

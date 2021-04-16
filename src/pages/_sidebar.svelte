@@ -3,7 +3,7 @@ import { goto } from "@roxi/routify";
 import { fly } from "svelte/transition";
 import IconButton from "~/components/icon-button.svelte";
 import { modal } from "~/components/modal.svelte";
-import Player from "~/components/music-player/index.svelte";
+import Player from "~/components/player.svelte";
 import ChevronLeft from "~/icons/chevron-left.svelte";
 
 const close = () => modal.set(null);

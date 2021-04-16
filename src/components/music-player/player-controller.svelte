@@ -1,5 +1,4 @@
 <script lang="ts">
-import SeekBar from "./seek-bar.svelte";
 import IconButton from "~/components/icon-button.svelte";
 import PuaseIcon from "~/icons/pause.svelte";
 import PlayIcon from "~/icons/play.svelte";
@@ -41,5 +40,3 @@ const skip = () => {
 <IconButton on:click={skip}>
   <SkipIcon color="text-gray-900" />
 </IconButton>
-
-<SeekBar />

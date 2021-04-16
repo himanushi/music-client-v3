@@ -1,6 +1,6 @@
 <script lang="ts">
-import Image from "../square-image.svelte";
-import Text from "../text.svelte";
+import Image from "~/components/square-image.svelte";
+import Text from "~/components/text.svelte";
 import type { Track } from "~/graphql/types";
 import { playerService } from "~/machines/jukebox-machine";
 
