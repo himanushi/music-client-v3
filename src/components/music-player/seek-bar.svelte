@@ -4,13 +4,26 @@ import { tweened } from "svelte/motion";
 import Text from "~/components/text.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
-$: player = $playerService.context.musicPlayerRef;
-
 // seek を滑らかに動かす
 const seek = tweened(0, {
-  "duration": 1000,
+  "duration": (from, to) => {
+
+    // seek が大幅に動いた時は滑らかでは不自然なので無効にする
+    const tick = 1000;
+    const diff = Math.abs(to - from);
+
+    if (diff > tick + 100) {
+
+      return 0;
+
+    }
+    return tick;
+
+  },
   "easing": cubicOut
 });
+
+const player = $playerService.context.musicPlayerRef;
 
 $: if (player) {
 
@@ -29,11 +42,39 @@ const toMMSS = (duration: number) => {
   return `${padding(minutes)}:${padding(seconds)}`;
 
 };
+
+const onChangeSeek = (event: Event) => {
+
+  const { target } = event;
+
+  if (!(target instanceof HTMLInputElement)) {
+
+    return;
+
+  }
+
+  const { value } = target;
+
+  if (player && value) {
+
+    player.send({
+      "seek": parseInt(value, 10),
+      "type": "CHANGE_SEEK"
+    });
+
+  }
+
+};
 </script>
 
 {#if player}
   <Text>{toMMSS($player.context.seek)}</Text>
-  <input type="range" max={$player.context.duration} value={$seek} />
+  <input
+    type="range"
+    max={$player.context.duration}
+    bind:value={$seek}
+    on:change={onChangeSeek}
+  />
   <Text>-{toMMSS($player.context.duration - $player.context.seek)}</Text>
 {/if}
 
