@@ -21,7 +21,7 @@ const showPlayer = () => modal.set(Player);
 <nav
   on:click|stopPropagation
   transition:fly={{
-    "duration": 300,
+    "duration": 200,
     "opacity": 100,
     "x": -288
   }}
