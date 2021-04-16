@@ -1,3 +1,4 @@
 {
-  "svelteIndentScriptAndStyle": false
+  "svelteIndentScriptAndStyle": false,
+  "quoteProps": "preserve"
 }

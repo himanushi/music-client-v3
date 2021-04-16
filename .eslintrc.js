@@ -5,9 +5,7 @@ module.exports = {
     "node": true
   },
   "extends": ["eslint:all"],
-  "globals": {
-    "MediaMetadata": "writable"
-  },
+  "globals": { "MediaMetadata": "writable" },
   "overrides": [
     {
       "extends": "./linter/.eslintrc.javascript.js",
@@ -23,10 +21,10 @@ module.exports = {
     }
   ],
   "rules": {
-    // アロー関数のワンライナーを許可しない
+    // アロー関数のワンライナーを許可する
     "arrow-body-style": [
       "error",
-      "always"
+      "as-needed"
     ],
 
     // キャメルケースを強要しない
@@ -56,9 +54,7 @@ module.exports = {
     // import 文はソートする
     "import/order": [
       "error",
-      {
-        "alphabetize": { "order": "asc" }
-      }
+      { "alphabetize": { "order": "asc" } }
     ],
 
     // インデントはスペース2個分
@@ -110,6 +106,9 @@ module.exports = {
       { "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^key$" }
     ],
+
+    // object 内の改行は prettier に任せる
+    "object-curly-newline": "off",
 
     // object の隙間を開ける
     "object-curly-spacing": [
