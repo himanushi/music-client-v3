@@ -82,6 +82,9 @@ module.exports = {
     // マジックナンバーを許可する
     "no-magic-numbers": "off",
 
+    // 演算子の混在を許可する
+    "no-mixed-operators": "off",
+
     // process.env 使用許可
     "no-process-env": "off",
 
