@@ -1,5 +1,4 @@
 <script lang="ts">
-import { cubicOut } from "svelte/easing";
 import { tweened } from "svelte/motion";
 import Text from "~/components/text.svelte";
 import { playerService } from "~/machines/jukebox-machine";
@@ -17,10 +16,10 @@ const seek = tweened(0, {
       return 0;
 
     }
+
     return tick;
 
-  },
-  "easing": cubicOut
+  }
 });
 
 const player = $playerService.context.musicPlayerRef;
