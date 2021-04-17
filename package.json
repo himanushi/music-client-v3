@@ -46,6 +46,7 @@
     "stylelint": "^13.12.0",
     "stylelint-config-recommended": "^4.0.0",
     "svelte-apollo": "^0.4.0",
+    "svelte-dnd-action": "^0.9.5",
     "svelte-preprocess": "^4.6.9",
     "typescript": "^4.2.3"
   },
