@@ -1,15 +1,11 @@
 <script>
 import { fly } from "svelte/transition";
-import Queue from "./queue/index.svelte";
 import { modal } from "~/components/modal.svelte";
 import Player from "~/components/music-player/index.svelte";
 
 const close = () => modal.set(null);
 let tabIndex = 0;
-const tabs = [
-  Player,
-  Queue
-];
+const tabs = [Player];
 </script>
 
 <div
