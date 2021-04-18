@@ -2,9 +2,7 @@
 import { goto } from "@roxi/routify";
 
 const create = () => {
-
   $goto("/playlist/new");
-
 };
 </script>
 

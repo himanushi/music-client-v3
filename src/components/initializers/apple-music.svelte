@@ -9,11 +9,9 @@ const tokenQuery = query<AppleMusicTokenQuery>(AppleMusicTokenDocument);
 let token: string | undefined;
 
 $: {
-
   token = $tokenQuery?.data?.appleMusicToken;
 
   if (token) {
-
     accountService.send({
       "config": {
         "app": {
@@ -24,8 +22,6 @@ $: {
       },
       "type": "SET_TOKEN"
     });
-
   }
-
 }
 </script>

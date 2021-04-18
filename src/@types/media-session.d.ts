@@ -74,7 +74,6 @@ interface MediaMetadataInit {
 }
 
 declare class MediaMetadata {
-
   constructor(init?: MediaMetadataInit);
 
   // Media's title.
@@ -88,7 +87,6 @@ declare class MediaMetadata {
 
   // Media's artwork.
   artwork: ReadonlyArray<MediaImage>;
-
 }
 
 interface MediaPositionState {

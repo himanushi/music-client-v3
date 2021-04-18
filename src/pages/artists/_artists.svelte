@@ -37,22 +37,14 @@ $: artistsQuery = query<ArtistsQuery, ArtistsQueryVariables>(ArtistsDocument, {
 });
 
 const loadMore = async () => {
-
-  await artistsQuery.fetchMore({
-    "variables": {
-      "cursor": {
-        limit,
-        "offset": artists.length
-      }
-    }
-  });
-
+  await artistsQuery.fetchMore({ "variables": { "cursor": {
+    limit,
+    "offset": artists.length
+  } } });
 };
 
 $: if ($artistsQuery.data) {
-
   artists = $artistsQuery.data.artists as Artist[];
-
 }
 
 const { getElement } = getContext("content");

@@ -30,25 +30,17 @@ const offsetLimitPagination = {
   ],
 
   merge (existing = [], incoming = []) {
-
     return [
       ...existing,
       ...incoming
     ];
-
   }
 };
 
-const cache = new InMemoryCache({
-  "typePolicies": {
-    "Query": {
-      "fields": {
-        "albums": offsetLimitPagination,
-        "artists": offsetLimitPagination
-      }
-    }
-  }
-});
+const cache = new InMemoryCache({ "typePolicies": { "Query": { "fields": {
+  "albums": offsetLimitPagination,
+  "artists": offsetLimitPagination
+} } } });
 
 export default new ApolloClient({
   cache,

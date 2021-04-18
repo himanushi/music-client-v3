@@ -76,11 +76,9 @@ export const JukeboxMachine = machine<
     "invoke": {
       "id": "mediaController",
       "src": (_) => (callback) => {
-
         const cb = (type: string) => () => callback({ type });
 
         if (navigator.mediaSession) {
-
           navigator.mediaSession.setActionHandler("play", cb("PLAY"));
           navigator.mediaSession.setActionHandler("pause", cb("PAUSE"));
           navigator.mediaSession.setActionHandler("nexttrack", cb("NEXT_PLAY"));
@@ -88,9 +86,7 @@ export const JukeboxMachine = machine<
             "previoustrack",
             cb("PREVIOUS_PLAY")
           );
-
         }
-
       }
     },
 
@@ -112,14 +108,12 @@ export const JukeboxMachine = machine<
           "cond": "canNextPlay",
           "target": "loading"
         },
-        {
-          "actions": [
-            "nextPlaybackNo",
-            "changeCurrentTrack",
-            "stop",
-            "setTrack"
-          ]
-        }
+        { "actions": [
+          "nextPlaybackNo",
+          "changeCurrentTrack",
+          "stop",
+          "setTrack"
+        ] }
       ],
 
       "PREVIOUS_PLAY": [
@@ -131,14 +125,12 @@ export const JukeboxMachine = machine<
           "cond": "canPreviousPlay",
           "target": "loading"
         },
-        {
-          "actions": [
-            "previousPlaybackNo",
-            "changeCurrentTrack",
-            "stop",
-            "setTrack"
-          ]
-        }
+        { "actions": [
+          "previousPlaybackNo",
+          "changeCurrentTrack",
+          "stop",
+          "setTrack"
+        ] }
       ],
 
       "REPEAT": { "actions": ["repeat"] },
@@ -168,13 +160,11 @@ export const JukeboxMachine = machine<
         "on": { "PLAYING": "playing" }
       },
 
-      "paused": {
-        "on": {
-          "PLAY": { "actions": ["play"] },
-          "PLAYING": "playing",
-          "PLAY_OR_PAUSE": { "actions": ["play"] }
-        }
-      },
+      "paused": { "on": {
+        "PLAY": { "actions": ["play"] },
+        "PLAYING": "playing",
+        "PLAY_OR_PAUSE": { "actions": ["play"] }
+      } },
 
       "playing": {
         "entry": ["setMediaMetadata"],
@@ -185,89 +175,62 @@ export const JukeboxMachine = machine<
         }
       },
 
-      "stopped": {
-        "on": {
-          "PLAY": { "actions": ["play"] },
-          "PLAYING": "playing",
-          "PLAY_OR_PAUSE": { "actions": ["play"] }
-        }
-      }
+      "stopped": { "on": {
+        "PLAY": { "actions": ["play"] },
+        "PLAYING": "playing",
+        "PLAY_OR_PAUSE": { "actions": ["play"] }
+      } }
     }
   },
   {
     "actions": {
-      "changeCurrentTrack": assign(({ tracks, currentPlaybackNo }) => ({
-        "currentTrack": tracks[currentPlaybackNo]
-      })),
+      "changeCurrentTrack": assign(({
+        tracks, currentPlaybackNo
+      }) => ({ "currentTrack": tracks[currentPlaybackNo] })),
 
       "changePlaybackNo": assign((_, event) => {
-
         if (!("currentPlaybackNo" in event)) {
-
           return {};
-
         }
         return { "currentPlaybackNo": event.currentPlaybackNo };
-
       }),
 
-      "initMusicPlayer": assign({
-        "musicPlayerRef": (_) => spawn(MusicPlayerMachine, "musicPlayer")
-      }),
+      "initMusicPlayer": assign({ "musicPlayerRef": (_) => spawn(MusicPlayerMachine, "musicPlayer") }),
 
       "load": send("LOAD", { "to": "musicPlayer" }),
 
-      "nextPlaybackNo": assign({
-        "currentPlaybackNo": ({ tracks, currentPlaybackNo }) => {
-
-          if (currentPlaybackNo + 1 === tracks.length) {
-
-            return 0;
-
-          }
-          return currentPlaybackNo + 1;
-
+      "nextPlaybackNo": assign({ "currentPlaybackNo": ({
+        tracks, currentPlaybackNo
+      }) => {
+        if (currentPlaybackNo + 1 === tracks.length) {
+          return 0;
         }
-      }),
+        return currentPlaybackNo + 1;
+      } }),
 
       "pause": send("PAUSE", { "to": "musicPlayer" }),
 
       "play": send("PLAY", { "to": "musicPlayer" }),
 
-      "previousPlaybackNo": assign({
-        "currentPlaybackNo": ({ currentPlaybackNo }) => {
-
-          if (currentPlaybackNo === 0) {
-
-            return 0;
-
-          }
-          return currentPlaybackNo - 1;
-
+      "previousPlaybackNo": assign({ "currentPlaybackNo": ({ currentPlaybackNo }) => {
+        if (currentPlaybackNo === 0) {
+          return 0;
         }
-      }),
+        return currentPlaybackNo - 1;
+      } }),
 
       "repeat": assign({ "repeat": ({ repeat }) => !repeat }),
 
-      "replaceTracks": assign({
-        "tracks": (_, event) => {
-
-          if ("tracks" in event) {
-
-            return event.tracks;
-
-          }
-          return [];
-
+      "replaceTracks": assign({ "tracks": (_, event) => {
+        if ("tracks" in event) {
+          return event.tracks;
         }
-      }),
+        return [];
+      } }),
 
       "setMediaMetadata": ({ currentTrack }) => {
-
         if (navigator.mediaSession) {
-
           if (currentTrack) {
-
             navigator.mediaSession.metadata = new MediaMetadata({
               "artwork": [
                 {
@@ -278,25 +241,16 @@ export const JukeboxMachine = machine<
               ],
               "title": currentTrack.name
             });
-
           }
-
         }
-
       },
 
-      "setName": assign({
-        "name": (_, event) => {
-
-          if ("name" in event) {
-
-            return event.name;
-
-          }
-          return "";
-
+      "setName": assign({ "name": (_, event) => {
+        if ("name" in event) {
+          return event.name;
         }
-      }),
+        return "";
+      } }),
 
       "setTrack": send(
         ({ currentTrack }) => ({
@@ -310,16 +264,14 @@ export const JukeboxMachine = machine<
     },
 
     "guards": {
-      "canNextPlay": ({ repeat, tracks, currentPlaybackNo }) => {
-
+      "canNextPlay": ({
+        repeat, tracks, currentPlaybackNo
+      }) => {
         if (repeat) {
-
           return true;
-
         }
 
         return currentPlaybackNo + 1 !== tracks.length;
-
       },
       "canPreviousPlay": ({ currentPlaybackNo }) => currentPlaybackNo !== 0
     }

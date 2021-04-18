@@ -3,19 +3,15 @@ module.exports = {
   "rules": {
     "at-rule-no-unknown": [
       true,
-      {
-        "ignoreAtRules": [
-          "extends",
-          "tailwind",
-          "layer"
-        ]
-      }
+      { "ignoreAtRules": [
+        "extends",
+        "tailwind",
+        "layer"
+      ] }
     ],
     "selector-pseudo-class-no-unknown": [
       true,
-      {
-        "ignorePseudoClasses": ["global"]
-      }
+      { "ignorePseudoClasses": ["global"] }
     ]
   }
 };

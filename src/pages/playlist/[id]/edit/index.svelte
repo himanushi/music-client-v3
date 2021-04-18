@@ -1,7 +1,13 @@
 <script lang="ts">
-import { goto, params } from "@roxi/routify";
-import { mutation, query } from "svelte-apollo";
-import { PlaylistDocument, UpsertPlaylistDocument } from "~/graphql/types";
+import {
+  goto, params
+} from "@roxi/routify";
+import {
+  mutation, query
+} from "svelte-apollo";
+import {
+  PlaylistDocument, UpsertPlaylistDocument
+} from "~/graphql/types";
 import type {
   Playlist,
   PlaylistQuery,
@@ -23,13 +29,13 @@ const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
 
 // 初期化
 $: if ($playlistQuery.data && initialize) {
-
   const playlist = $playlistQuery.data.playlist as Playlist;
 
-  ({ name, description, publicType } = playlist);
+  ({
+    name, description, publicType
+  } = playlist);
 
   initialize = false;
-
 }
 
 const upsertPlaylist = mutation<unknown, UpsertPlaylistMutationVariables>(
@@ -37,26 +43,18 @@ const upsertPlaylist = mutation<unknown, UpsertPlaylistMutationVariables>(
 );
 
 const update = async () => {
-
   try {
-
-    await upsertPlaylist({
-      "variables": {
-        "input": {
-          description,
-          name,
-          "playlistId": id,
-          publicType
-        }
-      }
-    });
+    await upsertPlaylist({ "variables": { "input": {
+      description,
+      name,
+      "playlistId": id,
+      publicType
+    } } });
 
     $goto("/playlist/:id", { id });
-
   } catch (error) {
     // console.error({ error });
   }
-
 };
 </script>
 

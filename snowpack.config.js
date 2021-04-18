@@ -6,16 +6,12 @@ module.exports = {
     "~": "./src"
   },
   "mount": {
-    ".routify": {
-      "url": "/"
-    },
+    ".routify": { "url": "/" },
     "public": {
       "static": true,
       "url": "/"
     },
-    "src": {
-      "url": "/"
-    }
+    "src": { "url": "/" }
   },
   "optimize": {
     "bundle": true,

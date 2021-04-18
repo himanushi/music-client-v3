@@ -7,21 +7,15 @@ import SkipIcon from "~/icons/skip.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
 const play_or_pause = () => {
-
   playerService.send("PLAY_OR_PAUSE");
-
 };
 
 const rewind = () => {
-
   playerService.send("PREVIOUS_PLAY");
-
 };
 
 const skip = () => {
-
   playerService.send("NEXT_PLAY");
-
 };
 </script>
 

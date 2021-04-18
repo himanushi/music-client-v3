@@ -7,7 +7,6 @@ export let index: number;
 export let tracks: readonly Track[];
 
 const onClick = () => {
-
   playerService.send([
     {
       name,
@@ -19,7 +18,6 @@ const onClick = () => {
       "type": "REPLACE_AND_PLAY"
     }
   ]);
-
 };
 </script>
 

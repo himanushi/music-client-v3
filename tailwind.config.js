@@ -8,12 +8,10 @@ module.exports = {
       "./public/*.html",
       "./src/**/*.{js,ts,svelte}"
     ],
-    "options": {
-      "safelist": [
-        /^h-/u,
-        /^w-/u
-      ]
-    }
+    "options": { "safelist": [
+      /^h-/u,
+      /^w-/u
+    ] }
   },
 
   /*
@@ -22,17 +20,9 @@ module.exports = {
    * @apply focus:outline-non → @apply focus_outline-non
    */
   "separator": "_",
-  "theme": {
-    "extend": {
-      "colors": {
-        "teal": colors.teal
-      }
-    }
-  },
-  "variants": {
-    "extend": {
-      "backgroundColor": ["active"],
-      "backgroundOpacity": ["active"]
-    }
-  }
+  "theme": { "extend": { "colors": { "teal": colors.teal } } },
+  "variants": { "extend": {
+    "backgroundColor": ["active"],
+    "backgroundOpacity": ["active"]
+  } }
 };

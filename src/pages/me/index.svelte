@@ -3,7 +3,9 @@ import { query } from "svelte-apollo";
 import AppleMusicButton from "./_apple-music-button.svelte";
 import Text from "~/components/text.svelte";
 import { MeDocument } from "~/graphql/types";
-import type { CurrentUser, MeQuery } from "~/graphql/types";
+import type {
+  CurrentUser, MeQuery
+} from "~/graphql/types";
 
 $: meQuery = query<MeQuery>(MeDocument, { "fetchPolicy": "cache-first" });
 

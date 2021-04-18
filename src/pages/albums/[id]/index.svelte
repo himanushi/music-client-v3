@@ -4,7 +4,9 @@ import PlayButton from "./_play-button.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { AlbumDocument } from "~/graphql/types";
-import type { Album, AlbumQuery } from "~/graphql/types";
+import type {
+  Album, AlbumQuery
+} from "~/graphql/types";
 import Artists from "~/pages/artists/_artists.svelte";
 
 export let id = "";
@@ -17,9 +19,7 @@ const albumQuery = query<AlbumQuery>(AlbumDocument, {
 let album: Album | undefined;
 
 $: if ($albumQuery.data) {
-
   album = $albumQuery.data.album as Album;
-
 }
 
 const artistConditions = { "albums": { "id": [id] } };

@@ -12,21 +12,15 @@ import { playerService } from "~/machines/jukebox-machine";
 $: track = $playerService.context.currentTrack;
 
 const play_or_pause = () => {
-
   playerService.send("PLAY_OR_PAUSE");
-
 };
 
 const skip = () => {
-
   playerService.send("NEXT_PLAY");
-
 };
 
 const showPlayer = () => {
-
   modal.set(Player);
-
 };
 </script>
 

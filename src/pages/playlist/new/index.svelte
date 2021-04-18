@@ -16,26 +16,18 @@ let description = "";
 let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
 
 const create = async () => {
-
   try {
-
-    await upsertPlaylist({
-      "variables": {
-        "input": {
-          description,
-          name,
-          publicType,
-          "trackIds": []
-        }
-      }
-    });
+    await upsertPlaylist({ "variables": { "input": {
+      description,
+      name,
+      publicType,
+      "trackIds": []
+    } } });
 
     modal.set(null);
-
   } catch (error) {
     // console.error({ error });
   }
-
 };
 </script>
 

@@ -1,13 +1,12 @@
 import { Howl } from "howler";
-import { Machine as machine, assign, send, sendParent, State } from "xstate";
+import {
+  Machine as machine, assign, send, sendParent, State
+} from "xstate";
 import { Track } from "~/graphql/types";
 
 const setPlayer = (track: Track) => {
-
   if (!track || !track.previewUrl) {
-
     return undefined;
-
   }
 
   const howl: Howl = new Howl({
@@ -19,7 +18,6 @@ const setPlayer = (track: Track) => {
   });
 
   return howl;
-
 };
 
 export type PreviewPlayerContext = {
@@ -86,15 +84,13 @@ export const PreviewPlayerMachine = machine<
         "target": "stopped"
       },
 
-      "TICK": {
-        "actions": [
-          "tick",
-          sendParent(({ seek }) => ({
-            seek,
-            "type": "SET_SEEK"
-          }))
-        ]
-      }
+      "TICK": { "actions": [
+        "tick",
+        sendParent(({ seek }) => ({
+          seek,
+          "type": "SET_SEEK"
+        }))
+      ] }
     },
     "states": {
       "finished": { "entry": [sendParent("FINISHED")] },
@@ -121,9 +117,7 @@ export const PreviewPlayerMachine = machine<
 
           // eslint-disable-next-line max-lines-per-function
           "src": ({ player }: PreviewPlayerContext) => (callback) => {
-
             if (player) {
-
               player.on("pause", () => callback("PAUSED"));
 
               player.on("end", () => callback("FINISHED"));
@@ -133,21 +127,14 @@ export const PreviewPlayerMachine = machine<
               const fadeouttime = 2000;
 
               const fadeIn = () => {
-
                 if (player.volume() === 0) {
-
                   player.fade(0, volume, fadeouttime);
-
                 } else {
-
                   player.volume(volume);
-
                 }
-
               };
 
               const setScheduleFadeOut = () => {
-
                 const seek = player.seek() as number;
 
                 const time = (player.duration() - seek) as number;
@@ -157,43 +144,32 @@ export const PreviewPlayerMachine = machine<
                 const timeout = ms - fadeouttime;
 
                 timeoutID = setTimeout(() => {
-
                   player.fade(volume, 0, fadeouttime);
-
                 }, timeout);
-
               };
 
               player.on("play", () => {
-
                 fadeIn();
                 setScheduleFadeOut();
-
               });
 
               player.on("seek", () => {
-
                 clearTimeout(timeoutID);
                 setScheduleFadeOut();
-
               });
 
               return () => {
-
                 clearTimeout(timeoutID);
                 player.off("play");
                 player.off("pause");
                 player.off("end");
                 player.off("seek");
-
               };
-
             }
 
             return () => {
               // 何もしない
             };
-
           }
         },
         "on": {
@@ -209,92 +185,56 @@ export const PreviewPlayerMachine = machine<
       }
     }
   },
-  {
-    "actions": {
-      "changeSeek": ({ player }, event) => {
+  { "actions": {
+    "changeSeek": ({ player }, event) => {
+      if (player && "seek" in event) {
+        player.seek(event.seek / 1000);
+      }
+    },
 
-        if (player && "seek" in event) {
+    "pause": ({ player }) => {
+      if (player && player.playing()) {
+        player.pause();
+      }
+    },
 
-          player.seek(event.seek / 1000);
+    "play": ({ player }) => {
+      if (player) {
+        player.play();
+      }
+    },
 
-        }
+    "setPlayer": assign({ "player": ({ track }) => {
+      if (track) {
+        return setPlayer(track);
+      }
 
-      },
+      return undefined;
+    } }),
 
-      "pause": ({ player }) => {
+    "setTrack": assign({ "track": (_, event) => {
+      if ("track" in event) {
+        return event.track;
+      }
 
-        if (player && player.playing()) {
+      return undefined;
+    } }),
 
-          player.pause();
+    "stop": ({ player }) => {
+      if (player && player.playing()) {
+        player.stop();
+      }
+    },
 
-        }
+    "tick": assign({ "seek": ({ player }) => {
+      if (player) {
+        const seek = player.seek() as number;
+        return Math.floor(seek * 1000);
+      }
 
-      },
-
-      "play": ({ player }) => {
-
-        if (player) {
-
-          player.play();
-
-        }
-
-      },
-
-      "setPlayer": assign({
-        "player": ({ track }) => {
-
-          if (track) {
-
-            return setPlayer(track);
-
-          }
-
-          return undefined;
-
-        }
-      }),
-
-      "setTrack": assign({
-        "track": (_, event) => {
-
-          if ("track" in event) {
-
-            return event.track;
-
-          }
-
-          return undefined;
-
-        }
-      }),
-
-      "stop": ({ player }) => {
-
-        if (player && player.playing()) {
-
-          player.stop();
-
-        }
-
-      },
-
-      "tick": assign({
-        "seek": ({ player }) => {
-
-          if (player) {
-
-            const seek = player.seek() as number;
-            return Math.floor(seek * 1000);
-
-          }
-
-          return 0;
-
-        }
-      })
-    }
-  }
+      return 0;
+    } })
+  } }
 );
 
 export type PreviewPlayerState = State<

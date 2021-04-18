@@ -1,8 +1,6 @@
 import App from "./app.svelte";
 
-const app = new App({
-  "target": document.body
-});
+const app = new App({ "target": document.body });
 
 export default app;
 
@@ -11,12 +9,8 @@ export default app;
  * Learn more: https://www.snowpack.dev/concepts/hot-module-replacement
  */
 if (import.meta.hot) {
-
   import.meta.hot.accept();
   import.meta.hot.dispose(() => {
-
     app.$destroy();
-
   });
-
 }

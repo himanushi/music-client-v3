@@ -4,7 +4,9 @@ import { query } from "svelte-apollo";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { PlaylistDocument } from "~/graphql/types";
-import type { Playlist, PlaylistQuery } from "~/graphql/types";
+import type {
+  Playlist, PlaylistQuery
+} from "~/graphql/types";
 
 export let id = "";
 
@@ -17,16 +19,12 @@ let playlist: Playlist | undefined;
 let isMyPlaylist = false;
 
 $: if ($playlistQuery.data) {
-
   playlist = $playlistQuery.data.playlist as Playlist;
   isMyPlaylist = playlist?.isMine || false;
-
 }
 
 const edit = () => {
-
   $goto("/playlist/:id/edit", { id });
-
 };
 </script>
 

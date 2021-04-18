@@ -14,7 +14,9 @@ import { query } from "svelte-apollo";
 import Item from "./_item-card.svelte";
 import Waypoint from "~/components/waypoint.svelte";
 import { AlbumsDocument } from "~/graphql/types";
-import type { Album, AlbumsQuery, AlbumsQueryVariables } from "~/graphql/types";
+import type {
+  Album, AlbumsQuery, AlbumsQueryVariables
+} from "~/graphql/types";
 
 export let conditions: conditonsType = {};
 
@@ -33,22 +35,14 @@ $: albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
 });
 
 const loadMore = async () => {
-
-  await albumsQuery.fetchMore({
-    "variables": {
-      "cursor": {
-        limit,
-        "offset": albums.length
-      }
-    }
-  });
-
+  await albumsQuery.fetchMore({ "variables": { "cursor": {
+    limit,
+    "offset": albums.length
+  } } });
 };
 
 $: if ($albumsQuery.data) {
-
   albums = $albumsQuery.data.albums as Album[];
-
 }
 
 const { getElement } = getContext("content");
