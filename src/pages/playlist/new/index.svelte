@@ -16,7 +16,9 @@ let description = "";
 let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
 
 const create = async () => {
+
   try {
+
     await upsertPlaylist({ "variables": { "input": {
       description,
       name,
@@ -25,9 +27,11 @@ const create = async () => {
     } } });
 
     modal.set(null);
+
   } catch (error) {
     // console.error({ error });
   }
+
 };
 </script>
 

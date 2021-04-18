@@ -27,7 +27,9 @@ const consider = (
     target: EventTarget & HTMLElement;
   }
 ) => {
-  items = event.detail.items;
+
+  ({ items } = event.detail);
+
 };
 
 const finalize = (
@@ -35,7 +37,9 @@ const finalize = (
     target: EventTarget & HTMLElement;
   }
 ) => {
-  items = event.detail.items;
+
+  ({ items } = event.detail);
+
 };
 </script>
 

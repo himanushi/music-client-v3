@@ -19,12 +19,16 @@ let playlist: Playlist | undefined;
 let isMyPlaylist = false;
 
 $: if ($playlistQuery.data) {
+
   playlist = $playlistQuery.data.playlist as Playlist;
   isMyPlaylist = playlist?.isMine || false;
+
 }
 
 const edit = () => {
+
   $goto("/playlist/:id/edit", { id });
+
 };
 </script>
 

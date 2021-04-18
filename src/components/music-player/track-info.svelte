@@ -8,9 +8,11 @@ let currentTrack: Track | undefined;
 let name: string | undefined;
 
 $: {
+
   ({
     currentTrack, name
   } = $playerService.context);
+
 }
 </script>
 

@@ -42,10 +42,15 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
           "id": "unauthorize",
 
           "src": (_, _event) => (callback) => {
+
             const changeStatus = (result: { authorizationStatus: number }) => {
+
               if (result.authorizationStatus === 0) {
+
                 callback("LOGOUT");
+
               }
+
             };
 
             MusicKit.getInstance().addEventListener(
@@ -57,6 +62,7 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
               MusicKit.Events.authorizationStatusDidChange,
               changeStatus
             );
+
           }
         },
 
@@ -73,10 +79,15 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
           "id": "unauthorize",
 
           "src": (_, _event) => (callback) => {
+
             const changeStatus = (result: { authorizationStatus: number }) => {
+
               if (result.authorizationStatus !== 0) {
+
                 callback("LOGIN");
+
               }
+
             };
 
             MusicKit.getInstance().addEventListener(
@@ -88,6 +99,7 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
               MusicKit.Events.authorizationStatusDidChange,
               changeStatus
             );
+
           }
         },
 
@@ -106,20 +118,30 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
     "logout": () => MusicKit.getInstance().unauthorize(),
 
     "setToken": send((_, event) => {
+
       try {
+
         MusicKit.getInstance();
+
       } catch (error) {
+
         if ("config" in event) {
+
           MusicKit.configure(event.config);
           MusicKit.getInstance().api.storefrontId = "jp";
+
         }
+
       }
 
       if (MusicKit.getInstance().isAuthorized) {
+
         return { "type": "LOGIN" };
+
       }
 
       return { "type": "LOGOUT" };
+
     })
   } }
 );

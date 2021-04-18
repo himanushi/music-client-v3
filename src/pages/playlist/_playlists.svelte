@@ -40,14 +40,18 @@ $: playlistsQuery = query<PlaylistsQuery, PlaylistsQueryVariables>(
 );
 
 const loadMore = async () => {
+
   await playlistsQuery.fetchMore({ "variables": { "cursor": {
     limit,
     "offset": playlists.length
   } } });
+
 };
 
 $: if ($playlistsQuery.data) {
+
   playlists = $playlistsQuery.data.playlists as Playlist[];
+
 }
 
 const { getElement } = getContext("content");

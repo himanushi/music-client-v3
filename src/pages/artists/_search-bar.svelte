@@ -8,10 +8,12 @@ import type { SearchParamsType } from "~/lib/params";
 let value: string = $params[SearchParams.artist.keyword];
 
 const search = () => {
+
   const parameters: SearchParamsType = {};
   parameters[SearchParams.artist.keyword] = value;
 
   $goto("/artists", parameters);
+
 };
 </script>
 

@@ -9,8 +9,10 @@ import ChevronLeft from "~/icons/chevron-left.svelte";
 const close = () => modal.set(null);
 
 const go = (path: string) => () => {
+
   $goto(path);
   modal.set(null);
+
 };
 
 const showPlayer = () => modal.set(Player);

@@ -76,9 +76,11 @@ export const JukeboxMachine = machine<
     "invoke": {
       "id": "mediaController",
       "src": (_) => (callback) => {
+
         const cb = (type: string) => () => callback({ type });
 
         if (navigator.mediaSession) {
+
           navigator.mediaSession.setActionHandler("play", cb("PLAY"));
           navigator.mediaSession.setActionHandler("pause", cb("PAUSE"));
           navigator.mediaSession.setActionHandler("nexttrack", cb("NEXT_PLAY"));
@@ -86,7 +88,9 @@ export const JukeboxMachine = machine<
             "previoustrack",
             cb("PREVIOUS_PLAY")
           );
+
         }
+
       }
     },
 
@@ -189,10 +193,14 @@ export const JukeboxMachine = machine<
       }) => ({ "currentTrack": tracks[currentPlaybackNo] })),
 
       "changePlaybackNo": assign((_, event) => {
+
         if (!("currentPlaybackNo" in event)) {
+
           return {};
+
         }
         return { "currentPlaybackNo": event.currentPlaybackNo };
+
       }),
 
       "initMusicPlayer": assign({ "musicPlayerRef": (_) => spawn(MusicPlayerMachine, "musicPlayer") }),
@@ -202,10 +210,14 @@ export const JukeboxMachine = machine<
       "nextPlaybackNo": assign({ "currentPlaybackNo": ({
         tracks, currentPlaybackNo
       }) => {
+
         if (currentPlaybackNo + 1 === tracks.length) {
+
           return 0;
+
         }
         return currentPlaybackNo + 1;
+
       } }),
 
       "pause": send("PAUSE", { "to": "musicPlayer" }),
@@ -213,24 +225,35 @@ export const JukeboxMachine = machine<
       "play": send("PLAY", { "to": "musicPlayer" }),
 
       "previousPlaybackNo": assign({ "currentPlaybackNo": ({ currentPlaybackNo }) => {
+
         if (currentPlaybackNo === 0) {
+
           return 0;
+
         }
         return currentPlaybackNo - 1;
+
       } }),
 
       "repeat": assign({ "repeat": ({ repeat }) => !repeat }),
 
       "replaceTracks": assign({ "tracks": (_, event) => {
+
         if ("tracks" in event) {
+
           return event.tracks;
+
         }
         return [];
+
       } }),
 
       "setMediaMetadata": ({ currentTrack }) => {
+
         if (navigator.mediaSession) {
+
           if (currentTrack) {
+
             navigator.mediaSession.metadata = new MediaMetadata({
               "artwork": [
                 {
@@ -241,15 +264,22 @@ export const JukeboxMachine = machine<
               ],
               "title": currentTrack.name
             });
+
           }
+
         }
+
       },
 
       "setName": assign({ "name": (_, event) => {
+
         if ("name" in event) {
+
           return event.name;
+
         }
         return "";
+
       } }),
 
       "setTrack": send(
@@ -267,11 +297,15 @@ export const JukeboxMachine = machine<
       "canNextPlay": ({
         repeat, tracks, currentPlaybackNo
       }) => {
+
         if (repeat) {
+
           return true;
+
         }
 
         return currentPlaybackNo + 1 !== tracks.length;
+
       },
       "canPreviousPlay": ({ currentPlaybackNo }) => currentPlaybackNo !== 0
     }

@@ -35,14 +35,18 @@ $: albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
 });
 
 const loadMore = async () => {
+
   await albumsQuery.fetchMore({ "variables": { "cursor": {
     limit,
     "offset": albums.length
   } } });
+
 };
 
 $: if ($albumsQuery.data) {
+
   albums = $albumsQuery.data.albums as Album[];
+
 }
 
 const { getElement } = getContext("content");

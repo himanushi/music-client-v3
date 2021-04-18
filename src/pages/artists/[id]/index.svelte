@@ -18,7 +18,9 @@ const artistQuery = query<ArtistQuery>(ArtistDocument, {
 let artist: Artist | undefined;
 
 $: if ($artistQuery.data) {
+
   artist = $artistQuery.data.artist as Artist;
+
 }
 
 const albumConditions = { "artists": { "id": [id] } };

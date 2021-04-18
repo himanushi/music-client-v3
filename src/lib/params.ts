@@ -1,4 +1,4 @@
-export type SearchParamsType = { [key: string]: string };
+export type SearchParamsType = Record<string, string>;
 
 export const SearchParams = {
   "album": {

@@ -29,6 +29,7 @@ const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
 
 // 初期化
 $: if ($playlistQuery.data && initialize) {
+
   const playlist = $playlistQuery.data.playlist as Playlist;
 
   ({
@@ -36,6 +37,7 @@ $: if ($playlistQuery.data && initialize) {
   } = playlist);
 
   initialize = false;
+
 }
 
 const upsertPlaylist = mutation<unknown, UpsertPlaylistMutationVariables>(
@@ -43,7 +45,9 @@ const upsertPlaylist = mutation<unknown, UpsertPlaylistMutationVariables>(
 );
 
 const update = async () => {
+
   try {
+
     await upsertPlaylist({ "variables": { "input": {
       description,
       name,
@@ -52,9 +56,11 @@ const update = async () => {
     } } });
 
     $goto("/playlist/:id", { id });
+
   } catch (error) {
     // console.error({ error });
   }
+
 };
 </script>
 

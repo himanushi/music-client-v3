@@ -120,11 +120,15 @@ export const MusicPlayerMachine = machine<
         "invoke": {
           "id": "seekTimer",
           "src": (_) => (callback) => {
+
             const interval = setInterval(() => callback("TICK"), 1000);
 
             return () => {
+
               clearInterval(interval);
+
             };
+
           }
         },
         "on": {
@@ -146,21 +150,29 @@ export const MusicPlayerMachine = machine<
   },
   { "actions": {
     "changeSeek": assign({ "seek": (_, event) => {
+
       if ("seek" in event) {
+
         return event.seek;
+
       }
       return 0;
+
     } }),
 
     "changeSeekPreview": send(
       (_, event) => {
+
         if ("seek" in event) {
+
           return {
             "seek": event.seek,
             "type": "CHANGE_SEEK"
           };
+
         }
         return { "type": "" };
+
       },
       { "to": "preview" }
     ),
@@ -176,40 +188,58 @@ export const MusicPlayerMachine = machine<
     "resetSeek": assign({ "seek": (_) => 0 }),
 
     "setDuration": assign({ "duration": ({ track }) => {
+
       if (!track) {
+
         return 0;
+
       }
       if (track.durationMs > 30000) {
+
         return 30000;
+
       }
       return track.durationMs;
+
     } }),
 
     "setSeek": assign({ "seek": (_, event) => {
+
       if ("seek" in event) {
+
         return event.seek;
+
       }
       return 0;
+
     } }),
 
     "setTrack": assign({ "track": (_, event) => {
+
       if ("track" in event) {
+
         return event.track;
+
       }
       return undefined;
+
     } }),
 
     // /////// PreviewPlayer /////////
     "setTrackToPreview": send(
       (_, event) => {
+
         if ("track" in event) {
+
           return {
             "track": event.track,
             "type": "SET_TRACK"
           };
+
         }
 
         return { "type": "" };
+
       },
       { "to": "preview" }
     ),

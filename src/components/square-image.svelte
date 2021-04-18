@@ -6,7 +6,9 @@ export { className as class };
 let style = "";
 
 if (src) {
+
   style = `background-image: url("${src}");`;
+
 }
 </script>
 

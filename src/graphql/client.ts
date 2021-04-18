@@ -30,10 +30,12 @@ const offsetLimitPagination = {
   ],
 
   merge (existing = [], incoming = []) {
+
     return [
       ...existing,
       ...incoming
     ];
+
   }
 };
 
