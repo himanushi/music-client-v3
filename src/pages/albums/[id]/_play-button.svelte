@@ -15,7 +15,7 @@ const onClick = () => {
     },
     {
       "currentPlaybackNo": index,
-      tracks,
+      "tracks": tracks.map((track) => track),
       "type": "REPLACE_AND_PLAY"
     }
   ]);

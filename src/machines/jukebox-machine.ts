@@ -17,7 +17,7 @@ import {
 export type JukeboxContext = {
   name: string;
   currentPlaybackNo: number;
-  tracks: readonly Track[];
+  tracks: Track[];
   currentTrack?: Track;
   repeat: boolean;
   musicPlayerRef?: SpawnedActorRef<MusicPlayerEvent, MusicPlayerState>;
