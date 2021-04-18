@@ -6,8 +6,8 @@ module.exports = {
   },
   "extends": ["eslint:all"],
   "globals": {
-    "DndEvent": "readable",
-    "MediaMetadata": "writable"
+    "DndEvent": false,
+    "MediaMetadata": true
   },
   "overrides": [
     {
@@ -118,7 +118,7 @@ module.exports = {
       }
     ],
 
-    // object 内の改行は prettier に任せる
+    // object 内の改行
     "object-curly-newline": [
       "error",
       { "minProperties": 2 }
@@ -132,6 +132,9 @@ module.exports = {
 
     // const 宣言をまとめない
     "one-var": "off",
+
+    // ブロック内の改行は prettier に任せる
+    "padded-blocks": "off",
 
     // 分割代入を強制しない
     "prefer-destructuring": "off",

@@ -2,7 +2,7 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "routify -b && snowpack build",
-    "lint": "prettier --write . && eslint . --ext .ts,.js,.svelte --fix",
+    "lint": "prettier --write . && eslint --fix --debug --ext .js,.ts . && eslint --fix --debug --ext .svelte .",
     "route": "routify -b",
     "routing": "routify",
     "generate": "npx graphql-codegen --config=codegen.yml"
