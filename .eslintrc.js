@@ -133,12 +133,6 @@ module.exports = {
     // const 宣言をまとめない
     "one-var": "off",
 
-    // ブロック内の改行は prettier に任せる
-    "padded-blocks": "off",
-
-    // 分割代入を強制しない
-    "prefer-destructuring": "off",
-
     // import をソートする
     "sort-imports": "off",
 
