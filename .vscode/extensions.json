@@ -8,6 +8,8 @@
     "stylelint.vscode-stylelint",
     // prettier
     "esbenp.prettier-vscode",
+    // postcss
+    "csstools.postcss",
     // fix with vscode prettier and eslint
     "rohit-gohri.format-code-action",
     // tailwindCSS classname autocomplete
