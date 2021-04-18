@@ -5,8 +5,10 @@ module.exports = {
     "node": true
   },
   "extends": ["eslint:all"],
-  "globals": { "DndEvent": "readable",
-    "MediaMetadata": "writable" },
+  "globals": {
+    "DndEvent": "readable",
+    "MediaMetadata": "writable"
+  },
   "overrides": [
     {
       "extends": "./linter/.eslintrc.javascript.js",
@@ -70,7 +72,10 @@ module.exports = {
     // コメントのみ最大列無視
     "max-len": [
       "error",
-      { "ignoreComments": true }
+      {
+        "code": 120,
+        "ignoreComments": true
+      }
     ],
 
     // ファイルの最大行数を制限しない
@@ -107,12 +112,17 @@ module.exports = {
     // typescript で [key in object] をするため
     "no-unused-vars": [
       "error",
-      { "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^key$" }
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^key$"
+      }
     ],
 
     // object 内の改行は prettier に任せる
-    "object-curly-newline": "off",
+    "object-curly-newline": [
+      "error",
+      { "minProperties": 2 }
+    ],
 
     // object の隙間を開ける
     "object-curly-spacing": [
