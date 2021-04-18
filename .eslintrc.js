@@ -5,7 +5,8 @@ module.exports = {
     "node": true
   },
   "extends": ["eslint:all"],
-  "globals": { "MediaMetadata": "writable" },
+  "globals": { "DndEvent": "readable",
+    "MediaMetadata": "writable" },
   "overrides": [
     {
       "extends": "./linter/.eslintrc.javascript.js",
@@ -121,6 +122,9 @@ module.exports = {
 
     // const 宣言をまとめない
     "one-var": "off",
+
+    // 分割代入を強制しない
+    "prefer-destructuring": "off",
 
     // import をソートする
     "sort-imports": "off",
