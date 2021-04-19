@@ -53,13 +53,13 @@ const finalize = (
     "info": { source }
   } = event.detail;
 
-  items = newItems as ItemsType;
-
   // player items との同期は見栄えがバグるのであえてしない
   playerService.send({
     "tracks": newItems.map((item) => item.track),
     "type": "MOVE"
   });
+
+  items = newItems as ItemsType;
 
   if (source === SOURCES.POINTER) {
 
@@ -84,6 +84,17 @@ const play = (currentPlaybackNo: number) => () => {
   });
 
 };
+
+const remove = (index: number) => () => {
+
+  playerService.send({
+    "removeIndex": index,
+    "type": "REMOVE"
+  });
+
+  items = items.filter((_, indx) => indx !== index);
+
+};
 </script>
 
 <section
@@ -105,6 +116,7 @@ const play = (currentPlaybackNo: number) => () => {
         <div on:click={play(index)}>|></div>
       {/if}
       <Text>{item.track.name}</Text>
+      <div on:click={remove(index)}>-</div>
     </div>
   {/each}
 </section>

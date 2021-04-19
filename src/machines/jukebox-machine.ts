@@ -45,6 +45,10 @@ export type JukeboxEvent =
       type: "MOVE";
       tracks: JukeboxContext["tracks"];
     }
+  | {
+      type: "REMOVE";
+      removeIndex: number;
+    }
   | { type: "SHUFFLE" }
   // Player
   | { type: "PLAY" }
@@ -143,6 +147,8 @@ export const JukeboxMachine = machine<
         ] }
       ],
 
+      "REMOVE": { "actions": ["removeTrack"] },
+
       "REPEAT": { "actions": ["repeat"] },
 
       "REPLACE_AND_PLAY": {
@@ -238,6 +244,19 @@ export const JukeboxMachine = machine<
 
         }
         return currentPlaybackNo - 1;
+
+      } }),
+
+      "removeTrack": assign({ "tracks": (context, event) => {
+
+        if ("removeIndex" in event) {
+
+          return context.tracks.filter(
+            (_, index) => index !== event.removeIndex
+          );
+
+        }
+        return context.tracks;
 
       } }),
 
