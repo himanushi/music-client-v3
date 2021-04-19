@@ -1,25 +1,17 @@
 <script lang="ts">
 import { dndzone } from "svelte-dnd-action";
 import { flip } from "svelte/animate";
+import Text from "../text.svelte";
+import { playerService } from "~/machines/jukebox-machine";
 
-let items: Record<string, any>[] = [
-  {
-    "id": 1,
-    "name": "item1"
-  },
-  {
-    "id": 2,
-    "name": "item2"
-  },
-  {
-    "id": 3,
-    "name": "item3"
-  },
-  {
-    "id": 4,
-    "name": "item4"
-  }
-];
+$: playbackNo = $playerService.context.currentPlaybackNo;
+
+let items: Record<string, any>[];
+$: items = $playerService.context.tracks.map((track, index) => ({
+  "id": index,
+  track
+}));
+
 const flipDurationMs = 300;
 
 const consider = (
@@ -45,13 +37,32 @@ const finalize = (
 
 <section
   use:dndzone={{
+    "dropTargetStyle": {},
     flipDurationMs,
     items
   }}
   on:consider={consider}
   on:finalize={finalize}
 >
-  {#each items as item (item.id)}
-    <div animate:flip={{ "duration": flipDurationMs }}>{item.name}</div>
+  {#each items as item, index (item.id)}
+    <div animate:flip={{ "duration": flipDurationMs }}>
+      <Text>三</Text>
+      {#if playbackNo === index}
+        <Text>○</Text>
+      {:else}
+        <Text>|></Text>
+      {/if}
+      <Text>{item.track.name}</Text>
+    </div>
   {/each}
 </section>
+
+<style lang="scss">
+section {
+  @apply h-3/4 overflow-y-scroll;
+}
+
+div {
+  @apply flex flex-row;
+}
+</style>
