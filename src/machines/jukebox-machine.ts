@@ -41,6 +41,10 @@ export type JukeboxEvent =
       tracks: JukeboxContext["tracks"];
       currentPlaybackNo: JukeboxContext["currentPlaybackNo"];
     }
+  | {
+      type: "MOVE";
+      tracks: JukeboxContext["tracks"];
+    }
   | { type: "SHUFFLE" }
   // Player
   | { type: "PLAY" }
@@ -102,6 +106,8 @@ export const JukeboxMachine = machine<
         ],
         "target": "loading"
       },
+
+      "MOVE": { "actions": ["replaceTracks"] },
 
       "NEXT_PLAY": [
         {

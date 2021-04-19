@@ -9,9 +9,7 @@ import { playerService } from "~/machines/jukebox-machine";
 
 type ItemsType = { id: number; track: Track }[];
 
-let items: ItemsType;
-
-$: items = $playerService.context.tracks.map((track, index) => ({
+let items: ItemsType = $playerService.context.tracks.map((track, index) => ({
   "id": index,
   track
 }));
@@ -56,6 +54,12 @@ const finalize = (
   } = event.detail;
 
   items = newItems as ItemsType;
+
+  // player items との同期は見栄えがバグるのであえてしない
+  playerService.send({
+    "tracks": newItems.map((item) => item.track),
+    "type": "MOVE"
+  });
 
   if (source === SOURCES.POINTER) {
 
