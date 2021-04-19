@@ -1,18 +1,25 @@
 <script lang="ts">
-import { dndzone } from "svelte-dnd-action";
+import {
+  dndzone, SOURCES, TRIGGERS
+} from "svelte-dnd-action";
 import { flip } from "svelte/animate";
 import Text from "../text.svelte";
+import type { Track } from "~/graphql/types";
 import { playerService } from "~/machines/jukebox-machine";
 
-$: playbackNo = $playerService.context.currentPlaybackNo;
+type ItemsType = { id: number; track: Track }[];
 
-let items: Record<string, any>[];
+let items: ItemsType;
+
 $: items = $playerService.context.tracks.map((track, index) => ({
   "id": index,
   track
 }));
 
+$: playbackNo = $playerService.context.currentPlaybackNo;
+
 const flipDurationMs = 100;
+let dragDisabled = true;
 
 const consider = (
   event: CustomEvent<DndEvent> & {
@@ -20,7 +27,20 @@ const consider = (
   }
 ) => {
 
-  ({ items } = event.detail);
+  const {
+    "items": newItems,
+    "info": {
+      source, trigger
+    }
+  } = event.detail;
+
+  items = newItems as ItemsType;
+
+  if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
+
+    dragDisabled = true;
+
+  }
 
 };
 
@@ -30,7 +50,25 @@ const finalize = (
   }
 ) => {
 
-  ({ items } = event.detail);
+  const {
+    "items": newItems,
+    "info": { source }
+  } = event.detail;
+
+  items = newItems as ItemsType;
+
+  if (source === SOURCES.POINTER) {
+
+    dragDisabled = true;
+
+  }
+
+};
+
+const startDrag = (event: Event) => {
+
+  event.preventDefault();
+  dragDisabled = false;
 
 };
 
@@ -46,6 +84,7 @@ const play = (currentPlaybackNo: number) => () => {
 
 <section
   use:dndzone={{
+    dragDisabled,
     "dropTargetStyle": {},
     flipDurationMs,
     items
@@ -55,7 +94,7 @@ const play = (currentPlaybackNo: number) => () => {
 >
   {#each items as item, index (item.id)}
     <div animate:flip={{ "duration": flipDurationMs }}>
-      <Text>三</Text>
+      <div on:mousedown={startDrag} on:touchstart={startDrag}>三</div>
       {#if playbackNo === index}
         <Text>○</Text>
       {:else}
