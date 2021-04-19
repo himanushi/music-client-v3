@@ -12,7 +12,7 @@ $: items = $playerService.context.tracks.map((track, index) => ({
   track
 }));
 
-const flipDurationMs = 300;
+const flipDurationMs = 100;
 
 const consider = (
   event: CustomEvent<DndEvent> & {
@@ -33,6 +33,15 @@ const finalize = (
   ({ items } = event.detail);
 
 };
+
+const play = (currentPlaybackNo: number) => () => {
+
+  playerService.send({
+    currentPlaybackNo,
+    "type": "CHANGE_PLAYBACK_NO"
+  });
+
+};
 </script>
 
 <section
@@ -50,7 +59,7 @@ const finalize = (
       {#if playbackNo === index}
         <Text>○</Text>
       {:else}
-        <Text>|></Text>
+        <div on:click={play(index)}>|></div>
       {/if}
       <Text>{item.track.name}</Text>
     </div>
