@@ -50,6 +50,36 @@ export type MusicPlayerEvent =
   | { type: "FINISHED" }
   | { type: "TICK" };
 
+const previewPlayerId = "preview";
+const appleMusicPlayerId = "apple-music-player";
+
+const selectPlayer = (context: MusicPlayerContext) => {
+
+  let appleAuth = false;
+  try {
+
+    appleAuth = MusicKit.getInstance().isAuthorized;
+
+  } catch (error) {
+
+    // eslint-disable-next-line no-console
+    console.error(error.message);
+
+  }
+
+  if (
+    appleAuth &&
+    context.track?.appleMusicTracks?.find((track) => track)?.appleMusicId
+  ) {
+
+    return appleMusicPlayerId;
+
+  }
+
+  return previewPlayerId;
+
+};
+
 export const MusicPlayerMachine = machine<
   MusicPlayerContext,
   MusicPlayerSchema,
@@ -58,9 +88,7 @@ export const MusicPlayerMachine = machine<
   {
     context: {
       duration: 0,
-      previewPlayerRef: undefined,
-      seek: 0,
-      track: undefined
+      seek: 0
     },
 
     id: "musicPlayer",
@@ -70,11 +98,11 @@ export const MusicPlayerMachine = machine<
     on: {
       CHANGE_SEEK: { actions: [
         "changeSeek",
-        "changeSeekPreview"
+        "changeSeekToPlayer"
       ] },
 
       LOAD: {
-        actions: ["loadPreview"],
+        actions: ["loadToPlayer"],
         target: "loading"
       },
 
@@ -84,7 +112,7 @@ export const MusicPlayerMachine = machine<
         "resetSeek",
         "setTrack",
         "setDuration",
-        "setTrackToPreview"
+        "setTrackToPlayer"
       ] },
 
       STOP: { actions: [
@@ -107,7 +135,7 @@ export const MusicPlayerMachine = machine<
       paused: {
         entry: [sendParent("PAUSED")],
         on: {
-          PLAY: { actions: ["playPreview"] },
+          PLAY: { actions: ["playToPlayer"] },
           PLAYING: "playing"
         }
       },
@@ -135,14 +163,14 @@ export const MusicPlayerMachine = machine<
           FINISHED: "finished",
           PAUSE: { actions: ["pausePreview"] },
           PAUSED: "paused",
-          TICK: { actions: ["tickPreview"] }
+          TICK: { actions: ["tickToPlayer"] }
         }
       },
 
       stopped: {
         entry: [sendParent("STOPPED")],
         on: {
-          PLAY: { actions: ["playPreview"] },
+          PLAY: { actions: ["playToPlayer"] },
           PLAYING: "playing"
         }
       }
@@ -160,7 +188,7 @@ export const MusicPlayerMachine = machine<
 
     } }),
 
-    changeSeekPreview: send(
+    changeSeekToPlayer: send(
       (_, event) => {
 
         if ("seek" in event) {
@@ -174,16 +202,16 @@ export const MusicPlayerMachine = machine<
         return { type: "" };
 
       },
-      { to: "preview" }
+      { to: selectPlayer }
     ),
 
-    initPlayers: assign({ previewPlayerRef: (_) => spawn(PreviewPlayerMachine, "preview") }),
+    initPlayers: assign({ previewPlayerRef: (_) => spawn(PreviewPlayerMachine, previewPlayerId) }),
 
-    loadPreview: send("LOAD", { to: "preview" }),
+    loadToPlayer: send("LOAD", { to: selectPlayer }),
 
     pausePreview: send("PAUSE", { to: "preview" }),
 
-    playPreview: send("PLAY", { to: "preview" }),
+    playToPlayer: send("PLAY", { to: selectPlayer }),
 
     resetSeek: assign({ seek: (_) => 0 }),
 
@@ -225,8 +253,7 @@ export const MusicPlayerMachine = machine<
 
     } }),
 
-    // /////// PreviewPlayer /////////
-    setTrackToPreview: send(
+    setTrackToPlayer: send(
       (_, event) => {
 
         if ("track" in event) {
@@ -241,12 +268,12 @@ export const MusicPlayerMachine = machine<
         return { type: "" };
 
       },
-      { to: "preview" }
+      { to: selectPlayer }
     ),
 
     stopPreview: send("STOP", { to: "preview" }),
 
-    tickPreview: send("TICK", { to: "preview" })
+    tickToPlayer: send("TICK", { to: selectPlayer })
   } }
 );
 

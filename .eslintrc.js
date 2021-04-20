@@ -7,7 +7,8 @@ module.exports = {
   extends: ["eslint:all"],
   globals: {
     DndEvent: false,
-    MediaMetadata: true
+    MediaMetadata: true,
+    MusicKit: false
   },
   overrides: [
     {
