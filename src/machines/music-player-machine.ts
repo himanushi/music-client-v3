@@ -116,7 +116,7 @@ export const MusicPlayerMachine = machine<
       ] },
 
       STOP: { actions: [
-        "stopPreview",
+        "stopToPlayers",
         "resetSeek"
       ] },
 
@@ -161,7 +161,7 @@ export const MusicPlayerMachine = machine<
         },
         on: {
           FINISHED: "finished",
-          PAUSE: { actions: ["pausePreview"] },
+          PAUSE: { actions: ["pauseToPlayers"] },
           PAUSED: "paused",
           TICK: { actions: ["tickToPlayer"] }
         }
@@ -209,7 +209,11 @@ export const MusicPlayerMachine = machine<
 
     loadToPlayer: send("LOAD", { to: selectPlayer }),
 
-    pausePreview: send("PAUSE", { to: "preview" }),
+    pauseToPlayers: (context) => {
+
+      context.previewPlayerRef?.send({ type: "PAUSE" });
+
+    },
 
     playToPlayer: send("PLAY", { to: selectPlayer }),
 
@@ -271,7 +275,15 @@ export const MusicPlayerMachine = machine<
       { to: selectPlayer }
     ),
 
-    stopPreview: send("STOP", { to: "preview" }),
+    /*
+     * 停止する場合は再生中のプレイヤーのみですべきだが、面倒なので全てのプレイヤーに対して行う
+     * いつかリファクタすること
+     */
+    stopToPlayers: (context) => {
+
+      context.previewPlayerRef?.send({ type: "STOP" });
+
+    },
 
     tickToPlayer: send("TICK", { to: selectPlayer })
   } }
