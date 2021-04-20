@@ -12,7 +12,7 @@ const createScrollLock = () => {
 
   return {
     subscribe,
-    "update": (path: string, scrollTop: number) => {
+    update: (path: string, scrollTop: number) => {
 
       update((object) => {
 

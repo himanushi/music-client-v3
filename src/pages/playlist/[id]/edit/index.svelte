@@ -23,8 +23,8 @@ let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
 let initialize = true;
 
 const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
-  "fetchPolicy": "cache-first",
-  "variables": { id }
+  fetchPolicy: "cache-first",
+  variables: { id }
 });
 
 // 初期化
@@ -48,10 +48,10 @@ const update = async () => {
 
   try {
 
-    await upsertPlaylist({ "variables": { "input": {
+    await upsertPlaylist({ variables: { input: {
       description,
       name,
-      "playlistId": id,
+      playlistId: id,
       publicType
     } } });
 

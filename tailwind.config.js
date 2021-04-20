@@ -1,14 +1,14 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  "mode": "jit",
-  "plugins": [],
-  "purge": {
-    "content": [
+  mode: "jit",
+  plugins: [],
+  purge: {
+    content: [
       "./public/*.html",
       "./src/**/*.{js,ts,svelte}"
     ],
-    "options": { "safelist": [
+    options: { safelist: [
       /^h-/u,
       /^w-/u
     ] }
@@ -19,10 +19,10 @@ module.exports = {
    * In eslint, using ":" in CSS may cause a parser error.
    * @apply focus:outline-non → @apply focus_outline-non
    */
-  "separator": "_",
-  "theme": { "extend": { "colors": { "teal": colors.teal } } },
-  "variants": { "extend": {
-    "backgroundColor": ["active"],
-    "backgroundOpacity": ["active"]
+  separator: "_",
+  theme: { extend: { colors: { teal: colors.teal } } },
+  variants: { extend: {
+    backgroundColor: ["active"],
+    backgroundOpacity: ["active"]
   } }
 };

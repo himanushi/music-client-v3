@@ -11,8 +11,8 @@ import type {
 export let id = "";
 
 const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
-  "fetchPolicy": "cache-first",
-  "variables": { id }
+  fetchPolicy: "cache-first",
+  variables: { id }
 });
 
 let playlist: Playlist | undefined;

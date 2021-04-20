@@ -26,21 +26,21 @@ const limit = 50;
 let artists: Artist[] = [];
 
 $: artistsQuery = query<ArtistsQuery, ArtistsQueryVariables>(ArtistsDocument, {
-  "fetchPolicy": "cache-first",
-  "variables": {
+  fetchPolicy: "cache-first",
+  variables: {
     conditions,
-    "cursor": {
+    cursor: {
       limit,
-      "offset": 0
+      offset: 0
     }
   }
 });
 
 const loadMore = async () => {
 
-  await artistsQuery.fetchMore({ "variables": { "cursor": {
+  await artistsQuery.fetchMore({ variables: { cursor: {
     limit,
-    "offset": artists.length
+    offset: artists.length
   } } });
 
 };

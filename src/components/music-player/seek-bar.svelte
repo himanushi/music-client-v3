@@ -4,7 +4,7 @@ import Text from "~/components/text.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
 // seek を滑らかに動かす
-const seek = tweened(0, { "duration": (from, to) => {
+const seek = tweened(0, { duration: (from, to) => {
 
   // seek が大幅に動いた時は滑らかでは不自然なので無効にする
   const tick = 1000;
@@ -55,8 +55,8 @@ const onChangeSeek = (event: Event) => {
   if (player && value) {
 
     player.send({
-      "seek": parseInt(value, 10),
-      "type": "CHANGE_SEEK"
+      seek: parseInt(value, 10),
+      type: "CHANGE_SEEK"
     });
 
   }

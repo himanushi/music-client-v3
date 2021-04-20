@@ -15,9 +15,9 @@ const tabs = [
 <div
   on:click|stopPropagation
   transition:fly={{
-    "duration": 400,
-    "opacity": 100,
-    "y": document.body.clientHeight
+    duration: 400,
+    opacity: 100,
+    y: document.body.clientHeight
   }}
   class="player"
 >

@@ -11,8 +11,8 @@ import Albums from "~/pages/albums/_albums.svelte";
 export let id = "";
 
 const artistQuery = query<ArtistQuery>(ArtistDocument, {
-  "fetchPolicy": "cache-first",
-  "variables": { id }
+  fetchPolicy: "cache-first",
+  variables: { id }
 });
 
 let artist: Artist | undefined;
@@ -23,7 +23,7 @@ $: if ($artistQuery.data) {
 
 }
 
-const albumConditions = { "artists": { "id": [id] } };
+const albumConditions = { artists: { id: [id] } };
 </script>
 
 {#if artist}

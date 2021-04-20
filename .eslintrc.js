@@ -51,7 +51,11 @@ module.exports = {
     // 1文字の変数を許可しない
     "id-length": [
       "error",
-      { exceptions: ["_"] }
+      { exceptions: [
+        "_",
+        "x",
+        "y"
+      ] }
     ],
 
     // import 文はソートする

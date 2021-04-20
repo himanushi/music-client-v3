@@ -22,26 +22,26 @@ export type accountEvent =
 
 export const accountMachine = machine<{}, accountSchema, accountEvent>(
   {
-    "id": "appleMusicAccount",
+    id: "appleMusicAccount",
 
-    "initial": "idle",
+    initial: "idle",
 
-    "states": {
-      "idle": {
-        "on": {
-          "SET_TOKEN": { "actions": ["setToken"] },
-          "LOGIN": "authorized",
-          "LOGOUT": "unauthorized"
+    states: {
+      idle: {
+        on: {
+          SET_TOKEN: { actions: ["setToken"] },
+          LOGIN: "authorized",
+          LOGOUT: "unauthorized"
         },
 
-        "meta": { "label": "idle" }
+        meta: { label: "idle" }
       },
 
-      "authorized": {
-        "invoke": {
-          "id": "unauthorize",
+      authorized: {
+        invoke: {
+          id: "unauthorize",
 
-          "src": (_, _event) => (callback) => {
+          src: (_, _event) => (callback) => {
 
             const changeStatus = (result: { authorizationStatus: number }) => {
 
@@ -66,19 +66,19 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
           }
         },
 
-        "on": {
-          "LOGIN_OR_LOGOUT": { "actions": "logout" },
-          "LOGOUT": "unauthorized"
+        on: {
+          LOGIN_OR_LOGOUT: { actions: "logout" },
+          LOGOUT: "unauthorized"
         },
 
-        "meta": { "label": "ログアウト" }
+        meta: { label: "ログアウト" }
       },
 
-      "unauthorized": {
-        "invoke": {
-          "id": "unauthorize",
+      unauthorized: {
+        invoke: {
+          id: "unauthorize",
 
-          "src": (_, _event) => (callback) => {
+          src: (_, _event) => (callback) => {
 
             const changeStatus = (result: { authorizationStatus: number }) => {
 
@@ -103,21 +103,21 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
           }
         },
 
-        "on": {
-          "LOGIN_OR_LOGOUT": { "actions": "login" },
-          "LOGIN": "authorized"
+        on: {
+          LOGIN_OR_LOGOUT: { actions: "login" },
+          LOGIN: "authorized"
         },
 
-        "meta": { "label": "ログイン" }
+        meta: { label: "ログイン" }
       }
     }
   },
-  { "actions": {
-    "login": () => MusicKit.getInstance().authorize(),
+  { actions: {
+    login: () => MusicKit.getInstance().authorize(),
 
-    "logout": () => MusicKit.getInstance().unauthorize(),
+    logout: () => MusicKit.getInstance().unauthorize(),
 
-    "setToken": send((_, event) => {
+    setToken: send((_, event) => {
 
       try {
 
@@ -136,11 +136,11 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
 
       if (MusicKit.getInstance().isAuthorized) {
 
-        return { "type": "LOGIN" };
+        return { type: "LOGIN" };
 
       }
 
-      return { "type": "LOGOUT" };
+      return { type: "LOGOUT" };
 
     })
   } }

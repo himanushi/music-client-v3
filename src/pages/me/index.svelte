@@ -7,7 +7,7 @@ import type {
   CurrentUser, MeQuery
 } from "~/graphql/types";
 
-$: meQuery = query<MeQuery>(MeDocument, { "fetchPolicy": "cache-first" });
+$: meQuery = query<MeQuery>(MeDocument, { fetchPolicy: "cache-first" });
 
 let me: CurrentUser;
 $: me = $meQuery?.data?.me as CurrentUser;

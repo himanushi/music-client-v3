@@ -1,32 +1,32 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 
 module.exports = {
-  "alias": {
-    "routify": "./.routify",
+  alias: {
+    routify: "./.routify",
     "~": "./src"
   },
-  "mount": {
-    ".routify": { "url": "/" },
-    "public": {
-      "static": true,
-      "url": "/"
+  mount: {
+    ".routify": { url: "/" },
+    public: {
+      static: true,
+      url: "/"
     },
-    "src": { "url": "/" }
+    src: { url: "/" }
   },
-  "optimize": {
-    "bundle": true,
-    "minify": true
+  optimize: {
+    bundle: true,
+    minify: true
   },
-  "plugins": [
+  plugins: [
     "@snowpack/plugin-svelte",
     "@snowpack/plugin-dotenv",
     "@snowpack/plugin-typescript"
   ],
-  "routes": [
+  routes: [
     {
-      "dest": "/index.html",
-      "match": "routes",
-      "src": ".*"
+      dest: "/index.html",
+      match: "routes",
+      src: ".*"
     }
   ]
 };

@@ -6,8 +6,8 @@ import {
 } from "@apollo/client/core";
 
 const httpLink = new HttpLink({
-  "credentials": "include",
-  "uri": import.meta.env.SNOWPACK_PUBLIC_GRAPHQL_URI
+  credentials: "include",
+  uri: import.meta.env.SNOWPACK_PUBLIC_GRAPHQL_URI
 });
 
 const headersLink = new ApolloLink((operation, forward) => forward(operation));
@@ -18,7 +18,7 @@ const link = ApolloLink.from([
 ]);
 
 const offsetLimitPagination = {
-  "keyArgs": [
+  keyArgs: [
     "conditions",
     [
       "name",
@@ -39,9 +39,9 @@ const offsetLimitPagination = {
   }
 };
 
-const cache = new InMemoryCache({ "typePolicies": { "Query": { "fields": {
-  "albums": offsetLimitPagination,
-  "artists": offsetLimitPagination
+const cache = new InMemoryCache({ typePolicies: { Query: { fields: {
+  albums: offsetLimitPagination,
+  artists: offsetLimitPagination
 } } } });
 
 export default new ApolloClient({

@@ -19,11 +19,11 @@ const create = async () => {
 
   try {
 
-    await upsertPlaylist({ "variables": { "input": {
+    await upsertPlaylist({ variables: { input: {
       description,
       name,
       publicType,
-      "trackIds": []
+      trackIds: []
     } } });
 
     modal.set(null);

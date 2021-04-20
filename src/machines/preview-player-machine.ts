@@ -13,11 +13,11 @@ const setPlayer = (track: Track) => {
   }
 
   const howl: Howl = new Howl({
-    "autoplay": false,
-    "html5": true,
-    "preload": false,
-    "src": track.previewUrl,
-    "volume": 0
+    autoplay: false,
+    html5: true,
+    preload: false,
+    src: track.previewUrl,
+    volume: 0
   });
 
   return howl;
@@ -60,67 +60,67 @@ export const PreviewPlayerMachine = machine<
   PreviewPlayerStateEvent
 >(
   {
-    "context": {
-      "player": undefined,
-      "seek": 0,
-      "track": undefined
+    context: {
+      player: undefined,
+      seek: 0,
+      track: undefined
     },
-    "id": "preview",
+    id: "preview",
 
-    "initial": "idle",
+    initial: "idle",
 
-    "on": {
-      "CHANGE_SEEK": { "actions": ["changeSeek"] },
+    on: {
+      CHANGE_SEEK: { actions: ["changeSeek"] },
 
-      "LOAD": { "target": "loading" },
+      LOAD: { target: "loading" },
 
-      "PLAY": {
-        "actions": ["play"],
-        "target": "playing"
+      PLAY: {
+        actions: ["play"],
+        target: "playing"
       },
 
-      "PLAYING": "playing",
+      PLAYING: "playing",
 
-      "SET_TRACK": { "actions": ["setTrack"] },
+      SET_TRACK: { actions: ["setTrack"] },
 
-      "STOP": {
-        "actions": ["stop"],
-        "target": "stopped"
+      STOP: {
+        actions: ["stop"],
+        target: "stopped"
       },
 
-      "TICK": { "actions": [
+      TICK: { actions: [
         "tick",
         sendParent(({ seek }) => ({
           seek,
-          "type": "SET_SEEK"
+          type: "SET_SEEK"
         }))
       ] }
     },
-    "states": {
-      "finished": { "entry": [sendParent("FINISHED")] },
+    states: {
+      finished: { entry: [sendParent("FINISHED")] },
 
-      "idle": {},
+      idle: {},
 
-      "loading": {
-        "entry": [
+      loading: {
+        entry: [
           "stop",
           send("PLAYING")
         ],
-        "exit": [
+        exit: [
           "setPlayer",
           "play"
         ]
       },
 
-      "paused": { "entry": [sendParent("PAUSED")] },
+      paused: { entry: [sendParent("PAUSED")] },
 
-      "playing": {
-        "entry": [sendParent("PLAYING")],
-        "invoke": {
-          "id": "playingListener",
+      playing: {
+        entry: [sendParent("PLAYING")],
+        invoke: {
+          id: "playingListener",
 
           // eslint-disable-next-line max-lines-per-function
-          "src": ({ player }: PreviewPlayerContext) => (callback) => {
+          src: ({ player }: PreviewPlayerContext) => (callback) => {
 
             if (player) {
 
@@ -196,21 +196,21 @@ export const PreviewPlayerMachine = machine<
 
           }
         },
-        "on": {
-          "FINISHED": "finished",
-          "PAUSE": { "actions": ["pause"] },
-          "PAUSED": "paused"
+        on: {
+          FINISHED: "finished",
+          PAUSE: { actions: ["pause"] },
+          PAUSED: "paused"
         }
       },
 
-      "stopped": {
-        "entry": [sendParent("STOPPED")],
-        "exit": ["setPlayer"]
+      stopped: {
+        entry: [sendParent("STOPPED")],
+        exit: ["setPlayer"]
       }
     }
   },
-  { "actions": {
-    "changeSeek": ({ player }, event) => {
+  { actions: {
+    changeSeek: ({ player }, event) => {
 
       if (player && "seek" in event) {
 
@@ -220,7 +220,7 @@ export const PreviewPlayerMachine = machine<
 
     },
 
-    "pause": ({ player }) => {
+    pause: ({ player }) => {
 
       if (player && player.playing()) {
 
@@ -230,7 +230,7 @@ export const PreviewPlayerMachine = machine<
 
     },
 
-    "play": ({ player }) => {
+    play: ({ player }) => {
 
       if (player) {
 
@@ -240,7 +240,7 @@ export const PreviewPlayerMachine = machine<
 
     },
 
-    "setPlayer": assign({ "player": ({ track }) => {
+    setPlayer: assign({ player: ({ track }) => {
 
       if (track) {
 
@@ -252,7 +252,7 @@ export const PreviewPlayerMachine = machine<
 
     } }),
 
-    "setTrack": assign({ "track": (_, event) => {
+    setTrack: assign({ track: (_, event) => {
 
       if ("track" in event) {
 
@@ -264,7 +264,7 @@ export const PreviewPlayerMachine = machine<
 
     } }),
 
-    "stop": ({ player }) => {
+    stop: ({ player }) => {
 
       if (player && player.playing()) {
 
@@ -274,7 +274,7 @@ export const PreviewPlayerMachine = machine<
 
     },
 
-    "tick": assign({ "seek": ({ player }) => {
+    tick: assign({ seek: ({ player }) => {
 
       if (player) {
 

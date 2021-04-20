@@ -11,12 +11,12 @@ const onClick = () => {
   playerService.send([
     {
       name,
-      "type": "SET_NAME"
+      type: "SET_NAME"
     },
     {
-      "currentPlaybackNo": index,
-      "tracks": tracks.map((track) => track),
-      "type": "REPLACE_AND_PLAY"
+      currentPlaybackNo: index,
+      tracks: tracks.map((track) => track),
+      type: "REPLACE_AND_PLAY"
     }
   ]);
 

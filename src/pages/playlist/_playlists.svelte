@@ -28,12 +28,12 @@ let playlists: Playlist[] = [];
 $: playlistsQuery = query<PlaylistsQuery, PlaylistsQueryVariables>(
   PlaylistsDocument,
   {
-    "fetchPolicy": "cache-first",
-    "variables": {
+    fetchPolicy: "cache-first",
+    variables: {
       conditions,
-      "cursor": {
+      cursor: {
         limit,
-        "offset": 0
+        offset: 0
       }
     }
   }
@@ -41,9 +41,9 @@ $: playlistsQuery = query<PlaylistsQuery, PlaylistsQueryVariables>(
 
 const loadMore = async () => {
 
-  await playlistsQuery.fetchMore({ "variables": { "cursor": {
+  await playlistsQuery.fetchMore({ variables: { cursor: {
     limit,
-    "offset": playlists.length
+    offset: playlists.length
   } } });
 
 };

@@ -24,21 +24,21 @@ const limit = 50;
 let albums: Album[] = [];
 
 $: albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
-  "fetchPolicy": "cache-first",
-  "variables": {
+  fetchPolicy: "cache-first",
+  variables: {
     conditions,
-    "cursor": {
+    cursor: {
       limit,
-      "offset": 0
+      offset: 0
     }
   }
 });
 
 const loadMore = async () => {
 
-  await albumsQuery.fetchMore({ "variables": { "cursor": {
+  await albumsQuery.fetchMore({ variables: { cursor: {
     limit,
-    "offset": albums.length
+    offset: albums.length
   } } });
 
 };

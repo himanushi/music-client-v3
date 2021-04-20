@@ -10,7 +10,7 @@ import { playerService } from "~/machines/jukebox-machine";
 type ItemsType = { id: number; track: Track }[];
 
 let items: ItemsType = $playerService.context.tracks.map((track, index) => ({
-  "id": index,
+  id: index,
   track
 }));
 
@@ -26,8 +26,8 @@ const consider = (
 ) => {
 
   const {
-    "items": newItems,
-    "info": {
+    items: newItems,
+    info: {
       source, trigger
     }
   } = event.detail;
@@ -49,14 +49,14 @@ const finalize = (
 ) => {
 
   const {
-    "items": newItems,
-    "info": { source }
+    items: newItems,
+    info: { source }
   } = event.detail;
 
   // player items との同期は見栄えがバグるのであえてしない
   playerService.send({
-    "tracks": newItems.map((item) => item.track),
-    "type": "MOVE"
+    tracks: newItems.map((item) => item.track),
+    type: "MOVE"
   });
 
   items = newItems as ItemsType;
@@ -80,7 +80,7 @@ const play = (currentPlaybackNo: number) => () => {
 
   playerService.send({
     currentPlaybackNo,
-    "type": "CHANGE_PLAYBACK_NO"
+    type: "CHANGE_PLAYBACK_NO"
   });
 
 };
@@ -88,8 +88,8 @@ const play = (currentPlaybackNo: number) => () => {
 const remove = (index: number) => () => {
 
   playerService.send({
-    "removeIndex": index,
-    "type": "REMOVE"
+    removeIndex: index,
+    type: "REMOVE"
   });
 
   items = items.filter((_, indx) => indx !== index);
@@ -100,7 +100,7 @@ const remove = (index: number) => () => {
 <section
   use:dndzone={{
     dragDisabled,
-    "dropTargetStyle": {},
+    dropTargetStyle: {},
     flipDurationMs,
     items
   }}
@@ -108,7 +108,7 @@ const remove = (index: number) => () => {
   on:finalize={finalize}
 >
   {#each items as item, index (item.id)}
-    <div animate:flip={{ "duration": flipDurationMs }}>
+    <div animate:flip={{ duration: flipDurationMs }}>
       <div on:mousedown={startDrag} on:touchstart={startDrag}>三</div>
       {#if playbackNo === index}
         <Text>○</Text>

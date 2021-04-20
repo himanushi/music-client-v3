@@ -15,14 +15,14 @@ $: {
   if (token) {
 
     accountService.send({
-      "config": {
-        "app": {
-          "build": "2.0.1",
-          "name": "video-game-music.net"
+      config: {
+        app: {
+          build: "2.0.1",
+          name: "video-game-music.net"
         },
-        "developerToken": token
+        developerToken: token
       },
-      "type": "SET_TOKEN"
+      type: "SET_TOKEN"
     });
 
   }
