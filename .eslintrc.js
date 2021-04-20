@@ -1,29 +1,29 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true
+  env: {
+    browser: true,
+    es6: true,
+    node: true
   },
-  "extends": ["eslint:all"],
-  "globals": {
-    "DndEvent": false,
-    "MediaMetadata": true
+  extends: ["eslint:all"],
+  globals: {
+    DndEvent: false,
+    MediaMetadata: true
   },
-  "overrides": [
+  overrides: [
     {
-      "extends": "./linter/.eslintrc.javascript.js",
-      "files": ["*.js"]
+      extends: "./linter/.eslintrc.javascript.js",
+      files: ["*.js"]
     },
     {
-      "extends": "./linter/.eslintrc.typescript.js",
-      "files": ["*.ts"]
+      extends: "./linter/.eslintrc.typescript.js",
+      files: ["*.ts"]
     },
     {
-      "extends": "./linter/.eslintrc.svelte.js",
-      "files": ["*.svelte"]
+      extends: "./linter/.eslintrc.svelte.js",
+      files: ["*.svelte"]
     }
   ],
-  "rules": {
+  rules: {
     // アロー関数のワンライナーを許可する
     "arrow-body-style": [
       "error",
@@ -31,7 +31,7 @@ module.exports = {
     ],
 
     // キャメルケースを強要しない
-    "camelcase": "off",
+    camelcase: "off",
 
     // コメントアウトの文章の初めを大文字にしない
     "capitalized-comments": "off",
@@ -51,17 +51,17 @@ module.exports = {
     // 1文字の変数を許可しない
     "id-length": [
       "error",
-      { "exceptions": ["_"] }
+      { exceptions: ["_"] }
     ],
 
     // import 文はソートする
     "import/order": [
       "error",
-      { "alphabetize": { "order": "asc" } }
+      { alphabetize: { order: "asc" } }
     ],
 
     // インデントはスペース2個分
-    "indent": [
+    indent: [
       "error",
       2
     ],
@@ -73,8 +73,8 @@ module.exports = {
     "max-len": [
       "error",
       {
-        "code": 120,
-        "ignoreComments": true
+        code: 120,
+        ignoreComments: true
       }
     ],
 
@@ -100,7 +100,7 @@ module.exports = {
     // typescript で nest した [key in object] をするため
     "no-shadow": [
       "error",
-      { "allow": ["key"] }
+      { allow: ["key"] }
     ],
 
     // 三項演算子有効
@@ -113,15 +113,15 @@ module.exports = {
     "no-unused-vars": [
       "error",
       {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^key$"
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^key$"
       }
     ],
 
     // object 内の改行
     "object-curly-newline": [
       "error",
-      { "minProperties": 2 }
+      { minProperties: 2 }
     ],
 
     // object の隙間を開ける
@@ -133,6 +133,12 @@ module.exports = {
     // const 宣言をまとめない
     "one-var": "off",
 
+    // object key のダブルクォーツを強制しない
+    "quote-props": [
+      "error",
+      "as-needed"
+    ],
+
     // import をソートする
     "sort-imports": "off",
 
@@ -140,7 +146,7 @@ module.exports = {
     "sort-keys-fix/sort-keys-fix": "error",
 
     // "use strict" を強要しない
-    "strict": [
+    strict: [
       "error",
       "never"
     ]
