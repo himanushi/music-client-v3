@@ -3,7 +3,7 @@ import {
   dndzone, SOURCES, TRIGGERS
 } from "svelte-dnd-action";
 import { flip } from "svelte/animate";
-import Text from "../text.svelte";
+import Text from "~/components/text.svelte";
 import type { Track } from "~/graphql/types";
 import { playerService } from "~/machines/jukebox-machine";
 
