@@ -128,7 +128,7 @@ export const PreviewPlayerMachine = machine<
 
               player.on("end", () => callback("FINISHED"));
 
-              let timeoutID: number;
+              let timeoutID: NodeJS.Timeout;
               const volume = 0.5;
               const fadeouttime = 2000;
 

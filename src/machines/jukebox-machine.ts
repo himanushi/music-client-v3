@@ -1,3 +1,4 @@
+import { inspect } from "@xstate/inspect";
 import {
   Machine as machine,
   SpawnedActorRef,
@@ -347,4 +348,6 @@ export type JukeboxState = State<
   }
 >;
 
-export const playerService = interpret(JukeboxMachine).start();
+inspect({ iframe: false });
+
+export const playerService = interpret(JukeboxMachine, { devTools: true }).start();

@@ -8,7 +8,8 @@ module.exports = {
   globals: {
     DndEvent: false,
     MediaMetadata: true,
-    MusicKit: false
+    MusicKit: false,
+    NodeJS: false
   },
   overrides: [
     {

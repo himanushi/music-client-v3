@@ -9,6 +9,11 @@ import {
 import { sendParent } from "xstate/lib/actions";
 import { Track } from "~/graphql/types";
 import {
+  AppleMusicPlayerMachine,
+  AppleMusicPlayerState,
+  AppleMusicPlayerStateEvent
+} from "~/machines/apple-music-player-machine";
+import {
   PreviewPlayerMachine,
   PreviewPlayerState,
   PreviewPlayerStateEvent
@@ -18,6 +23,10 @@ export type MusicPlayerContext = {
   previewPlayerRef?: SpawnedActorRef<
     PreviewPlayerStateEvent,
     PreviewPlayerState
+  >;
+  appleMusicPlayerRef?: SpawnedActorRef<
+    AppleMusicPlayerStateEvent,
+    AppleMusicPlayerState
   >;
   track?: Track;
   duration: number;
@@ -102,7 +111,10 @@ export const MusicPlayerMachine = machine<
       ] },
 
       LOAD: {
-        actions: ["loadToPlayer"],
+        actions: [
+          "stopToPlayers",
+          "loadToPlayer"
+        ],
         target: "loading"
       },
 
@@ -205,13 +217,21 @@ export const MusicPlayerMachine = machine<
       { to: selectPlayer }
     ),
 
-    initPlayers: assign({ previewPlayerRef: (_) => spawn(PreviewPlayerMachine, previewPlayerId) }),
+    initPlayers: assign({
+      appleMusicPlayerRef: (_) => spawn(AppleMusicPlayerMachine, appleMusicPlayerId),
+      previewPlayerRef: (_) => spawn(PreviewPlayerMachine, previewPlayerId)
+    }),
 
     loadToPlayer: send("LOAD", { to: selectPlayer }),
 
+    /*
+     * 一時停止する場合は再生中のプレイヤーのみですべきだが、面倒なので全てのプレイヤーに対して行う
+     * いつかリファクタすること
+     */
     pauseToPlayers: (context) => {
 
       context.previewPlayerRef?.send({ type: "PAUSE" });
+      context.appleMusicPlayerRef?.send({ type: "PAUSE" });
 
     },
 
@@ -282,6 +302,7 @@ export const MusicPlayerMachine = machine<
     stopToPlayers: (context) => {
 
       context.previewPlayerRef?.send({ type: "STOP" });
+      context.appleMusicPlayerRef?.send({ type: "STOP" });
 
     },
 
