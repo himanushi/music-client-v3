@@ -147,6 +147,7 @@ export const MusicPlayerMachine = machine<
       paused: {
         entry: [sendParent("PAUSED")],
         on: {
+          FINISHED: "finished",
           PLAY: { actions: ["playToPlayer"] },
           PLAYING: "playing"
         }
@@ -159,7 +160,7 @@ export const MusicPlayerMachine = machine<
         ],
         invoke: {
           id: "seekTimer",
-          src: (_) => (callback) => {
+          src: () => (callback) => {
 
             const interval = setInterval(() => callback("TICK"), 1000);
 

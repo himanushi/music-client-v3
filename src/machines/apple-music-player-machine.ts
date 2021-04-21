@@ -126,7 +126,7 @@ export const AppleMusicPlayerMachine = machine<
 
           fetching: {
             on: { PLAYING: `#${AppleMusicPlayerId}.playing` },
-            invoke: { src: () => async (callback) => {
+            invoke: { src: () => (callback) => {
 
               // eslint-disable-next-line no-unused-vars
               const didChange: (state: {
@@ -147,7 +147,7 @@ export const AppleMusicPlayerMachine = machine<
                 didChange
               );
 
-              await MusicKit.getInstance().player.play();
+              MusicKit.getInstance().player.play();
 
               return () => {
 
@@ -163,12 +163,79 @@ export const AppleMusicPlayerMachine = machine<
         }
       },
 
-      paused: { entry: [sendParent("PAUSED")] },
+      paused: {
+        entry: [sendParent("PAUSED")],
+        invoke: { src: () => (callback) => {
+
+          // eslint-disable-next-line no-unused-vars
+          const didChange: (state: {
+              oldState: number;
+              state: number;
+            }) => any = (state) => {
+
+              if (MusicKit.PlaybackStates[state.state] === "ended") {
+
+                callback("FINISHED");
+
+              }
+
+            };
+
+          MusicKit.getInstance().player.addEventListener(
+            "playbackStateDidChange",
+            didChange
+          );
+
+          return () => {
+
+            MusicKit.getInstance().player.removeEventListener(
+              "playbackStateDidChange",
+              didChange
+            );
+
+          };
+
+        } },
+
+        on: { FINISHED: "finished" }
+      },
 
       playing: {
+        invoke: { src: () => (callback) => {
+
+          // eslint-disable-next-line no-unused-vars
+          const didChange: (state: {
+              oldState: number;
+              state: number;
+            }) => any = (state) => {
+
+              if (MusicKit.PlaybackStates[state.state] === "paused") {
+
+                callback("PAUSED");
+
+              }
+
+            };
+
+          MusicKit.getInstance().player.addEventListener(
+            "playbackStateDidChange",
+            didChange
+          );
+
+          return () => {
+
+            MusicKit.getInstance().player.removeEventListener(
+              "playbackStateDidChange",
+              didChange
+            );
+
+          };
+
+        } },
+
         entry: [sendParent("PLAYING")],
+
         on: {
-          FINISHED: "finished",
           PAUSE: { actions: ["pause"] },
           PAUSED: "paused"
         }
@@ -193,13 +260,13 @@ export const AppleMusicPlayerMachine = machine<
 
     },
 
-    pause: (_) => {
+    pause: () => {
 
       MusicKit.getInstance().player.pause();
 
     },
 
-    play: (_) => {
+    play: () => {
 
       MusicKit.getInstance().player.play();
 
@@ -232,13 +299,13 @@ export const AppleMusicPlayerMachine = machine<
 
     } }),
 
-    stop: (_) => {
+    stop: () => {
 
       MusicKit.getInstance().stop();
 
     },
 
-    tick: assign({ seek: (_) => {
+    tick: assign({ seek: () => {
 
       const seek = MusicKit.getInstance().player.currentPlaybackTime;
       return Math.floor(seek * 1000);

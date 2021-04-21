@@ -84,7 +84,7 @@ export const JukeboxMachine = machine<
 
     invoke: {
       id: "mediaController",
-      src: (_) => (callback) => {
+      src: () => (callback) => {
 
         const cb = (type: string) => () => callback({ type });
 
