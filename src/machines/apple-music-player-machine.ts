@@ -301,7 +301,15 @@ export const AppleMusicPlayerMachine = machine<
 
     stop: () => {
 
-      MusicKit.getInstance().stop();
+      if (
+        MusicKit.PlaybackStates[
+          MusicKit.getInstance().player.playbackState
+        ] === "playing"
+      ) {
+
+        MusicKit.getInstance().stop();
+
+      }
 
     },
 
