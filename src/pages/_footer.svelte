@@ -6,10 +6,12 @@ import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import PuaseIcon from "~/icons/pause.svelte";
 import PlayIcon from "~/icons/play.svelte";
+import LoadingIcon from "~/icons/refresh.svelte";
 import SkipIcon from "~/icons/skip.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
 $: track = $playerService.context.currentTrack;
+$: player = $playerService.context.musicPlayerRef;
 
 const play_or_pause = () => {
 
@@ -42,13 +44,17 @@ const showPlayer = () => {
     </div>
   {/if}
 
-  <IconButton on:click={play_or_pause}>
-    {#if $playerService.value === "playing"}
-      <PuaseIcon color="text-gray-900" />
-    {:else}
-      <PlayIcon color="text-gray-900" />
-    {/if}
-  </IconButton>
+  {#if player}
+    <IconButton on:click={play_or_pause}>
+      {#if $player.value === "playing"}
+        <PuaseIcon color="text-gray-900" />
+      {:else if $player.value === "loading"}
+        <LoadingIcon color="text-gray-900" />
+      {:else}
+        <PlayIcon color="text-gray-900" />
+      {/if}
+    </IconButton>
+  {/if}
 
   <IconButton on:click={skip}>
     <SkipIcon color="text-gray-900" />

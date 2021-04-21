@@ -1,9 +1,10 @@
 <script lang="ts">
 let className = "";
 export { className as class };
+export let disabled = false;
 </script>
 
-<button class={className} on:click>
+<button {disabled} class={className} on:click>
   <slot><!-- icon --></slot>
 </button>
 

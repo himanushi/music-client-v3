@@ -50,6 +50,7 @@ export type MusicPlayerEvent =
   | { type: "SET_SEEK"; seek: number }
   | { type: "CHANGE_SEEK"; seek: number }
   | { type: "LOAD" }
+  | { type: "LOADING" }
   | { type: "PLAY" }
   | { type: "PLAYING" }
   | { type: "PAUSE" }
@@ -117,6 +118,8 @@ export const MusicPlayerMachine = machine<
         ],
         target: "loading"
       },
+
+      LOADING: "loading",
 
       SET_SEEK: { actions: ["setSeek"] },
 

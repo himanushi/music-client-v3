@@ -89,6 +89,12 @@ module.exports = {
 
     "max-statements": "off",
 
+    // 三項演算子は改行してもしなくても良い
+    "multiline-ternary": [
+      "error",
+      "never"
+    ],
+
     "no-duplicate-imports": "off",
 
     // マジックナンバーを許可する
