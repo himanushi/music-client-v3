@@ -1,3 +1,7 @@
+// xstate では順序を見やすくするため object key sort は無効にする
+/* eslint-disable sort-keys */
+/* eslint-disable sort-keys-fix/sort-keys-fix */
+
 import { inspect } from "@xstate/inspect";
 import {
   Machine as machine,
@@ -72,7 +76,6 @@ export const JukeboxMachine = machine<
   {
     context: {
       currentPlaybackNo: 0,
-      musicPlayerRef: undefined,
       name: "",
       repeat: false,
       tracks: []
@@ -101,6 +104,39 @@ export const JukeboxMachine = machine<
         }
 
       }
+    },
+
+    states: {
+      idle: { entry: ["initMusicPlayer"] },
+
+      loading: {
+        entry: [
+          "setTrack",
+          "load"
+        ],
+        on: { PLAYING: "playing" }
+      },
+
+      playing: {
+        entry: ["setMediaMetadata"],
+        on: {
+          PAUSE: { actions: ["pause"] },
+          PAUSED: "paused",
+          PLAY_OR_PAUSE: { actions: ["pause"] }
+        }
+      },
+
+      paused: { on: {
+        PLAY: { actions: ["play"] },
+        PLAYING: "playing",
+        PLAY_OR_PAUSE: { actions: ["play"] }
+      } },
+
+      stopped: { on: {
+        PLAY: { actions: ["play"] },
+        PLAYING: "playing",
+        PLAY_OR_PAUSE: { actions: ["play"] }
+      } }
     },
 
     on: {
@@ -164,39 +200,6 @@ export const JukeboxMachine = machine<
       SET_NAME: { actions: ["setName"] },
 
       STOPPED: "stopped"
-    },
-
-    states: {
-      idle: { entry: ["initMusicPlayer"] },
-
-      loading: {
-        entry: [
-          "setTrack",
-          "load"
-        ],
-        on: { PLAYING: "playing" }
-      },
-
-      paused: { on: {
-        PLAY: { actions: ["play"] },
-        PLAYING: "playing",
-        PLAY_OR_PAUSE: { actions: ["play"] }
-      } },
-
-      playing: {
-        entry: ["setMediaMetadata"],
-        on: {
-          PAUSE: { actions: ["pause"] },
-          PAUSED: "paused",
-          PLAY_OR_PAUSE: { actions: ["pause"] }
-        }
-      },
-
-      stopped: { on: {
-        PLAY: { actions: ["play"] },
-        PLAYING: "playing",
-        PLAY_OR_PAUSE: { actions: ["play"] }
-      } }
     }
   },
   {
@@ -207,12 +210,13 @@ export const JukeboxMachine = machine<
 
       changePlaybackNo: assign((_, event) => {
 
-        if (!("currentPlaybackNo" in event)) {
+        if ("currentPlaybackNo" in event) {
 
-          return {};
+          return { currentPlaybackNo: event.currentPlaybackNo };
 
         }
-        return { currentPlaybackNo: event.currentPlaybackNo };
+
+        return {};
 
       }),
 
@@ -222,31 +226,13 @@ export const JukeboxMachine = machine<
 
       nextPlaybackNo: assign({ currentPlaybackNo: ({
         tracks, currentPlaybackNo
-      }) => {
-
-        if (currentPlaybackNo + 1 === tracks.length) {
-
-          return 0;
-
-        }
-        return currentPlaybackNo + 1;
-
-      } }),
+      }) => currentPlaybackNo + 1 === tracks.length ? 0 : currentPlaybackNo + 1 }),
 
       pause: send("PAUSE", { to: "musicPlayer" }),
 
       play: send("PLAY", { to: "musicPlayer" }),
 
-      previousPlaybackNo: assign({ currentPlaybackNo: ({ currentPlaybackNo }) => {
-
-        if (currentPlaybackNo === 0) {
-
-          return 0;
-
-        }
-        return currentPlaybackNo - 1;
-
-      } }),
+      previousPlaybackNo: assign({ currentPlaybackNo: ({ currentPlaybackNo }) => currentPlaybackNo === 0 ? 0 : currentPlaybackNo - 1 }),
 
       removeTrack: assign({ tracks: (context, event) => {
 
@@ -263,16 +249,7 @@ export const JukeboxMachine = machine<
 
       repeat: assign({ repeat: ({ repeat }) => !repeat }),
 
-      replaceTracks: assign({ tracks: (_, event) => {
-
-        if ("tracks" in event) {
-
-          return event.tracks;
-
-        }
-        return [];
-
-      } }),
+      replaceTracks: assign({ tracks: (_, event) => "tracks" in event ? event.tracks : [] }),
 
       setMediaMetadata: ({ currentTrack }) => {
 
@@ -297,16 +274,7 @@ export const JukeboxMachine = machine<
 
       },
 
-      setName: assign({ name: (_, event) => {
-
-        if ("name" in event) {
-
-          return event.name;
-
-        }
-        return "";
-
-      } }),
+      setName: assign({ name: (_, event) => "name" in event ? event.name : "" }),
 
       setTrack: send(
         ({ currentTrack }) => ({
@@ -322,17 +290,7 @@ export const JukeboxMachine = machine<
     guards: {
       canNextPlay: ({
         repeat, tracks, currentPlaybackNo
-      }) => {
-
-        if (repeat) {
-
-          return true;
-
-        }
-
-        return currentPlaybackNo + 1 !== tracks.length;
-
-      },
+      }) => repeat || currentPlaybackNo + 1 !== tracks.length,
       canPreviousPlay: ({ currentPlaybackNo }) => currentPlaybackNo !== 0
     }
   }

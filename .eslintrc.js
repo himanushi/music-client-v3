@@ -79,7 +79,7 @@ module.exports = {
     "max-len": [
       "error",
       {
-        code: 120,
+        code: 150,
         ignoreComments: true
       }
     ],
@@ -94,6 +94,9 @@ module.exports = {
       "error",
       "never"
     ],
+
+    // アロー関数を有効にする
+    "no-confusing-arrow": "off",
 
     "no-duplicate-imports": "off",
 

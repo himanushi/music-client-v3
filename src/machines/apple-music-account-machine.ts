@@ -1,9 +1,9 @@
-/* eslint-disable no-undef */
-/* eslint-disable sort-keys-fix/sort-keys-fix */
+// xstate では順序を見やすくするため object key sort は無効にする
 /* eslint-disable sort-keys */
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 
 import {
-  interpret, Machine as machine, send
+  interpret, Machine as machine, send, Sender
 } from "xstate";
 
 export type accountSchema = {
@@ -34,14 +34,14 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
           LOGOUT: "unauthorized"
         },
 
-        meta: { label: "idle" }
+        meta: { label: "loading" }
       },
 
       authorized: {
         invoke: {
           id: "unauthorize",
 
-          src: (_, _event) => (callback) => {
+          src: () => (callback: Sender<accountEvent>) => {
 
             const changeStatus = (result: { authorizationStatus: number }) => {
 
@@ -78,7 +78,7 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
         invoke: {
           id: "unauthorize",
 
-          src: (_, _event) => (callback) => {
+          src: () => (callback: Sender<accountEvent>) => {
 
             const changeStatus = (result: { authorizationStatus: number }) => {
 

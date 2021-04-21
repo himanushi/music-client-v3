@@ -1,3 +1,7 @@
+// xstate では順序を見やすくするため object key sort は無効にする
+/* eslint-disable sort-keys */
+/* eslint-disable sort-keys-fix/sort-keys-fix */
+
 import {
   Machine as machine,
   SpawnedActorRef,
@@ -105,38 +109,6 @@ export const MusicPlayerMachine = machine<
 
     initial: "idle",
 
-    on: {
-      CHANGE_SEEK: { actions: [
-        "changeSeek",
-        "changeSeekToPlayer"
-      ] },
-
-      LOAD: {
-        actions: [
-          "stopToPlayers",
-          "loadToPlayer"
-        ],
-        target: "loading"
-      },
-
-      LOADING: "loading",
-
-      SET_SEEK: { actions: ["setSeek"] },
-
-      SET_TRACK: { actions: [
-        "resetSeek",
-        "setTrack",
-        "setDuration",
-        "setTrackToPlayer"
-      ] },
-
-      STOP: { actions: [
-        "stopToPlayers",
-        "resetSeek"
-      ] },
-
-      STOPPED: "stopped"
-    },
     states: {
       finished: { entry: [
         "resetSeek",
@@ -190,19 +162,43 @@ export const MusicPlayerMachine = machine<
           PLAYING: "playing"
         }
       }
+    },
+
+    on: {
+      CHANGE_SEEK: { actions: [
+        "changeSeek",
+        "changeSeekToPlayer"
+      ] },
+
+      LOAD: {
+        actions: [
+          "stopToPlayers",
+          "loadToPlayer"
+        ],
+        target: "loading"
+      },
+
+      LOADING: "loading",
+
+      SET_SEEK: { actions: ["setSeek"] },
+
+      SET_TRACK: { actions: [
+        "resetSeek",
+        "setTrack",
+        "setDuration",
+        "setTrackToPlayer"
+      ] },
+
+      STOP: { actions: [
+        "stopToPlayers",
+        "resetSeek"
+      ] },
+
+      STOPPED: "stopped"
     }
   },
   { actions: {
-    changeSeek: assign({ seek: (_, event) => {
-
-      if ("seek" in event) {
-
-        return event.seek;
-
-      }
-      return 0;
-
-    } }),
+    changeSeek: assign({ seek: (_, event) => "seek" in event ? event.seek : 0 }),
 
     changeSeekToPlayer: send(
       (_, event) => {
@@ -259,31 +255,14 @@ export const MusicPlayerMachine = machine<
         return 30000;
 
       }
+
       return context.track.durationMs;
 
     } }),
 
-    setSeek: assign({ seek: (_, event) => {
+    setSeek: assign({ seek: (_, event) => "seek" in event ? event.seek : 0 }),
 
-      if ("seek" in event) {
-
-        return event.seek;
-
-      }
-      return 0;
-
-    } }),
-
-    setTrack: assign({ track: (_, event) => {
-
-      if ("track" in event) {
-
-        return event.track;
-
-      }
-      return undefined;
-
-    } }),
+    setTrack: assign({ track: (_, event) => "track" in event ? event.track : undefined }),
 
     setTrackToPlayer: send(
       (_, event) => {

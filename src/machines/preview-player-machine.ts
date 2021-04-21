@@ -1,3 +1,7 @@
+// xstate では順序を見やすくするため object key sort は無効にする
+/* eslint-disable sort-keys */
+/* eslint-disable sort-keys-fix/sort-keys-fix */
+
 import { Howl } from "howler";
 import {
   Machine as machine, assign, send, sendParent, State
@@ -60,42 +64,11 @@ export const PreviewPlayerMachine = machine<
   PreviewPlayerStateEvent
 >(
   {
-    context: {
-      player: undefined,
-      seek: 0,
-      track: undefined
-    },
+    context: { seek: 0 },
     id: "preview",
 
     initial: "idle",
 
-    on: {
-      CHANGE_SEEK: { actions: ["changeSeek"] },
-
-      LOAD: { target: "loading" },
-
-      PLAY: {
-        actions: ["play"],
-        target: "playing"
-      },
-
-      PLAYING: "playing",
-
-      SET_TRACK: { actions: ["setTrack"] },
-
-      STOP: {
-        actions: ["stop"],
-        target: "stopped"
-      },
-
-      TICK: { actions: [
-        "tick",
-        sendParent(({ seek }) => ({
-          seek,
-          type: "SET_SEEK"
-        }))
-      ] }
-    },
     states: {
       finished: { entry: [sendParent("FINISHED")] },
 
@@ -207,6 +180,34 @@ export const PreviewPlayerMachine = machine<
         entry: [sendParent("STOPPED")],
         exit: ["setPlayer"]
       }
+    },
+
+    on: {
+      CHANGE_SEEK: { actions: ["changeSeek"] },
+
+      LOAD: { target: "loading" },
+
+      PLAY: {
+        actions: ["play"],
+        target: "playing"
+      },
+
+      PLAYING: "playing",
+
+      SET_TRACK: { actions: ["setTrack"] },
+
+      STOP: {
+        actions: ["stop"],
+        target: "stopped"
+      },
+
+      TICK: { actions: [
+        "tick",
+        sendParent(({ seek }) => ({
+          seek,
+          type: "SET_SEEK"
+        }))
+      ] }
     }
   },
   { actions: {
@@ -240,29 +241,9 @@ export const PreviewPlayerMachine = machine<
 
     },
 
-    setPlayer: assign({ player: ({ track }) => {
+    setPlayer: assign({ player: ({ track }) => track ? setPlayer(track) : undefined }),
 
-      if (track) {
-
-        return setPlayer(track);
-
-      }
-
-      return undefined;
-
-    } }),
-
-    setTrack: assign({ track: (_, event) => {
-
-      if ("track" in event) {
-
-        return event.track;
-
-      }
-
-      return undefined;
-
-    } }),
+    setTrack: assign({ track: (_, event) => "track" in event ? event.track : undefined }),
 
     stop: ({ player }) => {
 
