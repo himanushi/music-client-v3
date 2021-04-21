@@ -239,19 +239,23 @@ export const MusicPlayerMachine = machine<
 
     resetSeek: assign({ seek: (_) => 0 }),
 
-    setDuration: assign({ duration: ({ track }) => {
+    setDuration: assign({ duration: (context) => {
 
-      if (!track) {
+      if (!context.track) {
 
         return 0;
 
       }
-      if (track.durationMs > 30000) {
+
+      if (
+        selectPlayer(context) === previewPlayerId &&
+            context.track.durationMs > 30000
+      ) {
 
         return 30000;
 
       }
-      return track.durationMs;
+      return context.track.durationMs;
 
     } }),
 
