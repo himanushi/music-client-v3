@@ -1,5 +1,9 @@
+// xstate では順序を見やすくするため object key sort は無効にする
+/* eslint-disable sort-keys */
+/* eslint-disable sort-keys-fix/sort-keys-fix */
+
 import {
-  Machine as machine, assign, send, sendParent, State
+  Machine as machine, assign, sendParent, State
 } from "xstate";
 import { Track } from "~/graphql/types";
 
@@ -11,7 +15,13 @@ export type AppleMusicPlayerContext = {
 export type AppleMusicPlayerStateSchema = {
   states: {
     idle: {};
-    loading: {};
+    loading: {
+      states: {
+        stopping: {};
+        queueing: {};
+        fetching: {};
+      };
+    };
     playing: {};
     paused: {};
     stopped: {};
@@ -32,6 +42,8 @@ export type AppleMusicPlayerStateEvent =
   | { type: "FINISHED" }
   | { type: "TICK" };
 
+export const AppleMusicPlayerId = "apple-music-player";
+
 export const AppleMusicPlayerMachine = machine<
   AppleMusicPlayerContext,
   AppleMusicPlayerStateSchema,
@@ -39,7 +51,7 @@ export const AppleMusicPlayerMachine = machine<
 >(
   {
     context: { seek: 0 },
-    id: "apple-music-player",
+    id: AppleMusicPlayerId,
 
     initial: "idle",
 
@@ -70,26 +82,85 @@ export const AppleMusicPlayerMachine = machine<
         }))
       ] }
     },
-    states: {
-      finished: { entry: [sendParent("FINISHED")] },
 
+    states: {
       idle: {},
 
       loading: {
+        initial: "stopping",
+        states: {
+          stopping: { invoke: {
+            src: async () => {
 
-        /*
-         * states: {
-         *   initial: "idle",
-         */
+              if (
+                MusicKit.PlaybackStates.playing ===
+                  MusicKit.getInstance().playbackState
+              ) {
 
-        entry: [
-          "stop",
-          send("PLAYING")
-        ],
-        exit: [
-          "setPlayer",
-          "play"
-        ]
+                await MusicKit.getInstance().player.stop();
+
+              }
+
+            },
+
+            onDone: "queueing"
+          } },
+
+          queueing: { invoke: {
+            src: async (context) => {
+
+              const id = context.track?.appleMusicTracks?.find(
+                (track) => track
+              )?.appleMusicId;
+
+              if (id) {
+
+                await MusicKit.getInstance().setQueue({ songs: [id] });
+
+              }
+
+            },
+
+            onDone: "fetching"
+          } },
+
+          fetching: {
+            on: { PLAYING: `#${AppleMusicPlayerId}.playing` },
+            invoke: { src: () => async (callback) => {
+
+              // eslint-disable-next-line no-unused-vars
+              const didChange: (state: {
+                  oldState: number;
+                  state: number;
+                }) => any = (state) => {
+
+                  if (MusicKit.PlaybackStates[state.state] === "playing") {
+
+                    callback("PLAYING");
+
+                  }
+
+                };
+
+              MusicKit.getInstance().player.addEventListener(
+                "playbackStateDidChange",
+                didChange
+              );
+
+              await MusicKit.getInstance().player.play();
+
+              return () => {
+
+                MusicKit.getInstance().player.removeEventListener(
+                  "playbackStateDidChange",
+                  didChange
+                );
+
+              };
+
+            } }
+          }
+        }
       },
 
       paused: { entry: [sendParent("PAUSED")] },
@@ -106,7 +177,9 @@ export const AppleMusicPlayerMachine = machine<
       stopped: {
         entry: [sendParent("STOPPED")],
         exit: ["setPlayer"]
-      }
+      },
+
+      finished: { entry: [sendParent("FINISHED")] }
     }
   },
   { actions: {
@@ -122,13 +195,13 @@ export const AppleMusicPlayerMachine = machine<
 
     pause: (_) => {
 
-      MusicKit.getInstance().pause();
+      MusicKit.getInstance().player.pause();
 
     },
 
     play: (_) => {
 
-      MusicKit.getInstance().play();
+      MusicKit.getInstance().player.play();
 
     },
 
