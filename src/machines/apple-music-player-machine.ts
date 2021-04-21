@@ -218,6 +218,10 @@ export const AppleMusicPlayerMachine = machine<
 
                 callback("FINISHED");
 
+              } else if (MusicKit.PlaybackStates[state.state] === "loading") {
+
+                callback("WAITING");
+
               }
 
             };
@@ -238,7 +242,10 @@ export const AppleMusicPlayerMachine = machine<
 
         } },
 
-        on: { FINISHED: "finished" }
+        on: {
+          FINISHED: "finished",
+          WAITING: "waiting"
+        }
       },
 
       playing: {
