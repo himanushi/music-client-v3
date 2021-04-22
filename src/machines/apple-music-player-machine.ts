@@ -54,8 +54,6 @@ const setEvents = (callback: any, events: string[][]) => {
     didChange
   );
 
-  MusicKit.getInstance().player.play();
-
   return () => {
 
     MusicKit.getInstance().player.removeEventListener(
@@ -165,6 +163,7 @@ export const AppleMusicPlayerMachine = machine<
           } },
 
           fetching: {
+            entry: ["play"],
             on: { PLAYING: `#${AppleMusicPlayerId}.playing` },
             invoke: { src: () => (callback) => setEvents(callback, [
               [
