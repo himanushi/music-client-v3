@@ -1,0 +1,8 @@
+query SpotifyToken($code: String, $refreshToken: String) {
+  spotifyToken(code: $code) {
+    accessToken
+    expiresIn
+    scope
+    tokenType
+  }
+}

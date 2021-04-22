@@ -760,7 +760,6 @@ export type Query_PlaylistsArgs = {
 
 export type Query_SpotifyTokenArgs = {
   code?: Maybe<Scalars["String"]>;
-  refreshToken?: Maybe<Scalars["String"]>;
 };
 
 export type Query_TracksArgs = {
@@ -1298,6 +1297,18 @@ export type PlaylistsQuery = {
       >;
       readonly author?: Maybe<Pick<User, "id" | "name">>;
     }
+  >;
+};
+
+export type SpotifyTokenQueryVariables = Exact<{
+  code?: Maybe<Scalars["String"]>;
+  refreshToken?: Maybe<Scalars["String"]>;
+}>;
+
+export type SpotifyTokenQuery = {
+  readonly spotifyToken: Pick<
+    SpotifyToken,
+    "accessToken" | "expiresIn" | "scope" | "tokenType"
   >;
 };
 
@@ -2528,6 +2539,62 @@ export const PlaylistsDocument: DocumentNode<
                 },
                 { kind: "Field", name: { kind: "Name", value: "createdAt" } },
                 { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
+export const SpotifyTokenDocument: DocumentNode<
+  SpotifyTokenQuery,
+  SpotifyTokenQueryVariables
+> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "SpotifyToken" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "refreshToken" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "spotifyToken" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "code" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "code" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "accessToken" } },
+                { kind: "Field", name: { kind: "Name", value: "expiresIn" } },
+                { kind: "Field", name: { kind: "Name", value: "scope" } },
+                { kind: "Field", name: { kind: "Name", value: "tokenType" } },
               ],
             },
           },
