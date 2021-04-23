@@ -8,5 +8,15 @@ module.exports = {
     "@typescript-eslint",
     "import",
     "sort-keys-fix"
-  ]
+  ],
+  rules: {
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^key$"
+      }
+    ],
+    "no-unused-vars": "off"
+  }
 };
