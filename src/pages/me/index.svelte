@@ -1,6 +1,7 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
 import AppleMusicButton from "./_apple-music-button.svelte";
+import SpotifyButton from "./_spotify-button.svelte";
 import Text from "~/components/text.svelte";
 import { MeDocument } from "~/graphql/types";
 import type {
@@ -19,4 +20,5 @@ $: me = $meQuery?.data?.me as CurrentUser;
   <Text>権限 : {me.role.name}</Text>
 
   <AppleMusicButton />
+  <SpotifyButton />
 {/if}

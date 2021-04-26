@@ -22,7 +22,7 @@ export type accountEvent =
 
 export const accountMachine = machine<{}, accountSchema, accountEvent>(
   {
-    id: "appleMusicAccount",
+    id: "apple-music-account",
 
     initial: "idle",
 

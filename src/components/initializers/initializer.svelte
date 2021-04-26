@@ -1,5 +1,7 @@
 <script lang="ts">
-import AppleMusic from "~/components/initializers/apple-music.svelte";
+import AppleMusicAccount from "~/components/initializers/apple-music-account.svelte";
+import SpotifyAccount from "~/components/initializers/spotify-account.svelte";
 </script>
 
-<AppleMusic />
+<AppleMusicAccount />
+<SpotifyAccount />

@@ -1,6 +1,6 @@
 <script lang="ts">
 import Text from "~/components/text.svelte";
-import { accountService } from "~/machines/apple-music-account-machine";
+import { accountService } from "~/machines/spotify-account-machine";
 
 const onClick = () => {
 
@@ -11,5 +11,5 @@ const onClick = () => {
 $: meta = $accountService.meta[`${accountService.id}.${$accountService.value}`];
 </script>
 
-<Text>Apple Music</Text>
+<Text>Spotify</Text>
 <button on:click={onClick}>{meta.label}</button>

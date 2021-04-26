@@ -1,0 +1,3 @@
+query SpotifyLogin($code: String) {
+  spotifyLogin(code: $code)
+}

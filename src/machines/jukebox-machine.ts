@@ -306,6 +306,6 @@ export type JukeboxState = State<
   }
 >;
 
-inspect({ iframe: false });
+// inspect({ iframe: false });
 
 export const playerService = interpret(JukeboxMachine, { devTools: true }).start();

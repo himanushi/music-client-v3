@@ -1,0 +1,3 @@
+query SpotifyLogout {
+  spotifyLogout
+}

@@ -10,7 +10,7 @@ const seek = tweened(0, { duration: (from, to) => {
   const tick = 1000;
   const diff = Math.abs(to - from);
 
-  if (diff > tick + 100) {
+  if (diff > tick + 500) {
 
     return 0;
 
