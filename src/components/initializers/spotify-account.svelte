@@ -7,9 +7,9 @@ import { accountService } from "~/machines/spotify-account-machine";
 
 const client = getClient();
 
-const login = (code?: string) => {
+const login = async (code?: string) => {
 
-  client.query({
+  await client.query({
     query: SpotifyLoginDocument,
     variables: { code }
   });
@@ -18,8 +18,7 @@ const login = (code?: string) => {
 
 const logout = async () => {
 
-  const result = await client.query({ query: SpotifyLogoutDocument });
-  console.log({ result });
+  await client.query({ query: SpotifyLogoutDocument });
 
 };
 

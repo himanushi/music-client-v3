@@ -2,7 +2,7 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
-import { inspect } from "@xstate/inspect";
+// import { inspect } from "@xstate/inspect";
 import {
   Machine as machine,
   SpawnedActorRef,

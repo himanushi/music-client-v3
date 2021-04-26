@@ -2,7 +2,6 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
-import { inspect } from "@xstate/inspect";
 import { v4 as uuid } from "uuid";
 import {
   assign, interpret, Machine as machine
@@ -12,7 +11,6 @@ import { cookie } from "~/lib/cookie";
 const spotifyState = "spotifyState";
 const spotifyAccessToken = "spotifyAccessToken";
 const spotifyRefreshToken = "spotifyRefreshTokenDummy";
-const spotifyDeviceId = "spotifyDeviceId";
 
 export type accountContext = {
   login: (code?: string) => void;
@@ -23,7 +21,12 @@ export type accountSchema = {
   states: {
     idle: {};
     waiting: {};
-    authorized: {};
+    authorized: {
+      states: {
+        idle: {};
+        logout: {};
+      };
+    };
     unauthorized: {};
   };
 };
@@ -41,13 +44,15 @@ export type accountEvent =
   | { type: "LOGIN" }
   | { type: "LOGOUT" };
 
+const spotifyAccountId = "spotify-account";
+
 export const accountMachine = machine<
   accountContext,
   accountSchema,
   accountEvent
 >(
   {
-    id: "spotify-account",
+    id: spotifyAccountId,
 
     initial: "idle",
 
@@ -101,15 +106,31 @@ export const accountMachine = machine<
       },
 
       authorized: {
-        on: {
-          LOGIN_OR_LOGOUT: {
-            actions: "logout",
-            target: "waiting"
-          },
-          LOGOUT: "unauthorized"
-        },
+        initial: "idle",
 
-        meta: { label: "ログアウト" }
+        states: {
+          idle: {
+            on: { LOGIN_OR_LOGOUT: "logout" },
+
+            meta: { label: "ログアウト" }
+          },
+          logout: {
+            invoke: { src: ({ logout }) => (callback) => {
+
+              (async () => {
+
+                await logout();
+                callback("WAITING");
+
+              })();
+
+            } },
+
+            on: { WAITING: `#${spotifyAccountId}.waiting` },
+
+            meta: { label: "ログアウト中..." }
+          }
+        }
       },
 
       unauthorized: {
@@ -135,9 +156,13 @@ export const accountMachine = machine<
 
               cookie.remove(spotifyState);
 
-              context.login(code);
+              (async () => {
 
-              callback("WAITING");
+                await context.login(code);
+
+                callback("WAITING");
+
+              })();
 
             }
 

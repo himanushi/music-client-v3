@@ -8,7 +8,14 @@ const onClick = () => {
 
 };
 
-$: meta = $accountService.meta[`${accountService.id}.${$accountService.value}`];
+let meta: any;
+
+$: {
+
+  meta = $accountService.meta as any;
+  meta = meta[Object.keys(meta)[0]];
+
+}
 </script>
 
 <Text>Spotify</Text>
