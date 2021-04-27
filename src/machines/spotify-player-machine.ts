@@ -72,7 +72,13 @@ export const SpotifyPlayerMachine = machine<
     initial: "idle",
 
     on: {
-      CHANGE_SEEK: { actions: ["changeSeek"] },
+      CHANGE_SEEK: { actions: [
+        "changeSeek",
+        sendParent(({ seek }) => ({
+          seek,
+          type: "SET_SEEK"
+        }))
+      ] },
 
       LOAD: { target: "loading" },
 
@@ -129,12 +135,6 @@ export const SpotifyPlayerMachine = machine<
           });
 
           player.addListener("player_state_changed", (state) => {
-
-            // seek 更新
-            callback({
-              type: "SET_SEEK",
-              seek: state.position
-            });
 
             console.log({ state });
 
@@ -193,6 +193,11 @@ export const SpotifyPlayerMachine = machine<
                 uris: [`spotify:track:${id}`]
               });
 
+              callback({
+                type: "SET_SEEK",
+                seek: 0
+              });
+
               callback("PLAYING");
 
             } else {
@@ -223,16 +228,19 @@ export const SpotifyPlayerMachine = machine<
     }
   },
   { actions: {
-    changeSeek: (_, event) => {
+    changeSeek: assign({ seek: (_, event) => {
 
       const spotify = getSpotify();
       if ("seek" in event && spotify) {
 
         spotify.seek(event.seek);
+        return event.seek;
 
       }
 
-    },
+      return 0;
+
+    } }),
 
     setTrack: assign({ track: ({ track }, event) => "track" in event ? event.track : track }),
 
