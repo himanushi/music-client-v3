@@ -2,15 +2,17 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
+import SpotifyWebApi from "spotify-web-api-node";
 import { v4 as uuid } from "uuid";
 import {
   assign, interpret, Machine as machine
 } from "xstate";
 import { cookie } from "~/lib/cookie";
 
-const spotifyState = "spotifyState";
-const spotifyAccessToken = "spotifyAccessToken";
-const spotifyRefreshToken = "spotifyRefreshTokenDummy";
+export const spotifyState = "spotifyState";
+export const spotifyAccessToken = "spotifyAccessToken";
+export const spotifyRefreshToken = "spotifyRefreshTokenDummy";
+export const spotifyPremiumUser = "spotifyPremiumUser";
 
 export type accountContext = {
   login: (code?: string) => void;
@@ -89,11 +91,35 @@ export const accountMachine = machine<
 
           if (accessToken || refreshTokenToken) {
 
-            callback("AUTHORIZED");
+            (async () => {
+
+              const spotify = new SpotifyWebApi({ accessToken });
+              const me = await spotify.getMe().catch((error) => {
+
+                console.log(error);
+                callback("UNAUTHORIZED");
+
+              });
+
+              if (me && me.body.product === "premium") {
+
+                cookie.set(spotifyPremiumUser, "true");
+
+              } else {
+
+                cookie.set(spotifyPremiumUser, "false");
+
+              }
+
+              callback("AUTHORIZED");
+
+            })();
+
+          } else {
+
+            callback("UNAUTHORIZED");
 
           }
-
-          callback("UNAUTHORIZED");
 
         } },
 
