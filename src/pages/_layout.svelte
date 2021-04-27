@@ -10,11 +10,11 @@ import client from "~/graphql/client";
 setClient(client);
 </script>
 
+<Initializer />
 <Header />
 <Content><slot /></Content>
 <Footer />
 <Modal />
-<Initializer />
 
 <style lang="scss">
 :global(body) {

@@ -9,7 +9,8 @@ module.exports = {
     DndEvent: false,
     MediaMetadata: true,
     MusicKit: false,
-    NodeJS: false
+    NodeJS: false,
+    Spotify: false
   },
   overrides: [
     {

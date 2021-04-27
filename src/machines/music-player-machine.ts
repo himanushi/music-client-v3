@@ -12,6 +12,7 @@ import {
 } from "xstate";
 import { sendParent } from "xstate/lib/actions";
 import { Track } from "~/graphql/types";
+import { cookie } from "~/lib/cookie";
 import {
   AppleMusicPlayerMachine,
   AppleMusicPlayerState,
@@ -22,6 +23,15 @@ import {
   PreviewPlayerState,
   PreviewPlayerStateEvent
 } from "~/machines/preview-player-machine";
+import {
+  spotifyAccessToken,
+  spotifyPremiumUser
+} from "~/machines/spotify-account-machine";
+import {
+  SpotifyPlayerMachine,
+  SpotifyPlayerState,
+  SpotifyPlayerStateEvent
+} from "~/machines/spotify-player-machine";
 
 export type MusicPlayerContext = {
   previewPlayerRef?: SpawnedActorRef<
@@ -31,6 +41,10 @@ export type MusicPlayerContext = {
   appleMusicPlayerRef?: SpawnedActorRef<
     AppleMusicPlayerStateEvent,
     AppleMusicPlayerState
+  >;
+  spotifyPlayerRef?: SpawnedActorRef<
+    SpotifyPlayerStateEvent,
+    SpotifyPlayerState
   >;
   track?: Track;
   duration: number;
@@ -66,10 +80,12 @@ export type MusicPlayerEvent =
 
 const previewPlayerId = "preview";
 const appleMusicPlayerId = "apple-music-player";
+const spotifyPlayerId = "spotify-player";
 
 const selectPlayer = (context: MusicPlayerContext) => {
 
   let appleAuth = false;
+
   try {
 
     appleAuth = MusicKit.getInstance().isAuthorized;
@@ -87,6 +103,19 @@ const selectPlayer = (context: MusicPlayerContext) => {
   ) {
 
     return appleMusicPlayerId;
+
+  }
+
+  const accessToken = cookie.get(spotifyAccessToken);
+  const premiumUser = cookie.get(spotifyPremiumUser) === "true";
+
+  if (
+    premiumUser &&
+    accessToken &&
+    context.track?.spotifyTracks?.find((track) => track)?.spotifyId
+  ) {
+
+    return spotifyPlayerId;
 
   }
 
@@ -218,6 +247,7 @@ export const MusicPlayerMachine = machine<
     ),
 
     initPlayers: assign({
+      spotifyPlayerRef: (_) => spawn(SpotifyPlayerMachine, spotifyPlayerId),
       appleMusicPlayerRef: (_) => spawn(AppleMusicPlayerMachine, appleMusicPlayerId),
       previewPlayerRef: (_) => spawn(PreviewPlayerMachine, previewPlayerId)
     }),
