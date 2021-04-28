@@ -147,10 +147,38 @@ export const accountMachine = machine<
 
         states: {
           idle: {
-            on: { LOGIN_OR_LOGOUT: "logout" },
+            invoke: { src: ({ login }) => (callback) => {
+
+              // expire から算出すべき
+              const minutes = 40;
+              const ms = minutes * 60 * 1000;
+
+              const id = setInterval(() => {
+
+                if (cookie.get(spotifyRefreshToken)) {
+
+                  login();
+
+                } else {
+
+                  callback("LOGOUT");
+
+                }
+
+              }, ms);
+
+              return () => clearInterval(id);
+
+            } },
+
+            on: {
+              LOGIN_OR_LOGOUT: "logout",
+              LOGOUT: "logout"
+            },
 
             meta: { label: "ログアウト" }
           },
+
           logout: {
             invoke: { src: ({ logout }) => (callback) => {
 
