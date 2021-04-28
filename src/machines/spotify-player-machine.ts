@@ -11,7 +11,10 @@ import {
   SpotifyTrack, Track
 } from "~/graphql/types";
 import { cookie } from "~/lib/cookie";
-import { spotifyAccessToken } from "~/machines/spotify-account-machine";
+import {
+  spotifyAccessToken,
+  spotifyRefreshToken
+} from "~/machines/spotify-account-machine";
 
 export type SpotifyPlayerContext = {
   track?: Track;
@@ -21,6 +24,7 @@ export type SpotifyPlayerContext = {
 
 export type SpotifyPlayerStateSchema = {
   states: {
+    initializing: {};
     idle: {};
     loading: {};
     playing: {};
@@ -35,6 +39,7 @@ export type SpotifyPlayerStateEvent =
   | { type: "SET_SEEK"; seek: number }
   | { type: "SET_DEVICE_ID"; deviceId: string }
   | { type: "CHANGE_SEEK"; seek: number }
+  | { type: "IDLE" }
   | { type: "LOAD" }
   | { type: "PLAY" }
   | { type: "PLAYING" }
@@ -143,7 +148,7 @@ export const SpotifyPlayerMachine = machine<
     context: { seek: 0 },
     id: SpotifyPlayerId,
 
-    initial: "idle",
+    initial: "initializing",
 
     on: {
       CHANGE_SEEK: { actions: [
@@ -185,6 +190,25 @@ export const SpotifyPlayerMachine = machine<
     } },
 
     states: {
+      initializing: {
+        invoke: { src: () => (callback) => {
+
+          const id = setInterval(() => {
+
+            if (cookie.get(spotifyRefreshToken)) {
+
+              callback("IDLE");
+
+            }
+
+          }, 1000);
+
+          return () => clearInterval(id);
+
+        } },
+        on: { IDLE: "idle" }
+      },
+
       idle: { invoke: { src: () => (callback: Sender<SpotifyPlayerStateEvent>) => {
 
         // 初回接続

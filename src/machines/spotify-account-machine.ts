@@ -185,6 +185,7 @@ export const accountMachine = machine<
               (async () => {
 
                 await logout();
+                cookie.remove(spotifyPremiumUser);
                 callback("WAITING");
 
               })();
