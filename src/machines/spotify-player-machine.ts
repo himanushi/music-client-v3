@@ -50,6 +50,7 @@ export const SpotifyPlayerId = "spotify-player";
 const getSpotify = () => {
 
   const accessToken = cookie.get(spotifyAccessToken);
+
   if (!accessToken) {
 
     return undefined;
@@ -67,7 +68,7 @@ const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
 
   if (!accessToken) {
 
-    callback("FINISHED");
+    callback("STOPPED");
     return;
 
   }
@@ -82,8 +83,6 @@ const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
   });
 
   player.addListener("player_state_changed", (state) => {
-
-    console.log({ state });
 
     // 正しい seek を設定
     if (state) {
