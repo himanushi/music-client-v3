@@ -83,6 +83,18 @@ const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
 
   player.addListener("player_state_changed", (state) => {
 
+    console.log({ state });
+
+    // 正しい seek を設定
+    if (state) {
+
+      callback({
+        type: "SET_SEEK",
+        seek: state.position
+      });
+
+    }
+
     // FINISHED
     if (
       state &&
@@ -93,15 +105,18 @@ const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
 
       callback("FINISHED");
 
-    }
+    } else if (
+      state &&
+      state.paused &&
+      state.track_window.previous_tracks.length === 0 &&
+      state.position !== 0
+    ) {
 
-    // 正しい seek を設定
-    if (state) {
+      callback("PAUSED");
 
-      callback({
-        type: "SET_SEEK",
-        seek: state.position
-      });
+    } else if (state && !state.paused) {
+
+      callback("PLAYING");
 
     }
 
@@ -142,23 +157,11 @@ export const SpotifyPlayerMachine = machine<
 
       LOAD: { target: "loading" },
 
-      PLAY: {
-        actions: ["play"],
-        target: "playing"
-      },
-
-      PLAYING: "playing",
-
       SET_TRACK: { actions: ["setTrack"] },
 
       SET_SEEK: { actions: ["setSeek"] },
 
       SET_DEVICE_ID: { actions: ["setDeviceId"] },
-
-      STOP: {
-        actions: ["stop"],
-        target: "stopped"
-      },
 
       TICK: { actions: [
         "tick",
@@ -188,6 +191,8 @@ export const SpotifyPlayerMachine = machine<
         // 初回接続
         window.onSpotifyWebPlaybackSDKReady = () => {
 
+          // eslint-disable-next-line no-console
+          console.log("init Spotify");
           connectSpotify(callback);
 
         };
@@ -196,9 +201,6 @@ export const SpotifyPlayerMachine = machine<
         script.setAttribute("src", "https://sdk.scdn.co/spotify-player.js");
         script.setAttribute("type", "text/javascript");
         document.head.appendChild(script);
-
-        // eslint-disable-next-line no-console
-        console.log("init Spotify");
 
       } } },
 
@@ -252,13 +254,39 @@ export const SpotifyPlayerMachine = machine<
         }
       },
 
-      paused: { entry: [sendParent("PAUSED")] },
+      paused: {
+        entry: [sendParent("PAUSED")],
+        on: {
+          PLAY: { actions: ["replay"] },
+          PLAYING: "playing",
+          STOP: {
+            actions: ["stop"],
+            target: "stopped"
+          }
+        }
+      },
 
-      playing: { entry: [sendParent("PLAYING")] },
+      playing: {
+        entry: [sendParent("PLAYING")],
+        on: {
+          PAUSE: { actions: ["pause"] },
+          PAUSED: "paused",
+          STOP: {
+            actions: ["stop"],
+            target: "stopped"
+          }
+        }
+      },
 
-      stopped: { entry: [sendParent("STOPPED")] },
+      stopped: {
+        entry: [sendParent("STOPPED")],
+        on: { PLAY: "loading" }
+      },
 
-      finished: { entry: [sendParent("FINISHED")] }
+      finished: {
+        entry: [sendParent("FINISHED")],
+        on: { PLAY: "loading" }
+      }
     }
   },
   { actions: {
@@ -298,7 +326,38 @@ export const SpotifyPlayerMachine = machine<
 
     } }),
 
-    pause: () => {}
+    replay: () => {
+
+      const spotify = getSpotify();
+      if (spotify) {
+
+        spotify.play();
+
+      }
+
+    },
+
+    pause: () => {
+
+      const spotify = getSpotify();
+      if (spotify) {
+
+        spotify.pause();
+
+      }
+
+    },
+
+    stop: () => {
+
+      const spotify = getSpotify();
+      if (spotify) {
+
+        spotify.pause();
+
+      }
+
+    }
   } }
 );
 

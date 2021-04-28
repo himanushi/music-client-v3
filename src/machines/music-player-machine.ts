@@ -262,6 +262,7 @@ export const MusicPlayerMachine = machine<
 
       context.previewPlayerRef?.send({ type: "PAUSE" });
       context.appleMusicPlayerRef?.send({ type: "PAUSE" });
+      context.spotifyPlayerRef?.send({ type: "PAUSE" });
 
     },
 
@@ -320,6 +321,7 @@ export const MusicPlayerMachine = machine<
 
       context.previewPlayerRef?.send({ type: "STOP" });
       context.appleMusicPlayerRef?.send({ type: "STOP" });
+      context.spotifyPlayerRef?.send({ type: "STOP" });
 
     },
 
