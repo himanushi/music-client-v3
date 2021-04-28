@@ -3,6 +3,7 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
 import SpotifyWebApi from "spotify-web-api-node";
+import type { Sender } from "xstate";
 import {
   Machine as machine, assign, sendParent, State
 } from "xstate";
@@ -10,14 +11,12 @@ import {
   SpotifyTrack, Track
 } from "~/graphql/types";
 import { cookie } from "~/lib/cookie";
-import {
-  spotifyAccessToken,
-  spotifyDeviceId
-} from "~/machines/spotify-account-machine";
+import { spotifyAccessToken } from "~/machines/spotify-account-machine";
 
 export type SpotifyPlayerContext = {
   track?: Track;
   seek: number;
+  deviceId?: string;
 };
 
 export type SpotifyPlayerStateSchema = {
@@ -34,6 +33,7 @@ export type SpotifyPlayerStateSchema = {
 export type SpotifyPlayerStateEvent =
   | { type: "SET_TRACK"; track: Track }
   | { type: "SET_SEEK"; seek: number }
+  | { type: "SET_DEVICE_ID"; deviceId: string }
   | { type: "CHANGE_SEEK"; seek: number }
   | { type: "LOAD" }
   | { type: "PLAY" }
@@ -57,6 +57,66 @@ const getSpotify = () => {
   }
 
   return new SpotifyWebApi({ accessToken });
+
+};
+
+// eslint-disable-next-line max-lines-per-function
+const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
+
+  const accessToken = cookie.get(spotifyAccessToken);
+
+  if (!accessToken) {
+
+    callback("FINISHED");
+    return;
+
+  }
+
+  const player = new Spotify.Player({
+    name: "Spotify Player",
+    getOAuthToken: (cb) => {
+
+      cb(accessToken);
+
+    }
+  });
+
+  player.addListener("player_state_changed", (state) => {
+
+    // FINISHED
+    if (
+      state &&
+      state.paused &&
+      state.track_window.previous_tracks.length === 0 &&
+      state.position === 0
+    ) {
+
+      callback("FINISHED");
+
+    }
+
+    // 正しい seek を設定
+    if (state) {
+
+      callback({
+        type: "SET_SEEK",
+        seek: state.position
+      });
+
+    }
+
+  });
+
+  player.addListener("ready", ({ device_id }) => {
+
+    callback({
+      type: "SET_DEVICE_ID",
+      deviceId: device_id
+    });
+
+  });
+
+  player.connect();
 
 };
 
@@ -93,6 +153,8 @@ export const SpotifyPlayerMachine = machine<
 
       SET_SEEK: { actions: ["setSeek"] },
 
+      SET_DEVICE_ID: { actions: ["setDeviceId"] },
+
       STOP: {
         actions: ["stop"],
         target: "stopped"
@@ -109,56 +171,24 @@ export const SpotifyPlayerMachine = machine<
       FINISHED: "finished"
     },
 
+    invoke: { src: () => (callback: Sender<SpotifyPlayerStateEvent>) => {
+
+      // 初回以外の接続
+      if (window.onSpotifyWebPlaybackSDKReady) {
+
+        connectSpotify(callback);
+
+      }
+
+    } },
+
     states: {
-      // eslint-disable-next-line max-lines-per-function
-      idle: { invoke: { src: () => (callback) => {
+      idle: { invoke: { src: () => (callback: Sender<SpotifyPlayerStateEvent>) => {
 
-        const accessToken = cookie.get(spotifyAccessToken);
-
-        // eslint-disable-next-line max-lines-per-function
+        // 初回接続
         window.onSpotifyWebPlaybackSDKReady = () => {
 
-          if (!accessToken) {
-
-            console.log("Not found spotify token!!");
-            return;
-
-          }
-
-          const player = new Spotify.Player({
-            name: "Spotify Player",
-            getOAuthToken: (cb) => {
-
-              cb(accessToken);
-
-            }
-          });
-
-          player.addListener("player_state_changed", (state) => {
-
-            console.log({ state });
-
-            // FINISHED
-            if (
-              state.paused &&
-                  state.position === 0 &&
-                  state.track_window.previous_tracks.length === 0
-            ) {
-
-              callback("FINISHED");
-
-            }
-
-          });
-
-          player.addListener("ready", ({ device_id }) => {
-
-            console.log("init Spotify");
-            cookie.set(spotifyDeviceId, device_id, { expires: 7 });
-
-          });
-
-          player.connect();
+          connectSpotify(callback);
 
         };
 
@@ -167,15 +197,20 @@ export const SpotifyPlayerMachine = machine<
         script.setAttribute("type", "text/javascript");
         document.head.appendChild(script);
 
+        // eslint-disable-next-line no-console
+        console.log("init Spotify");
+
       } } },
 
       loading: {
-        invoke: { src: ({ track }) => (callback) => {
+        invoke: { src: ({
+          deviceId, track
+        }) => (callback) => {
 
           const id = track?.spotifyTracks?.find((st: SpotifyTrack) => st)?.
             spotifyId;
 
-          if (!id) {
+          if (!id || !deviceId) {
 
             callback("FINISHED");
             return;
@@ -184,12 +219,11 @@ export const SpotifyPlayerMachine = machine<
 
           (async () => {
 
-            const device_id = cookie.get(spotifyDeviceId);
             const spotify = getSpotify();
             if (spotify) {
 
               await spotify.play({
-                device_id,
+                device_id: deviceId,
                 uris: [`spotify:track:${id}`]
               });
 
@@ -246,8 +280,25 @@ export const SpotifyPlayerMachine = machine<
 
     setSeek: assign({ seek: ({ seek }, event) => "seek" in event ? event.seek : seek }),
 
+    setDeviceId: assign({ deviceId: ({ deviceId }, event) => "deviceId" in event ? event.deviceId : deviceId }),
+
     // Spotify api で毎秒再生時間を取得する方法が多分ない
-    tick: assign({ seek: ({ seek }) => seek + 1000 })
+    tick: assign({ seek: ({
+      seek, track
+    }) => {
+
+      const nextSeek = seek + 1000;
+      if (track && track.durationMs < nextSeek) {
+
+        return seek;
+
+      }
+
+      return nextSeek;
+
+    } }),
+
+    pause: () => {}
   } }
 );
 

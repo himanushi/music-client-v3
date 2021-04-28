@@ -101,7 +101,8 @@ export const PreviewPlayerMachine = machine<
 
               player.on("end", () => callback("FINISHED"));
 
-              let timeoutID: number;
+              // ref: https://stackoverflow.com/questions/45802988/typescript-use-correct-version-of-settimeout-node-vs-window
+              let timeoutID: ReturnType<typeof setTimeout>;
               const volume = 0.5;
               const fadeouttime = 2000;
 

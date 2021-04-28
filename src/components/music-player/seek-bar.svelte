@@ -72,7 +72,7 @@ const onChangeSeek = (event: Event) => {
     bind:value={$seek}
     on:change={onChangeSeek}
   />
-  <Text>-{toMMSS($player.context.duration - $player.context.seek)}</Text>
+  <Text>{toMMSS($player.context.duration)}</Text>
 {/if}
 
 <style lang="scss">

@@ -12,7 +12,6 @@ import { cookie } from "~/lib/cookie";
 export const spotifyState = "spotifyState";
 export const spotifyAccessToken = "spotifyAccessToken";
 export const spotifyRefreshToken = "spotifyRefreshTokenDummy";
-export const spotifyDeviceId = "spotifyDeviceId";
 export const spotifyPremiumUser = "spotifyPremiumUser";
 
 export type accountContext = {
@@ -88,36 +87,42 @@ export const accountMachine = machine<
         // eslint-disable-next-line max-lines-per-function
         invoke: { src: ({ login }) => (callback) => {
 
-          const accessToken = cookie.get(spotifyAccessToken);
           const refreshTokenToken = cookie.get(spotifyRefreshToken);
 
-          if (accessToken || refreshTokenToken) {
+          if (refreshTokenToken) {
 
             (async () => {
 
               // 一旦トークンを更新しておく
               await login();
 
-              const spotify = new SpotifyWebApi({ accessToken });
-              const me = await spotify.getMe().catch((error) => {
+              const accessToken = cookie.get(spotifyAccessToken);
 
+              try {
+
+                const spotify = new SpotifyWebApi({ accessToken });
+                const me = await spotify.getMe();
+
+                // 有料アカウントのみフル再生が可能なためメモ
+                if (me && me.body.product === "premium") {
+
+                  cookie.set(spotifyPremiumUser, "true");
+
+                } else {
+
+                  cookie.set(spotifyPremiumUser, "false");
+
+                }
+
+                callback("AUTHORIZED");
+
+              } catch (error) {
+
+                // eslint-disable-next-line no-console
                 console.log(error);
                 callback("UNAUTHORIZED");
 
-              });
-
-              // 有料アカウントのみフル再生が可能なためメモ
-              if (me && me.body.product === "premium") {
-
-                cookie.set(spotifyPremiumUser, "true");
-
-              } else {
-
-                cookie.set(spotifyPremiumUser, "false");
-
               }
-
-              callback("AUTHORIZED");
 
             })();
 
@@ -236,14 +241,6 @@ export const accountMachine = machine<
           `&state=${id}`;
 
       window.open(url, "_self");
-
-    },
-
-    logout: ({ logout }) => {
-
-      cookie.remove(spotifyAccessToken);
-      cookie.remove(spotifyRefreshToken);
-      logout();
 
     },
 

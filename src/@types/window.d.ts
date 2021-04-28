@@ -15,7 +15,7 @@
  */
 
 interface Window {
-  onSpotifyWebPlaybackSDKReady(): void;
+  onSpotifyWebPlaybackSDKReady?(): void;
   Spotify: typeof Spotify;
 }
 

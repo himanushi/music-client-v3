@@ -39,6 +39,9 @@ module.exports = {
     // コメントアウトの文章の初めを大文字にしない
     "capitalized-comments": "off",
 
+    // 戻り値の値を強制しない
+    "consistent-return": "off",
+
     // デフォルト値がある引数は最後にしなくても良い
     "default-param-last": "off",
 
