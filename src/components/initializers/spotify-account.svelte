@@ -10,6 +10,7 @@ const client = getClient();
 const login = async (code?: string) => {
 
   await client.query({
+    fetchPolicy: "no-cache",
     query: SpotifyLoginDocument,
     variables: { code }
   });
@@ -18,7 +19,10 @@ const login = async (code?: string) => {
 
 const logout = async () => {
 
-  await client.query({ query: SpotifyLogoutDocument });
+  await client.query({
+    fetchPolicy: "no-cache",
+    query: SpotifyLogoutDocument
+  });
 
 };
 

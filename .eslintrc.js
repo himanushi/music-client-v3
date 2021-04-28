@@ -93,6 +93,9 @@ module.exports = {
 
     "max-statements": "off",
 
+    // 複数行用のコメント記述法を強制しない
+    "multiline-comment-style": "off",
+
     // 三項演算子は改行してもしなくても良い
     "multiline-ternary": [
       "error",
