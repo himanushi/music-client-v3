@@ -2,7 +2,7 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
-import { inspect } from "@xstate/inspect";
+// import { inspect } from "@xstate/inspect";
 import {
   Machine as machine,
   SpawnedActorRef,
@@ -234,18 +234,35 @@ export const JukeboxMachine = machine<
 
       previousPlaybackNo: assign({ currentPlaybackNo: ({ currentPlaybackNo }) => currentPlaybackNo === 0 ? 0 : currentPlaybackNo - 1 }),
 
-      removeTrack: assign({ tracks: (context, event) => {
+      removeTrack: assign({
+        currentPlaybackNo: (context, event) => {
 
-        if ("removeIndex" in event) {
+          if (
+            "removeIndex" in event &&
+            context.currentPlaybackNo > event.removeIndex
+          ) {
 
-          return context.tracks.filter(
-            (_, index) => index !== event.removeIndex
-          );
+            return context.currentPlaybackNo - 1;
+
+          }
+
+          return context.currentPlaybackNo;
+
+        },
+
+        tracks: (context, event) => {
+
+          if ("removeIndex" in event) {
+
+            return context.tracks.filter(
+              (_, index) => index !== event.removeIndex
+            );
+
+          }
+          return context.tracks;
 
         }
-        return context.tracks;
-
-      } }),
+      }),
 
       repeat: assign({ repeat: ({ repeat }) => !repeat }),
 
@@ -306,6 +323,6 @@ export type JukeboxState = State<
   }
 >;
 
-inspect({ iframe: false });
+// inspect({ iframe: false });
 
-export const playerService = interpret(JukeboxMachine, { devTools: true }).start();
+export const playerService = interpret(JukeboxMachine).start();
