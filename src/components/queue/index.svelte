@@ -7,10 +7,16 @@ import Text from "~/components/text.svelte";
 import type { Track } from "~/graphql/types";
 import { playerService } from "~/machines/jukebox-machine";
 
-type ItemsType = { id: number; track: Track }[];
+type ItemsType = {
+  id: number;
+  track: Track;
+  isDndShadowItem?: boolean;
+  index: number;
+}[];
 
 let items: ItemsType = $playerService.context.tracks.map((track, index) => ({
   id: index,
+  index,
   track
 }));
 
@@ -48,18 +54,36 @@ const finalize = (
   }
 ) => {
 
-  const {
-    items: newItems,
-    info: { source }
-  } = event.detail;
+  const { info: { source } } = event.detail;
+
+  let from = 0;
+  let to = 0;
+
+  const newItems = items.map((item, index) => {
+
+    if (item.isDndShadowItem) {
+
+      from = item.index;
+      to = index;
+
+    }
+
+    return {
+      id: item.id,
+      index,
+      track: item.track
+    };
+
+  });
 
   // player items との同期は見栄えがバグるのであえてしない
   playerService.send({
-    tracks: newItems.map((item) => item.track),
+    from,
+    to,
     type: "MOVE"
   });
 
-  items = newItems as ItemsType;
+  items = newItems;
 
   if (source === SOURCES.POINTER) {
 

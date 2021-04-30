@@ -38,6 +38,39 @@ export type JukeboxSchema = {
   };
 };
 
+// ref: https://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
+const move = (arr: any[], from: number, to: number) => {
+
+  let old_index = from;
+  let new_index = to;
+
+  while (old_index < 0) {
+
+    old_index += arr.length;
+
+  }
+  while (new_index < 0) {
+
+    new_index += arr.length;
+
+  }
+  if (new_index >= arr.length) {
+
+    let length = new_index - arr.length + 1;
+    // eslint-disable-next-line no-plusplus
+    while (length--) {
+
+      arr.push(undefined);
+
+    }
+
+  }
+
+  arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+  return arr;
+
+};
+
 export type JukeboxEvent =
   // Queue
   | { type: "SET_NAME"; name: string }
@@ -48,7 +81,8 @@ export type JukeboxEvent =
     }
   | {
       type: "MOVE";
-      tracks: JukeboxContext["tracks"];
+      from: number;
+      to: number;
     }
   | {
       type: "REMOVE";
@@ -148,7 +182,7 @@ export const JukeboxMachine = machine<
         target: "loading"
       },
 
-      MOVE: { actions: ["replaceTracks"] },
+      MOVE: { actions: ["moveTracks"] },
 
       NEXT_PLAY: [
         {
@@ -267,6 +301,49 @@ export const JukeboxMachine = machine<
       repeat: assign({ repeat: ({ repeat }) => !repeat }),
 
       replaceTracks: assign({ tracks: (_, event) => "tracks" in event ? event.tracks : [] }),
+
+      moveTracks: assign({
+        currentPlaybackNo: ({ currentPlaybackNo }, event) => {
+
+          if ("from" in event && "to" in event) {
+
+            if (currentPlaybackNo === event.from) {
+
+              return event.to;
+
+            } else if (
+              event.from < currentPlaybackNo &&
+              currentPlaybackNo <= event.to
+            ) {
+
+              return currentPlaybackNo - 1;
+
+            } else if (
+              event.from > currentPlaybackNo &&
+              currentPlaybackNo >= event.to
+            ) {
+
+              return currentPlaybackNo + 1;
+
+            }
+
+          }
+
+          return currentPlaybackNo;
+
+        },
+        tracks: ({ tracks }, event) => {
+
+          if ("from" in event && "to" in event) {
+
+            return move(tracks, event.from, event.to);
+
+          }
+
+          return tracks;
+
+        }
+      }),
 
       setMediaMetadata: ({ currentTrack }) => {
 

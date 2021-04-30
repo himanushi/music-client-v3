@@ -157,6 +157,7 @@ export const SpotifyPlayerMachine = machine<
 >(
   {
     context: { seek: 0 },
+
     id: spotifyPlayerId,
 
     initial: "initializing",
