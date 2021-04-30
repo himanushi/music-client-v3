@@ -26,15 +26,21 @@ export type SpotifyPlayerStateSchema = {
   states: {
     initializing: {};
     idle: {};
-    loading: {};
-    playing: {};
-    paused: {};
+    listening: {
+      states: {
+        connecting: {};
+        loading: {};
+        playing: {};
+        paused: {};
+      };
+    };
     stopped: {};
     finished: {};
   };
 };
 
 export type SpotifyPlayerStateEvent =
+  | { type: "CONNECTED" }
   | { type: "SET_TRACK"; track: Track }
   | { type: "SET_SEEK"; seek: number }
   | { type: "SET_DEVICE_ID"; deviceId: string }
@@ -50,7 +56,8 @@ export type SpotifyPlayerStateEvent =
   | { type: "FINISHED" }
   | { type: "TICK" };
 
-export const SpotifyPlayerId = "spotify-player";
+export const spotifyPlayerId = "spotify-player";
+const playerName = "ゲーム音楽";
 
 const getSpotify = () => {
 
@@ -79,7 +86,7 @@ const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
   }
 
   const player = new Spotify.Player({
-    name: "Spotify Player",
+    name: playerName,
     getOAuthToken: (cb) => {
 
       cb(accessToken);
@@ -133,9 +140,13 @@ const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
       deviceId: device_id
     });
 
+    callback("CONNECTED");
+
   });
 
   player.connect();
+
+  return () => player.disconnect();
 
 };
 
@@ -146,7 +157,7 @@ export const SpotifyPlayerMachine = machine<
 >(
   {
     context: { seek: 0 },
-    id: SpotifyPlayerId,
+    id: spotifyPlayerId,
 
     initial: "initializing",
 
@@ -159,7 +170,7 @@ export const SpotifyPlayerMachine = machine<
         }))
       ] },
 
-      LOAD: { target: "loading" },
+      LOAD: { target: "listening" },
 
       SET_TRACK: { actions: ["setTrack"] },
 
@@ -177,17 +188,6 @@ export const SpotifyPlayerMachine = machine<
 
       FINISHED: "finished"
     },
-
-    invoke: { src: () => (callback: Sender<SpotifyPlayerStateEvent>) => {
-
-      // 初回以外の接続
-      if (window.onSpotifyWebPlaybackSDKReady) {
-
-        connectSpotify(callback);
-
-      }
-
-    } },
 
     states: {
       initializing: {
@@ -209,14 +209,13 @@ export const SpotifyPlayerMachine = machine<
         on: { IDLE: "idle" }
       },
 
-      idle: { invoke: { src: () => (callback: Sender<SpotifyPlayerStateEvent>) => {
+      idle: { invoke: { src: () => () => {
 
-        // 初回接続
+        // Spotify SDK 読み込み
         window.onSpotifyWebPlaybackSDKReady = () => {
 
           // eslint-disable-next-line no-console
           console.log("init Spotify");
-          connectSpotify(callback);
 
         };
 
@@ -227,88 +226,98 @@ export const SpotifyPlayerMachine = machine<
 
       } } },
 
-      loading: {
-        invoke: { src: ({
-          deviceId, track
-        }) => (callback) => {
+      listening: {
+        initial: "connecting",
 
-          const id = track?.spotifyTracks?.find((st: SpotifyTrack) => st)?.
-            spotifyId;
+        invoke: { src: () => (callback: Sender<SpotifyPlayerStateEvent>) => connectSpotify(callback) },
 
-          if (!id || !deviceId) {
+        states: {
+          connecting: { on: { CONNECTED: "loading" } },
 
-            callback("FINISHED");
-            return;
+          loading: {
+            invoke: { src: ({
+              deviceId, track
+            }) => (callback) => {
 
-          }
+              const id = track?.spotifyTracks?.find((st: SpotifyTrack) => st)?.
+                spotifyId;
 
-          (async () => {
+              if (!id || !deviceId) {
 
-            const spotify = getSpotify();
-            if (spotify) {
+                callback("FINISHED");
+                return;
 
-              await spotify.play({
-                device_id: deviceId,
-                uris: [`spotify:track:${id}`]
-              });
+              }
 
-              callback({
-                type: "SET_SEEK",
-                seek: 0
-              });
+              (async () => {
 
-              callback("PLAYING");
+                const spotify = getSpotify();
+                if (spotify) {
 
-            } else {
+                  await spotify.play({
+                    device_id: deviceId,
+                    uris: [`spotify:track:${id}`]
+                  });
 
-              callback("FINISHED");
+                  callback({
+                    type: "SET_SEEK",
+                    seek: 0
+                  });
 
+                  callback("PLAYING");
+
+                } else {
+
+                  callback("FINISHED");
+
+                }
+
+              })();
+
+            } },
+
+            entry: [sendParent("LOADING")],
+
+            on: {
+              PLAYING: "playing",
+              FINISHED: `#${spotifyPlayerId}.finished`
             }
+          },
 
-          })();
+          paused: {
+            entry: [sendParent("PAUSED")],
+            on: {
+              PLAY: { actions: ["replay"] },
+              PLAYING: "playing",
+              STOP: {
+                actions: ["stop"],
+                target: `#${spotifyPlayerId}.stopped`
+              }
+            }
+          },
 
-        } },
-
-        entry: [sendParent("LOADING")],
-
-        on: {
-          PLAYING: "playing",
-          FINISHED: "finished"
-        }
-      },
-
-      paused: {
-        entry: [sendParent("PAUSED")],
-        on: {
-          PLAY: { actions: ["replay"] },
-          PLAYING: "playing",
-          STOP: {
-            actions: ["stop"],
-            target: "stopped"
-          }
-        }
-      },
-
-      playing: {
-        entry: [sendParent("PLAYING")],
-        on: {
-          PAUSE: { actions: ["pause"] },
-          PAUSED: "paused",
-          STOP: {
-            actions: ["stop"],
-            target: "stopped"
+          playing: {
+            entry: [sendParent("PLAYING")],
+            on: {
+              PAUSE: { actions: ["pause"] },
+              PAUSED: "paused",
+              STOP: {
+                actions: ["stop"],
+                target: `#${spotifyPlayerId}.stopped`
+              }
+            }
           }
         }
       },
 
       stopped: {
         entry: [sendParent("STOPPED")],
-        on: { PLAY: "loading" }
+        on: { PLAY: "listening" }
       },
 
       finished: {
         entry: [sendParent("FINISHED")],
-        on: { PLAY: "loading" }
+        on: { PLAY: "listening" }
       }
     }
   },

@@ -254,10 +254,6 @@ export const MusicPlayerMachine = machine<
 
     loadToPlayer: send("LOAD", { to: selectPlayer }),
 
-    /*
-     * 一時停止する場合は再生中のプレイヤーのみですべきだが、面倒なので全てのプレイヤーに対して行う
-     * いつかリファクタすること
-     */
     pauseToPlayers: (context) => {
 
       context.previewPlayerRef?.send({ type: "PAUSE" });
@@ -313,10 +309,6 @@ export const MusicPlayerMachine = machine<
       { to: selectPlayer }
     ),
 
-    /*
-     * 停止する場合は再生中のプレイヤーのみですべきだが、面倒なので全てのプレイヤーに対して行う
-     * いつかリファクタすること
-     */
     stopToPlayers: (context) => {
 
       context.previewPlayerRef?.send({ type: "STOP" });
