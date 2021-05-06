@@ -84,6 +84,19 @@ const spotifyPlayerId = "spotify-player";
 
 const selectPlayer = (context: MusicPlayerContext) => {
 
+  const accessToken = cookie.get(spotifyAccessToken);
+  const premiumUser = cookie.get(spotifyPremiumUser) === "true";
+
+  if (
+    premiumUser &&
+    accessToken &&
+    context.track?.spotifyTracks?.find((track) => track)?.spotifyId
+  ) {
+
+    return spotifyPlayerId;
+
+  }
+
   let appleAuth = false;
 
   try {
@@ -103,19 +116,6 @@ const selectPlayer = (context: MusicPlayerContext) => {
   ) {
 
     return appleMusicPlayerId;
-
-  }
-
-  const accessToken = cookie.get(spotifyAccessToken);
-  const premiumUser = cookie.get(spotifyPremiumUser) === "true";
-
-  if (
-    premiumUser &&
-    accessToken &&
-    context.track?.spotifyTracks?.find((track) => track)?.spotifyId
-  ) {
-
-    return spotifyPlayerId;
 
   }
 
