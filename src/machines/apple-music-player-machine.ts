@@ -79,7 +79,7 @@ export type AppleMusicPlayerStateEvent =
   | { type: "FINISHED" }
   | { type: "TICK" };
 
-export const AppleMusicPlayerId = "apple-music-player";
+export const appleMusicPlayerId = "apple-music-player";
 
 export const AppleMusicPlayerMachine = machine<
   AppleMusicPlayerContext,
@@ -88,7 +88,8 @@ export const AppleMusicPlayerMachine = machine<
 >(
   {
     context: { seek: 0 },
-    id: AppleMusicPlayerId,
+
+    id: appleMusicPlayerId,
 
     initial: "idle",
 
@@ -164,7 +165,7 @@ export const AppleMusicPlayerMachine = machine<
 
           fetching: {
             entry: ["play"],
-            on: { PLAYING: `#${AppleMusicPlayerId}.playing` },
+            on: { PLAYING: `#${appleMusicPlayerId}.playing` },
             invoke: { src: () => (callback) => setEvents(callback, [
               [
                 "playing",

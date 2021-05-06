@@ -17,7 +17,9 @@ $: {
 </script>
 
 {#if currentTrack && name}
-  <Text>{name}</Text>
-  <Image src={currentTrack.artworkM.url} class="w-60 h-60" />
-  <Text>{currentTrack.name}</Text>
+  {#key currentTrack.id}
+    <Text>{name}</Text>
+    <Image src={currentTrack.artworkM.url} class="w-60 h-60" />
+    <Text>{currentTrack.name}</Text>
+  {/key}
 {/if}

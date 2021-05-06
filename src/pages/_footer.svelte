@@ -34,14 +34,16 @@ const showPlayer = () => {
 
 <footer>
   {#if track}
-    <div class="track-info">
-      <div class="clickable" on:click={showPlayer}>
-        <Image src={track.artworkM.url} class="h-10 w-10" />
-        <span class="title">
-          <Text>{track.name}</Text>
-        </span>
+    {#key track.id}
+      <div class="track-info">
+        <div class="clickable" on:click={showPlayer}>
+          <Image src={track.artworkM.url} class="h-10 w-10" />
+          <span class="title">
+            <Text>{track.name}</Text>
+          </span>
+        </div>
       </div>
-    </div>
+    {/key}
   {/if}
 
   {#if player}

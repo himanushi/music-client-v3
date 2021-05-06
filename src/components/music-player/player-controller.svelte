@@ -9,6 +9,8 @@ import { playerService } from "~/machines/jukebox-machine";
 
 $: player = $playerService.context.musicPlayerRef;
 
+$: disabled = player && $player.value === "loading";
+
 const play_or_pause = () => {
 
   playerService.send("PLAY_OR_PAUSE");
@@ -28,12 +30,12 @@ const skip = () => {
 };
 </script>
 
-<IconButton on:click={rewind}>
+<IconButton {disabled} on:click={rewind}>
   <RewindIcon color="text-gray-900" />
 </IconButton>
 
 {#if player}
-  <IconButton on:click={play_or_pause}>
+  <IconButton {disabled} on:click={play_or_pause}>
     {#if $player.value === "playing"}
       <PuaseIcon color="text-gray-900" />
     {:else if $player.value === "loading"}
@@ -44,6 +46,6 @@ const skip = () => {
   </IconButton>
 {/if}
 
-<IconButton on:click={skip}>
+<IconButton {disabled} on:click={skip}>
   <SkipIcon color="text-gray-900" />
 </IconButton>
