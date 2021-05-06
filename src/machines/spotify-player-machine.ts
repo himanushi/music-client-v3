@@ -135,9 +135,7 @@ export const SpotifyPlayerMachine = machine<
 
           loading: {
             invoke: { src: "load" },
-
             entry: [sendParent("LOADING")],
-
             on: {
               PLAYING: "playing",
               FINISHED: `#${spotifyPlayerId}.finished`
