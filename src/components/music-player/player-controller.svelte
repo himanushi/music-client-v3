@@ -1,4 +1,5 @@
 <script lang="ts">
+import RepeatButton from "./repeat-button.svelte";
 import IconButton from "~/components/icon-button.svelte";
 import PuaseIcon from "~/icons/pause.svelte";
 import PlayIcon from "~/icons/play.svelte";
@@ -29,6 +30,8 @@ const skip = () => {
 
 };
 </script>
+
+<RepeatButton />
 
 <IconButton {disabled} on:click={rewind}>
   <RewindIcon color="text-gray-900" />
