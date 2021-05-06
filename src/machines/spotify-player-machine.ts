@@ -20,6 +20,7 @@ export type SpotifyPlayerContext = {
   track?: Track;
   seek: number;
   deviceId?: string;
+  accessToken?: string;
 };
 
 export type SpotifyPlayerStateSchema = {
@@ -44,6 +45,7 @@ export type SpotifyPlayerStateEvent =
   | { type: "SET_TRACK"; track: Track }
   | { type: "SET_SEEK"; seek: number }
   | { type: "SET_DEVICE_ID"; deviceId: string }
+  | { type: "SET_ACCESS_TOKEN"; accessToken: string }
   | { type: "CHANGE_SEEK"; seek: number }
   | { type: "IDLE" }
   | { type: "LOAD" }
@@ -74,7 +76,7 @@ const getSpotify = () => {
 };
 
 // eslint-disable-next-line max-lines-per-function
-const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
+const connectSpotify = () => (callback: Sender<SpotifyPlayerStateEvent>) => {
 
   const accessToken = cookie.get(spotifyAccessToken);
 
@@ -84,6 +86,11 @@ const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
     return;
 
   }
+
+  callback({
+    type: "SET_ACCESS_TOKEN",
+    accessToken
+  });
 
   const player = new Spotify.Player({
     name: playerName,
@@ -150,6 +157,27 @@ const connectSpotify = (callback: Sender<SpotifyPlayerStateEvent>) => {
 
 };
 
+const disconnectSpotify = (context: SpotifyPlayerContext) => (
+  callback: Sender<SpotifyPlayerStateEvent>
+) => {
+
+  // access token の更新対応
+  const id = setInterval(() => {
+
+    const accessToken = cookie.get(spotifyAccessToken);
+
+    if (context.accessToken !== accessToken) {
+
+      callback({ type: "STOP" });
+
+    }
+
+  }, 60 * 1000);
+
+  return () => clearInterval(id);
+
+};
+
 export const SpotifyPlayerMachine = machine<
   SpotifyPlayerContext,
   SpotifyPlayerStateSchema,
@@ -178,6 +206,8 @@ export const SpotifyPlayerMachine = machine<
       SET_SEEK: { actions: ["setSeek"] },
 
       SET_DEVICE_ID: { actions: ["setDeviceId"] },
+
+      SET_ACCESS_TOKEN: { actions: ["setAccessToken"] },
 
       TICK: { actions: [
         "tick",
@@ -230,7 +260,7 @@ export const SpotifyPlayerMachine = machine<
       listening: {
         initial: "connecting",
 
-        invoke: { src: () => (callback: Sender<SpotifyPlayerStateEvent>) => connectSpotify(callback) },
+        invoke: { src: connectSpotify },
 
         states: {
           connecting: { on: { CONNECTED: "loading" } },
@@ -286,6 +316,7 @@ export const SpotifyPlayerMachine = machine<
           },
 
           paused: {
+            invoke: { src: disconnectSpotify },
             entry: [sendParent("PAUSED")],
             on: {
               PLAY: { actions: ["replay"] },
@@ -298,6 +329,7 @@ export const SpotifyPlayerMachine = machine<
           },
 
           playing: {
+            invoke: { src: disconnectSpotify },
             entry: [sendParent("PLAYING")],
             on: {
               PAUSE: { actions: ["pause"] },
@@ -342,6 +374,8 @@ export const SpotifyPlayerMachine = machine<
     setSeek: assign({ seek: ({ seek }, event) => "seek" in event ? event.seek : seek }),
 
     setDeviceId: assign({ deviceId: ({ deviceId }, event) => "deviceId" in event ? event.deviceId : deviceId }),
+
+    setAccessToken: assign({ accessToken: ({ accessToken }, event) => "accessToken" in event ? event.accessToken : accessToken }),
 
     // Spotify api で毎秒再生時間を取得する方法が多分ない
     tick: assign({ seek: ({
