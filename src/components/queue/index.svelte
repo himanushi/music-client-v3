@@ -116,7 +116,13 @@ const remove = (index: number) => () => {
     type: "REMOVE"
   });
 
-  items = items.filter((_, indx) => indx !== index);
+  items = items.
+    filter((_, i1) => i1 !== index).
+    map((item, i2) => ({
+      id: item.id,
+      index: i2,
+      track: item.track
+    }));
 
 };
 </script>
