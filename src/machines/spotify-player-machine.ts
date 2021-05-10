@@ -249,7 +249,16 @@ export const SpotifyPlayerMachine = machine<
         const spotify = getSpotify();
         if (spotify) {
 
-          spotify.pause();
+          try {
+
+            spotify.pause();
+
+          } catch (error) {
+
+            // eslint-disable-next-line no-console
+            console.warn(error.message);
+
+          }
 
         }
 
