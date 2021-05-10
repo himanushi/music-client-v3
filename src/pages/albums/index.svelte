@@ -5,6 +5,7 @@ import type {
   conditonsType, sortType
 } from "./_albums.svelte";
 import SearchBar from "./_search-bar.svelte";
+import SearchDetailButton from "./_search-detail-button.svelte";
 import type { Mutable } from "~/@types/extends";
 import type { AlbumsQueryVariables } from "~/graphql/types";
 import buildParameters from "~/lib/build-parameters";
@@ -26,6 +27,7 @@ $: {
 </script>
 
 <SearchBar />
+<SearchDetailButton />
 
 <div class="albums">
   <Albums {conditions} {sort} />

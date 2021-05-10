@@ -22,6 +22,7 @@ const offsetLimitPagination = {
     "conditions",
     [
       "name",
+      "favorite",
       "artists",
       ["id"],
       "albums",
