@@ -28,7 +28,7 @@ let playlists: Playlist[] = [];
 $: playlistsQuery = query<PlaylistsQuery, PlaylistsQueryVariables>(
   PlaylistsDocument,
   {
-    fetchPolicy: "cache-first",
+    fetchPolicy: "no-cache",
     variables: {
       conditions,
       cursor: {

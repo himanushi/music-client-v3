@@ -5,6 +5,10 @@ import {
 import {
   mutation, query
 } from "svelte-apollo";
+import PlayButton from "../_play-button.svelte";
+import DndSelection from "~/components/dnd-selection.svelte";
+import type { ItemsType } from "~/components/dnd-selection.svelte";
+import Text from "~/components/text.svelte";
 import {
   PlaylistDocument, UpsertPlaylistDocument
 } from "~/graphql/types";
@@ -21,9 +25,10 @@ let name = "";
 let description = "";
 let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
 let initialize = true;
+let items: ItemsType = [];
 
 const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
-  fetchPolicy: "cache-first",
+  fetchPolicy: "no-cache",
   variables: { id }
 });
 
@@ -35,6 +40,12 @@ $: if ($playlistQuery.data && initialize) {
   ({
     name, description, publicType
   } = playlist);
+
+  items = playlist.items.map((it, index) => ({
+    id: index,
+    index,
+    item: it.track
+  }));
 
   initialize = false;
 
@@ -52,7 +63,8 @@ const update = async () => {
       description,
       name,
       playlistId: id,
-      publicType
+      publicType,
+      trackIds: items.map((it) => it.item.id)
     } } });
 
     $goto("/playlist/:id", { id });
@@ -60,6 +72,16 @@ const update = async () => {
   } catch (error) {
     // console.error({ error });
   }
+
+};
+
+const changeItems = (
+  event: CustomEvent & {
+    detail: { items: any[] };
+  }
+) => {
+
+  ({ items } = event.detail);
 
 };
 </script>
@@ -77,6 +99,17 @@ const update = async () => {
     <option value="OPEN">公開</option>
     <option value="ANONYMOUS_OPEN">匿名公開</option>
   </select>
+
+  <DndSelection
+    on:remove={changeItems}
+    on:decide={changeItems}
+    {items}
+    let:item
+    let:index
+  >
+    <PlayButton {name} {index} tracks={items.map((it) => it.item)} />
+    <Text>{item.item.name}</Text>
+  </DndSelection>
 
   <button on:click={update}>保存</button>
 </form>

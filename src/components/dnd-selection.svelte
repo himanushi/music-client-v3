@@ -74,12 +74,13 @@ const decide = (
 
   });
 
+  items = newItems;
+
   dispatch("decide", {
     from,
+    items,
     to
   });
-
-  items = newItems;
 
   if (source === SOURCES.POINTER) {
 
@@ -98,8 +99,6 @@ const startDrag = (event: Event) => {
 
 const remove = (index: number) => () => {
 
-  dispatch("remove", { index });
-
   items = items.
     filter((_, i1) => i1 !== index).
     map((item, i2) => ({
@@ -107,6 +106,11 @@ const remove = (index: number) => () => {
       index: i2,
       item: item.item
     }));
+
+  dispatch("remove", {
+    index,
+    items
+  });
 
 };
 </script>

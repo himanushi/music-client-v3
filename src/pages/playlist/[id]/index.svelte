@@ -12,7 +12,7 @@ import type {
 export let id = "";
 
 const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
-  fetchPolicy: "cache-first",
+  fetchPolicy: "no-cache",
   variables: { id }
 });
 
