@@ -1,6 +1,7 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import { query } from "svelte-apollo";
+import PlayButton from "./_play-button.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { PlaylistDocument } from "~/graphql/types";
@@ -45,6 +46,11 @@ const edit = () => {
   {/if}
 
   {#each playlist.items as item, index ((item.id, index))}
+    <PlayButton
+      name={playlist.name}
+      {index}
+      tracks={playlist.items.map((it) => it.track)}
+    />
     <Text>{item.track.name}</Text>
   {/each}
 {/if}
