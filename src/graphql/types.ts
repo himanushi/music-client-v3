@@ -1275,6 +1275,16 @@ export type PlaylistsQuery = {
   >;
 };
 
+export type SelectPlaylistsQueryVariables = Exact<{
+  cursor?: Maybe<CursorInputObject>;
+  sort?: Maybe<PlaylistsSortInputObject>;
+  conditions?: Maybe<PlaylistsConditionsInputObject>;
+}>;
+
+export type SelectPlaylistsQuery = {
+  readonly playlists: ReadonlyArray<Pick<Playlist, "id" | "name">>;
+};
+
 export type SpotifyLoginQueryVariables = Exact<{
   code?: Maybe<Scalars["String"]>;
 }>;
@@ -2512,6 +2522,93 @@ export const PlaylistsDocument: DocumentNode<
                 },
                 { kind: "Field", name: { kind: "Name", value: "createdAt" } },
                 { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
+export const SelectPlaylistsDocument: DocumentNode<
+  SelectPlaylistsQuery,
+  SelectPlaylistsQueryVariables
+> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "SelectPlaylists" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "cursor" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "CursorInputObject" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "PlaylistsSortInputObject" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "conditions" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "PlaylistsConditionsInputObject" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "playlists" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cursor" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cursor" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "sort" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "sort" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "conditions" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "conditions" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
               ],
             },
           },

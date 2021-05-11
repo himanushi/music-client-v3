@@ -1,0 +1,10 @@
+query SelectPlaylists(
+  $cursor: CursorInputObject
+  $sort: PlaylistsSortInputObject
+  $conditions: PlaylistsConditionsInputObject
+) {
+  playlists(cursor: $cursor, sort: $sort, conditions: $conditions) {
+    id
+    name
+  }
+}
