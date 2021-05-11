@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 
 // ref: https://github.com/isaacHagoel/svelte-dnd-action#typescript
@@ -9,6 +10,17 @@ declare namespace svelte.JSX {
     ) => void;
     onfinalize?: (
       event: CustomEvent<DndEvent> & { target: EventTarget & T }
+    ) => void;
+    onmoving?: () => void;
+    onremove?: (
+      event: CustomEvent & {
+        detail: { index: number };
+      }
+    ) => void;
+    ondecide?: (
+      event: CustomEvent & {
+        detail: { from: number; to: number };
+      }
     ) => void;
   }
 }
