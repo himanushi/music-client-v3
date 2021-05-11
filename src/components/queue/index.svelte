@@ -39,7 +39,7 @@ const remove = (
   event: CustomEvent & {
     detail: { index: number };
   }
-) => () => {
+) => {
 
   playerService.send({
     removeIndex: event.detail.index,
