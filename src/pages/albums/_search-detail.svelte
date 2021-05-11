@@ -10,6 +10,7 @@ import type { SearchParamsType } from "~/lib/params";
 
 let keyword = $params[SearchParams.album.keyword];
 let favorite = $params[SearchParams.album.favorite] === "1";
+let username = $params[SearchParams.album.username];
 
 const onClock = () => {
 
@@ -22,6 +23,11 @@ const onClock = () => {
   if (favorite) {
 
     parameters[SearchParams.album.favorite] = "1";
+
+  }
+  if (username) {
+
+    parameters[SearchParams.album.username] = username;
 
   }
   $goto("/albums", parameters);
@@ -40,6 +46,10 @@ const close = () => modal.set(null);
     <label
       >お気に入り
       <input type="checkbox" bind:checked={favorite} />
+    </label>
+    <label
+      >ユーザーID
+      <input type="text" bind:value={username} />
     </label>
     <IconButton on:click={onClock}>
       <SearchIcon />
