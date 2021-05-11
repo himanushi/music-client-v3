@@ -7,6 +7,9 @@ import type {
   Artist, ArtistQuery
 } from "~/graphql/types";
 import Albums from "~/pages/albums/_albums.svelte";
+import type {
+  sortType, conditonsType
+} from "~/pages/albums/_albums.svelte";
 
 export let id = "";
 
@@ -23,7 +26,11 @@ $: if ($artistQuery.data) {
 
 }
 
-const albumConditions = { artists: { id: [id] } };
+const conditions: conditonsType = { artists: { id: [id] } };
+const sort: sortType = {
+  order: "RELEASE",
+  type: "DESC"
+};
 </script>
 
 {#if artist}
@@ -31,5 +38,5 @@ const albumConditions = { artists: { id: [id] } };
     <Image src={artist.artworkL.url} class="h-16 w-16" />
   {/if}
   <Text>{artist.name}</Text>
-  <Albums conditions={albumConditions} />
+  <Albums {conditions} {sort} />
 {/if}

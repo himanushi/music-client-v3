@@ -1,11 +1,15 @@
 <script lang="ts" context="module">
 // ↓ これどうにかしたい
 // eslint-disable-next-line import/order
-import type { ArtistsConditionsInputObject } from "~/graphql/types";
+import type {
+  ArtistsConditionsInputObject,
+  ArtistsSortInputObject
+} from "~/graphql/types";
 // eslint-disable-next-line import/order
 import type { Mutable } from "~/@types/extends";
 
 export type conditonsType = Mutable<ArtistsConditionsInputObject>;
+export type sortType = Mutable<ArtistsSortInputObject>;
 </script>
 
 <script lang="ts">
@@ -21,6 +25,7 @@ import type {
 } from "~/graphql/types";
 
 export let conditions: conditonsType = {};
+export let sort: sortType = {};
 
 const limit = 50;
 let artists: Artist[] = [];
@@ -32,7 +37,8 @@ $: artistsQuery = query<ArtistsQuery, ArtistsQueryVariables>(ArtistsDocument, {
     cursor: {
       limit,
       offset: 0
-    }
+    },
+    sort
   }
 });
 
