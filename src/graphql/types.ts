@@ -623,24 +623,6 @@ export type Mutation_UpsertRoleArgs = {
   input: UpsertRoleInput;
 };
 
-export type MyPlaylistsConditionsInputObject = {
-  /** プレイリスト名( like 検索) */
-  readonly name?: Maybe<Scalars['String']>;
-};
-
-export type MyPlaylistsQueryOrderEnum =
-  /** 作成日順 */
-  | 'NEW'
-  /** 更新日順 */
-  | 'UPDATED';
-
-export type MyPlaylistsSortInputObject = {
-  /** 並び順対象 */
-  readonly order?: Maybe<MyPlaylistsQueryOrderEnum>;
-  /** 並び順 */
-  readonly type?: Maybe<SortEnum>;
-};
-
 /** プレイリスト */
 export type Playlist = {
   /** 作者 */
@@ -686,6 +668,8 @@ export type PlaylistPublicTypeEnum =
 export type PlaylistsConditionsInputObject = {
   /** プレイリスト名( like 検索) */
   readonly name?: Maybe<Scalars['String']>;
+  /** 自身のプレイリストのみ取得 */
+  readonly isMine?: Maybe<Scalars['Boolean']>;
 };
 
 export type PlaylistsQueryOrderEnum =
@@ -723,8 +707,6 @@ export type Query = {
   readonly artists: ReadonlyArray<Artist>;
   /** カレントユーザー情報取得 */
   readonly me: CurrentUser;
-  /** マイプレイリスト一覧取得 */
-  readonly myPlaylists: ReadonlyArray<Playlist>;
   /** プレイリスト取得 */
   readonly playlist?: Maybe<Playlist>;
   /** プレイリスト一覧取得 */
@@ -733,7 +715,7 @@ export type Query = {
   readonly roles: ReadonlyArray<Role>;
   /** Spotify Login */
   readonly spotifyLogin: Scalars['String'];
-  /** refresh token を削除する。client token と refresh dummy token はブラウザで削除すること。 */
+  /** spotify 関連の cookie を削除する */
   readonly spotifyLogout: Scalars['String'];
   /** トラック一覧取得 */
   readonly tracks: ReadonlyArray<Track>;
@@ -766,13 +748,6 @@ export type Query_ArtistsArgs = {
   cursor?: Maybe<CursorInputObject>;
   sort?: Maybe<ArtistsSortInputObject>;
   conditions?: Maybe<ArtistsConditionsInputObject>;
-};
-
-
-export type Query_MyPlaylistsArgs = {
-  cursor?: Maybe<CursorInputObject>;
-  sort?: Maybe<MyPlaylistsSortInputObject>;
-  conditions?: Maybe<MyPlaylistsConditionsInputObject>;
 };
 
 
