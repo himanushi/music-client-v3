@@ -1,6 +1,7 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
 import PlayButton from "./_play-button.svelte";
+import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { AlbumDocument } from "~/graphql/types";
@@ -42,6 +43,7 @@ const sort: sortType = {
   {#each album.tracks as track, index (track.id)}
     <PlayButton {index} name={album.name} tracks={album.tracks} />
     <Text>{track.name}</Text>
+    <AddPlaylistButton {track} />
   {/each}
 
   <Artists {conditions} {sort} />

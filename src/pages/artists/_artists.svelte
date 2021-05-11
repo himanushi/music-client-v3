@@ -61,7 +61,7 @@ const { getElement } = getContext("content");
 const elementScroll: HTMLElement = getElement();
 </script>
 
-{#each artists as artist (artist.id)}
+{#each artists as artist, index (`${artist.id}_${index}`)}
   <Item id={artist.id} name={artist.name} src={artist.artworkM.url || ""} />
 {/each}
 <Waypoint threshold={300} {elementScroll} on:loadMore={loadMore} />

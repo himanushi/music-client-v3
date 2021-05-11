@@ -29,6 +29,11 @@ const offsetLimitPagination = {
       ["id"],
       "usernames",
       []
+    ],
+    "sort",
+    [
+      "order",
+      "type"
     ]
   ],
 
