@@ -2,11 +2,11 @@
 import { url } from "@roxi/routify";
 import Sidebar from "./_sidebar.svelte";
 import IconButton from "~/components/icon-button.svelte";
-import { modal } from "~/components/modal.svelte";
+import { modals } from "~/components/modals.svelte";
 import MenuIcon from "~/icons/menu.svelte";
 import UserIcon from "~/icons/user.svelte";
 
-const showSidebar = () => modal.set(Sidebar);
+const showSidebar = () => modals.open(Sidebar);
 </script>
 
 <header>

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { mutation } from "svelte-apollo";
-import { modal } from "~/components/modal.svelte";
+import { modals } from "~/components/modals.svelte";
 import { UpsertPlaylistDocument } from "~/graphql/types";
 import type {
   PlaylistPublicTypeEnum,
@@ -26,7 +26,7 @@ const create = async () => {
       trackIds: []
     } } });
 
-    modal.set(null);
+    modals.close();
 
   } catch (error) {
     // console.error({ error });

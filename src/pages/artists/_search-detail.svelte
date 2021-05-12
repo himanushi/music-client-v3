@@ -3,7 +3,7 @@ import {
   goto, params
 } from "@roxi/routify";
 import IconButton from "~/components/icon-button.svelte";
-import { modal } from "~/components/modal.svelte";
+import { modals } from "~/components/modals.svelte";
 import SearchIcon from "~/icons/search.svelte";
 import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
@@ -34,7 +34,7 @@ const onClock = () => {
 
 };
 
-const close = () => modal.set(null);
+const close = () => modals.close();
 </script>
 
 <div on:click|stopPropagation>

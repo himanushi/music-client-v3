@@ -1,6 +1,6 @@
 <script lang="ts">
 import IconButton from "~/components/icon-button.svelte";
-import { modal } from "~/components/modal.svelte";
+import { modals } from "~/components/modals.svelte";
 import Player from "~/components/player.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
@@ -27,7 +27,7 @@ const skip = () => {
 
 const showPlayer = () => {
 
-  modal.set(Player);
+  modals.open(Player);
 
 };
 </script>

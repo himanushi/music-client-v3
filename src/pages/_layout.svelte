@@ -4,7 +4,7 @@ import Content from "./_content.svelte";
 import Footer from "./_footer.svelte";
 import Header from "./_header.svelte";
 import Initializer from "~/components/initializers/initializer.svelte";
-import Modal from "~/components/modal.svelte";
+import Modal from "~/components/modals.svelte";
 import client from "~/graphql/client";
 
 setClient(client);

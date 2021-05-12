@@ -2,20 +2,20 @@
 import { goto } from "@roxi/routify";
 import { fly } from "svelte/transition";
 import IconButton from "~/components/icon-button.svelte";
-import { modal } from "~/components/modal.svelte";
+import { modals } from "~/components/modals.svelte";
 import Player from "~/components/player.svelte";
 import ChevronLeft from "~/icons/chevron-left.svelte";
 
-const close = () => modal.set(null);
+const close = () => modals.close();
 
 const go = (path: string) => () => {
 
   $goto(path);
-  modal.set(null);
+  modals.close();
 
 };
 
-const showPlayer = () => modal.set(Player);
+const showPlayer = () => modals.open(Player);
 </script>
 
 <nav
