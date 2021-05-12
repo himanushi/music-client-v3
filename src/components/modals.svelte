@@ -2,11 +2,19 @@
 import { SvelteComponent } from "svelte";
 import { writable } from "svelte/store";
 
+type modalType = {
+  component: typeof SvelteComponent;
+  // 外側クリックでクローズする場合は true, デフォルトは true
+  backdrop?: boolean;
+  class?: string;
+};
+
+// eslint-disable-next-line max-lines-per-function
 const createStore = () => {
 
   const {
     subscribe, update
-  } = writable<typeof SvelteComponent[]>([]);
+  } = writable<modalType[]>([]);
 
   return {
     close: () => {
@@ -21,11 +29,19 @@ const createStore = () => {
 
     },
 
-    open: (component: typeof SvelteComponent) => {
+    open: (props: modalType | typeof SvelteComponent) => {
 
       update((components) => {
 
-        components.push(component);
+        if ("component" in props) {
+
+          components.push(props);
+
+        } else {
+
+          components.push({ component: props });
+
+        }
 
         return components;
 
@@ -42,20 +58,30 @@ export const modals = createStore();
 </script>
 
 <script lang="ts">
-const close = () => modals.close();
+const close = (modal: modalType) => () => {
+
+  if (modal.backdrop === undefined || modal.backdrop) {
+
+    modals.close();
+
+  }
+
+};
 </script>
 
 {#if $modals.length > 0}
   {#each $modals as modal}
-    <div on:click={close}>
-      <svelte:component this={modal} />
+    <div
+      class={`bg-black bg-opacity-30 w-full h-full ${modal.class}`}
+      on:click={close(modal)}
+    >
+      <svelte:component this={modal.component} />
     </div>
   {/each}
 {/if}
 
 <style lang="scss">
 div {
-  @apply absolute w-full h-full z-50;
-  @apply bg-black bg-opacity-30;
+  @apply absolute z-50;
 }
 </style>
