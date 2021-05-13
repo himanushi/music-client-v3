@@ -330,6 +330,8 @@ export type Favorite = {
   readonly albumIds: ReadonlyArray<Scalars["String"]>;
   /** アーティストID */
   readonly artistIds: ReadonlyArray<Scalars["String"]>;
+  /** プレイリストID */
+  readonly playlistIds: ReadonlyArray<Scalars["String"]>;
   /** トラックID */
   readonly trackIds: ReadonlyArray<Scalars["String"]>;
 };
@@ -1061,6 +1063,33 @@ export type AddPlaylistItemsMutation = {
   >;
 };
 
+export type ChangeFavoritesMutationVariables = Exact<{
+  input: ChangeFavoritesInput;
+}>;
+
+export type ChangeFavoritesMutation = {
+  readonly changeFavorites?: Maybe<{
+    readonly currentUser?: Maybe<
+      Pick<
+        CurrentUser,
+        "id" | "name" | "username" | "registered" | "version"
+      > & {
+        readonly publicInformations: ReadonlyArray<
+          Pick<PublicInformation, "id" | "publicType">
+        >;
+        readonly role: Pick<
+          Role,
+          "id" | "name" | "description" | "allowedActions"
+        >;
+        readonly favorite: Pick<
+          Favorite,
+          "albumIds" | "artistIds" | "trackIds" | "playlistIds"
+        >;
+      }
+    >;
+  }>;
+};
+
 export type UpsertPlaylistMutationVariables = Exact<{
   input: UpsertPlaylistInput;
 }>;
@@ -1356,6 +1385,149 @@ export const AddPlaylistItemsDocument: DocumentNode<
                   },
                 },
                 { kind: "Field", name: { kind: "Name", value: "error" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
+export const ChangeFavoritesDocument: DocumentNode<
+  ChangeFavoritesMutation,
+  ChangeFavoritesMutationVariables
+> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ChangeFavorites" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "ChangeFavoritesInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "changeFavorites" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "currentUser" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "registered" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "version" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "publicInformations" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "publicType" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "role" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "allowedActions" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "favorite" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "albumIds" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "artistIds" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "trackIds" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "playlistIds" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
