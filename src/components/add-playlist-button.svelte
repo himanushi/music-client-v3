@@ -50,13 +50,10 @@ const showMyPlaylist = async () => {
       props: { lists: playlists.map((playlsit) => ({
         onClick: async () => {
 
-          await addPlaylist({
-            awaitRefetchQueries: true,
-            variables: { input: {
-              playlistId: playlsit.id,
-              trackIds: [track.id]
-            } }
-          });
+          await addPlaylist({ variables: { input: {
+            playlistId: playlsit.id,
+            trackIds: [track.id]
+          } } });
 
         },
         text: playlsit.name

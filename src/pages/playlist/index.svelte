@@ -30,7 +30,7 @@ $: {
 <SearchDetailButton />
 
 <div class="playlist">
-  <Playlist {conditions} />
+  <Playlist {conditions} {sort} />
 </div>
 
 <style>

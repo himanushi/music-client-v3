@@ -11,6 +11,32 @@ import type { SearchParamsType } from "~/lib/params";
 let keyword = $params[SearchParams.album.keyword];
 let favorite = $params[SearchParams.album.favorite] === "1";
 let username = $params[SearchParams.album.username];
+const order = $params[SearchParams.album.order] || "RELEASE";
+const direction = $params[SearchParams.album.direction] || "DESC";
+
+let orderValue = `${order}.${direction}`;
+const orderItems = [
+  {
+    label: "発売日新しい順",
+    value: "RELEASE.DESC"
+  },
+  {
+    label: "発売日古い順",
+    value: "RELEASE.ASC"
+  },
+  {
+    label: "追加日新しい順",
+    value: "NEW.DESC"
+  },
+  {
+    label: "追加日古い順",
+    value: "NEW.ASC"
+  },
+  {
+    label: "人気順",
+    value: "POPULARITY.DESC"
+  }
+];
 
 const onClock = () => {
 
@@ -28,6 +54,16 @@ const onClock = () => {
   if (username) {
 
     parameters[SearchParams.album.username] = username;
+
+  }
+  if (orderValue) {
+
+    const [
+      _order,
+      _direction
+    ] = orderValue.split(".");
+    parameters[SearchParams.album.order] = _order;
+    parameters[SearchParams.album.direction] = _direction;
 
   }
   $goto("/albums", parameters);
@@ -51,6 +87,13 @@ const close = () => modals.close();
       >ユーザーID
       <input type="text" bind:value={username} />
     </label>
+    <select bind:value={orderValue}>
+      {#each orderItems as item}
+        <option value={item.value}>
+          {item.label}
+        </option>
+      {/each}
+    </select>
     <IconButton on:click={onClock}>
       <SearchIcon />
     </IconButton>

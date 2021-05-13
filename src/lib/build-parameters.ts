@@ -13,12 +13,12 @@ export const ParameterPrefixKeys = {
 };
 
 export const ParameterKeys = {
+  direction: "d",
   favorite: "f",
   ids: "i",
   keyword: "q",
   mine: "m",
   order: "o",
-  sortType: "r",
   status: "s",
   username: "u"
 };
@@ -153,7 +153,7 @@ export default function buildParameters<T> (
   });
 
   // 並び順
-  getUniqueValues(prefixKey + ParameterKeys.sortType).forEach((value) => {
+  getUniqueValues(prefixKey + ParameterKeys.direction).forEach((value) => {
 
     parameters = merge(parameters, { sort: { type: value } });
 
