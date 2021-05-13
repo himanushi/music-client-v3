@@ -103,7 +103,7 @@ export const PreviewPlayerMachine = machine<
 
               // ref: https://stackoverflow.com/questions/45802988/typescript-use-correct-version-of-settimeout-node-vs-window
               let timeoutID: ReturnType<typeof setTimeout>;
-              const volume = 0.5;
+              const volume = 0.1;
               const fadeouttime = 2000;
 
               const fadeIn = () => {

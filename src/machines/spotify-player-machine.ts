@@ -337,7 +337,6 @@ export const SpotifyPlayerMachine = machine<
 
           }
 
-          // FINISHED
           if (
             state &&
             state.paused &&
@@ -428,12 +427,12 @@ export const SpotifyPlayerMachine = machine<
               uris: [`spotify:track:${id}`]
             });
 
+            await spotify.setVolume(10);
+
             callback({
               type: "SET_SEEK",
               seek: 0
             });
-
-            callback("PLAYING");
 
           } else {
 
