@@ -8,9 +8,9 @@ import ChevronLeft from "~/icons/chevron-left.svelte";
 
 const close = () => modals.close();
 
-const go = (path: string) => () => {
+const go = (path: string, params: Record<string, string> = {}) => () => {
 
-  $goto(path);
+  $goto(path, params);
   modals.close();
 
 };
@@ -36,9 +36,12 @@ const showPlayer = () => modals.open(Player);
     <section>
       <h5>検索</h5>
       <ul>
-        <li class="clickable" on:click={go("/artists")}>アーティスト検索</li>
-        <li class="clickable" on:click={go("/albums")}>アルバム検索</li>
-        <li class="clickable" on:click={go("/playlist")}>プレイリスト検索</li>
+        <li class="clickable" on:click={go("/artists")}>アーティスト</li>
+        <li class="clickable" on:click={go("/albums")}>アルバム</li>
+        <li class="clickable" on:click={go("/playlist")}>プレイリスト</li>
+        <li class="clickable" on:click={go("/playlist", { pm: "1" })}>
+          マイプレイリスト
+        </li>
         <li class="clickable" on:click={go("/me")}>設定</li>
         <li class="clickable" on:click={showPlayer}>音楽プレイヤー</li>
       </ul>

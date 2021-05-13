@@ -16,6 +16,7 @@ export const ParameterKeys = {
   favorite: "f",
   ids: "i",
   keyword: "q",
+  mine: "m",
   order: "o",
   sortType: "r",
   status: "s",
@@ -121,6 +122,13 @@ export default function buildParameters<T> (
   getUniqueValues(prefixKey + ParameterKeys.favorite).forEach((value) => {
 
     parameters = merge(parameters, { conditions: { favorite: value === "1" } });
+
+  });
+
+  // マイリスト
+  getUniqueValues(prefixKey + ParameterKeys.mine).forEach((value) => {
+
+    parameters = merge(parameters, { conditions: { isMine: value === "1" } });
 
   });
 

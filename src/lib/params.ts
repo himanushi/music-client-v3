@@ -24,6 +24,7 @@ export const SearchParams = {
     favorite: "pf",
     ids: "pi",
     keyword: "pq",
+    mine: "pm",
     order: "po",
     status: "ps",
     username: "pu"

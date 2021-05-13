@@ -650,8 +650,12 @@ export type PlaylistPublicTypeEnum =
 export type PlaylistsConditionsInputObject = {
   /** プレイリスト名( like 検索) */
   readonly name?: Maybe<Scalars["String"]>;
-  /** 自身のプレイリストのみ取得 */
+  /** 自身のプレイリスト取得 */
   readonly isMine?: Maybe<Scalars["Boolean"]>;
+  /** ユーザー名 */
+  readonly usernames?: Maybe<ReadonlyArray<Scalars["String"]>>;
+  /** お気に入り */
+  readonly favorite?: Maybe<Scalars["Boolean"]>;
 };
 
 export type PlaylistsQueryOrderEnum =

@@ -7,11 +7,18 @@ import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
 
 let value: string = $params[SearchParams.playlist.keyword];
+$: isMine = $params[SearchParams.playlist.mine] === "1";
 
 const search = () => {
 
   const parameters: SearchParamsType = {};
   parameters[SearchParams.playlist.keyword] = value;
+
+  if (isMine) {
+
+    parameters[SearchParams.playlist.mine] = "1";
+
+  }
 
   $goto("/playlist", parameters);
 
