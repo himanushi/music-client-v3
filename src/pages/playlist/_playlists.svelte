@@ -64,7 +64,7 @@ const { getElement } = getContext("content");
 const elementScroll: HTMLElement = getElement();
 </script>
 
-{#each playlists as playlist, index ((playlist.id, index))}
+{#each playlists as playlist, index (`${playlist.id}_${index}`)}
   <Item
     id={playlist.id}
     name={playlist.name}
