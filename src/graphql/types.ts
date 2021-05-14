@@ -222,6 +222,8 @@ export type ChangeFavoritesInput = {
   readonly albumIds?: Maybe<ReadonlyArray<Scalars["TTID"]>>;
   /** お気に入り変更したいトラックID */
   readonly trackIds?: Maybe<ReadonlyArray<Scalars["TTID"]>>;
+  /** お気に入り変更したいプレイリストID */
+  readonly playlistIds?: Maybe<ReadonlyArray<Scalars["TTID"]>>;
   /** true の場合は一括でお気に入り登録をする。false 場合は一括で解除する。 */
   readonly favorite: Scalars["Boolean"];
   /** A unique identifier for the client performing the mutation. */
@@ -1234,7 +1236,10 @@ export type MeQuery = {
       Pick<PublicInformation, "id" | "publicType">
     >;
     readonly role: Pick<Role, "id" | "name" | "description" | "allowedActions">;
-    readonly favorite: Pick<Favorite, "albumIds" | "artistIds" | "trackIds">;
+    readonly favorite: Pick<
+      Favorite,
+      "albumIds" | "artistIds" | "trackIds" | "playlistIds"
+    >;
   };
 };
 
@@ -2343,6 +2348,10 @@ export const MeDocument: DocumentNode<MeQuery, MeQueryVariables> = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "trackIds" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "playlistIds" },
                       },
                     ],
                   },

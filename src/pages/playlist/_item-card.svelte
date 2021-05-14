@@ -1,5 +1,6 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
+import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
 
 export let id = "";
@@ -14,6 +15,7 @@ const path = `/playlist/${id}`;
     <Image {src} class="h-40 w-40" />
     <span class="name">{name}</span>
   </a>
+  <Favorite type="playlist" {id} />
 </div>
 
 <style>
