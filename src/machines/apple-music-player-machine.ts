@@ -140,6 +140,8 @@ export const AppleMusicPlayerMachine = machine<
 
               }
 
+              MusicKit.getInstance().player.volume = 0.3;
+
             },
 
             onDone: "queueing"
@@ -256,7 +258,6 @@ export const AppleMusicPlayerMachine = machine<
 
     play: () => {
 
-      MusicKit.getInstance().player.volume = 0.1;
       MusicKit.getInstance().player.play();
 
     },

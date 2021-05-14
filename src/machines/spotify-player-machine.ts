@@ -427,7 +427,7 @@ export const SpotifyPlayerMachine = machine<
               uris: [`spotify:track:${id}`]
             });
 
-            await spotify.setVolume(10);
+            await spotify.setVolume(30);
 
             callback({
               type: "SET_SEEK",
