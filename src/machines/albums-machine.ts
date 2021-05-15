@@ -3,6 +3,7 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
 import { ObservableQuery } from "@apollo/client";
+import type { WatchQueryFetchPolicy } from "@apollo/client";
 import {
   Machine as machine, assign, Interpreter
 } from "xstate";
@@ -19,6 +20,7 @@ export type albumsContext = {
   albums: Album[];
   variables: AlbumsQueryVariables;
   watchQuery?: ObservableQuery<AlbumsQuery, AlbumsQueryVariables>;
+  fetchPolicy: WatchQueryFetchPolicy;
 };
 
 export type albumsSchema = {
@@ -68,12 +70,16 @@ export const albumsMachine = machine<albumsContext, albumsSchema, albumsEvent>(
         },
         conditions: {},
         sort: {}
-      }
+      },
+      fetchPolicy: "cache-first"
     },
 
     states: {
       active: { on: {
-        SET_PARAMETERS: { actions: ["setParameters"] },
+        SET_PARAMETERS: { actions: [
+          "setParameters",
+          "setFetchPolicy"
+        ] },
 
         EXECUTE_QUERY: "loading",
 
@@ -81,11 +87,14 @@ export const albumsMachine = machine<albumsContext, albumsSchema, albumsEvent>(
       } },
 
       loading: {
-        invoke: { src: ({ variables }) => (callback) => {
+        invoke: { src: ({
+          variables, fetchPolicy
+        }) => (callback) => {
 
           const watchQuery = client.watchQuery({
             query: AlbumsDocument,
-            variables
+            variables,
+            fetchPolicy
           });
 
           callback({
@@ -168,6 +177,8 @@ export const albumsMachine = machine<albumsContext, albumsSchema, albumsEvent>(
     ] : albums }),
 
     setWatchQuery: assign({ watchQuery: (_, event) => "watchQuery" in event ? event.watchQuery : undefined }),
+
+    setFetchPolicy: assign({ fetchPolicy: ({ variables }) => variables.conditions?.favorite ? "no-cache" : "cache-first" }),
 
     setParameters: assign({ variables: ({ variables }, event) => {
 
