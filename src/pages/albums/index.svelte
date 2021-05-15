@@ -1,36 +1,59 @@
 <script lang="ts">
 import { params } from "@roxi/routify";
-import Albums from "./_albums.svelte";
-import type {
-  conditonsType, sortType
-} from "./_albums.svelte";
+import {
+  onMount, onDestroy, getContext
+} from "svelte";
+import { interpret } from "xstate";
+import ItemCard from "./_item-card.svelte";
 import SearchBar from "./_search-bar.svelte";
 import SearchDetailButton from "./_search-detail-button.svelte";
-import type { Mutable } from "~/@types/extends";
-import type { AlbumsQueryVariables } from "~/graphql/types";
-import buildParameters from "~/lib/build-parameters";
+import Waypoint from "~/components/waypoint.svelte";
+import { albumsMachine } from "~/machines/albums-machine";
+import type { albumsServiceType } from "~/machines/albums-machine";
 
-let conditions: conditonsType = {};
-let sort: sortType = {};
+let service: albumsServiceType;
 
-$: {
+onMount(() => {
 
-  const parameters = buildParameters<Mutable<AlbumsQueryVariables>>(
-    "album",
-    $params
-  );
+  service = interpret(albumsMachine).start();
 
-  conditions = parameters.conditions || {};
-  sort = parameters.sort || {};
+});
+
+onDestroy(() => {
+
+  service.stop();
+
+});
+
+$: if (service) {
+
+  service.send({
+    params: $params,
+    type: "SET_PARAMETERS"
+  });
+
+  service.send({ type: "EXECUTE_QUERY" });
 
 }
+
+$: albums = $service?.context.albums || [];
+
+const { getElement } = getContext("content");
+const elementScroll: HTMLElement = getElement();
 </script>
 
 <SearchBar />
 <SearchDetailButton />
 
 <div class="albums">
-  <Albums {conditions} {sort} />
+  {#each albums as album, index (`${album.id}_${index}`)}
+    <ItemCard id={album.id} name={album.name} src={album.artworkM.url || ""} />
+  {/each}
+  <Waypoint
+    threshold={500}
+    {elementScroll}
+    on:loadMore={() => service.send("FETCH_MORE")}
+  />
 </div>
 
 <style>
