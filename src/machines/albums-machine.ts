@@ -37,6 +37,10 @@ export type albumsEvent =
       params: { [x: string]: any };
     }
   | {
+      type: "SET_VARIABLES";
+      variables: AlbumsQueryVariables;
+    }
+  | {
       type: "SET_WATCH_QUERY";
       watchQuery: ObservableQuery<AlbumsQuery, AlbumsQueryVariables>;
     }
@@ -78,6 +82,11 @@ export const albumsMachine = machine<albumsContext, albumsSchema, albumsEvent>(
       active: { on: {
         SET_PARAMETERS: { actions: [
           "setParameters",
+          "setFetchPolicy"
+        ] },
+
+        SET_VARIABLES: { actions: [
+          "setVariables",
           "setFetchPolicy"
         ] },
 
@@ -189,6 +198,21 @@ export const albumsMachine = machine<albumsContext, albumsSchema, albumsEvent>(
           event.params,
           variables
         );
+
+      }
+
+      return variables;
+
+    } }),
+
+    setVariables: assign({ variables: ({ variables }, event) => {
+
+      if ("variables" in event) {
+
+        return {
+          ...variables,
+          ...event.variables
+        };
 
       }
 

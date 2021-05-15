@@ -5,10 +5,12 @@ import {
 import { interpret } from "xstate";
 import ItemCard from "./_item-card.svelte";
 import Waypoint from "~/components/waypoint.svelte";
+import type { AlbumsQueryVariables } from "~/graphql/types";
 import { albumsMachine } from "~/machines/albums-machine";
 import type { albumsServiceType } from "~/machines/albums-machine";
 
 export let params: { [key: string]: any } | undefined = undefined;
+export let variables: AlbumsQueryVariables | undefined = undefined;
 
 let service: albumsServiceType;
 
@@ -31,6 +33,13 @@ $: if (service) {
     service.send({
       params,
       type: "SET_PARAMETERS"
+    });
+
+  } else if (variables) {
+
+    service.send({
+      type: "SET_VARIABLES",
+      variables
     });
 
   }
