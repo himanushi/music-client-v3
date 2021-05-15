@@ -128,6 +128,9 @@ module.exports = {
     // 三項演算子有効
     "no-ternary": "off",
 
+    // undefined で初期化しても良い
+    "no-undef-init": "off",
+
     // undefined 使える
     "no-undefined": "off",
 

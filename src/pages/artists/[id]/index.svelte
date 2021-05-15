@@ -38,5 +38,5 @@ const sort: sortType = {
     <Image src={artist.artworkL.url} class="h-16 w-16" />
   {/if}
   <Text>{artist.name}</Text>
-  <Albums {conditions} {sort} />
+  <!-- <Albums {conditions} {sort} /> -->
 {/if}

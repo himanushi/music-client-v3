@@ -1,65 +1,56 @@
-<script lang="ts" context="module">
-// ↓ これどうにかしたい
-// eslint-disable-next-line import/order
-import type {
-  AlbumsConditionsInputObject,
-  AlbumsSortInputObject
-} from "~/graphql/types";
-// eslint-disable-next-line import/order
-import type { Mutable } from "~/@types/extends";
-
-export type conditonsType = Mutable<AlbumsConditionsInputObject>;
-export type sortType = Mutable<AlbumsSortInputObject>;
-</script>
-
 <script lang="ts">
-import { getContext } from "svelte";
-import { query } from "svelte-apollo";
-import Item from "./_item-card.svelte";
+import {
+  onMount, onDestroy, getContext
+} from "svelte";
+import { interpret } from "xstate";
+import ItemCard from "./_item-card.svelte";
 import Waypoint from "~/components/waypoint.svelte";
-import { AlbumsDocument } from "~/graphql/types";
-import type {
-  Album, AlbumsQuery, AlbumsQueryVariables
-} from "~/graphql/types";
+import { albumsMachine } from "~/machines/albums-machine";
+import type { albumsServiceType } from "~/machines/albums-machine";
 
-export let conditions: conditonsType = {};
-export let sort: sortType = {};
+export let params: { [key: string]: any } | undefined = undefined;
 
-const limit = 50;
-let albums: Album[] = [];
+let service: albumsServiceType;
 
-$: albumsQuery = query<AlbumsQuery, AlbumsQueryVariables>(AlbumsDocument, {
-  fetchPolicy: "cache-first",
-  variables: {
-    conditions,
-    cursor: {
-      limit,
-      offset: 0
-    },
-    sort
-  }
+onMount(() => {
+
+  service = interpret(albumsMachine).start();
+
 });
 
-const loadMore = async () => {
+onDestroy(() => {
 
-  await albumsQuery.fetchMore({ variables: { cursor: {
-    limit,
-    offset: albums.length
-  } } });
+  service.stop();
 
-};
+});
 
-$: if ($albumsQuery.data) {
+$: if (service) {
 
-  albums = $albumsQuery.data.albums as Album[];
+  if (params) {
+
+    service.send({
+      params,
+      type: "SET_PARAMETERS"
+    });
+
+  }
+
+  service.send({ type: "EXECUTE_QUERY" });
 
 }
+
+$: albums = $service?.context.albums || [];
 
 const { getElement } = getContext("content");
 const elementScroll: HTMLElement = getElement();
 </script>
 
 {#each albums as album, index (`${album.id}_${index}`)}
-  <Item id={album.id} name={album.name} src={album.artworkM.url || ""} />
+  <ItemCard id={album.id} name={album.name} src={album.artworkM.url || ""} />
 {/each}
-<Waypoint threshold={300} {elementScroll} on:loadMore={loadMore} />
+
+<Waypoint
+  threshold={300}
+  {elementScroll}
+  on:loadMore={() => service.send("FETCH_MORE")}
+/>
