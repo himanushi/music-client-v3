@@ -6,12 +6,9 @@ import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { AlbumDocument } from "~/graphql/types";
 import type {
-  Album, AlbumQuery
+  Album, AlbumQuery, AlbumsQueryVariables
 } from "~/graphql/types";
 import Artists from "~/pages/artists/_artists.svelte";
-import type {
-  sortType, conditonsType
-} from "~/pages/artists/_artists.svelte";
 
 export let id = "";
 
@@ -28,10 +25,12 @@ $: if ($albumQuery.data) {
 
 }
 
-const conditions: conditonsType = { albums: { id: [id] } };
-const sort: sortType = {
-  order: "POPULARITY",
-  type: "DESC"
+const variables: AlbumsQueryVariables = {
+  conditions: { albums: { id: [id] } },
+  sort: {
+    order: "POPULARITY",
+    type: "DESC"
+  }
 };
 </script>
 
@@ -46,5 +45,5 @@ const sort: sortType = {
     <AddPlaylistButton {track} />
   {/each}
 
-  <Artists {conditions} {sort} />
+  <Artists {variables} />
 {/if}

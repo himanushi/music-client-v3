@@ -27,7 +27,7 @@ const limit = 50;
 
 // eslint-disable-next-line max-lines-per-function
 export const itemsMachine = <
-  ItemType,
+  ItemType extends any,
   ItemsQuery extends { items: ReadonlyArray<Record<string, any>> }
 >(
     type: ParameterPrefix,

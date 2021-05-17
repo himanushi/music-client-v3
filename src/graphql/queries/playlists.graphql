@@ -3,7 +3,7 @@ query Playlists(
   $sort: PlaylistsSortInputObject
   $conditions: PlaylistsConditionsInputObject
 ) {
-  playlists(cursor: $cursor, sort: $sort, conditions: $conditions) {
+  items: playlists(cursor: $cursor, sort: $sort, conditions: $conditions) {
     id
     name
     track {

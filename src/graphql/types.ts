@@ -78,6 +78,8 @@ export type AlbumsConditionsInputObject = {
   readonly usernames?: Maybe<ReadonlyArray<Scalars["String"]>>;
   /** アーティストID */
   readonly artists?: Maybe<IdInputObject>;
+  /** アルバムID */
+  readonly albums?: Maybe<IdInputObject>;
   /** トラックID */
   readonly tracks?: Maybe<IdInputObject>;
   /** アルバム名(あいまい検索) */
@@ -1185,7 +1187,7 @@ export type AlbumsQueryVariables = Exact<{
 }>;
 
 export type AlbumsQuery = {
-  readonly albums: ReadonlyArray<
+  readonly items: ReadonlyArray<
     Pick<Album, "id" | "name" | "status"> & {
       readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
       readonly appleMusicAlbum?: Maybe<Pick<AppleMusicAlbum, "id">>;
@@ -1218,7 +1220,7 @@ export type ArtistsQueryVariables = Exact<{
 }>;
 
 export type ArtistsQuery = {
-  readonly artists: ReadonlyArray<
+  readonly items: ReadonlyArray<
     Pick<Artist, "id" | "name" | "status"> & {
       readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
     }
@@ -1301,7 +1303,7 @@ export type PlaylistsQueryVariables = Exact<{
 }>;
 
 export type PlaylistsQuery = {
-  readonly playlists: ReadonlyArray<
+  readonly items: ReadonlyArray<
     Pick<Playlist, "id" | "name" | "createdAt" | "updatedAt"> & {
       readonly track?: Maybe<
         Pick<Track, "id"> & {
@@ -2008,6 +2010,7 @@ export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
         selections: [
           {
             kind: "Field",
+            alias: { kind: "Name", value: "items" },
             name: { kind: "Name", value: "albums" },
             arguments: [
               {
@@ -2221,6 +2224,7 @@ export const ArtistsDocument: DocumentNode<
         selections: [
           {
             kind: "Field",
+            alias: { kind: "Name", value: "items" },
             name: { kind: "Name", value: "artists" },
             arguments: [
               {
@@ -2631,6 +2635,7 @@ export const PlaylistsDocument: DocumentNode<
         selections: [
           {
             kind: "Field",
+            alias: { kind: "Name", value: "items" },
             name: { kind: "Name", value: "playlists" },
             arguments: [
               {

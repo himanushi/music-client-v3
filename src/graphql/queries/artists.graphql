@@ -3,7 +3,7 @@ query Artists(
   $sort: ArtistsSortInputObject
   $conditions: ArtistsConditionsInputObject
 ) {
-  artists(cursor: $cursor, sort: $sort, conditions: $conditions) {
+  items: artists(cursor: $cursor, sort: $sort, conditions: $conditions) {
     id
     name
     status

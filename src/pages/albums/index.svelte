@@ -8,12 +8,12 @@ import SearchDetailButton from "./_search-detail-button.svelte";
 <SearchBar />
 <SearchDetailButton />
 
-<div class="albums">
+<div>
   <Albums params={$params} />
 </div>
 
 <style>
-.albums {
+div {
   @apply flex flex-wrap;
 }
 </style>

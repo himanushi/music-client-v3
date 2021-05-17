@@ -2,20 +2,19 @@
 import { url } from "@roxi/routify";
 import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
+import type { Artist } from "~/graphql/types";
 
-export let id = "";
-export let src = "";
-export let name = "";
+export let item: Artist;
 
-const path = `/artists/${id}`;
+const path = `/artists/${item.id}`;
 </script>
 
 <div class="w-40">
   <a class="card" href={$url(path)}>
-    <Image {src} class="h-40 w-40" />
-    <span class="name">{name}</span>
+    <Image src={item.artworkM?.url} class="h-40 w-40" />
+    <span class="name">{item.name}</span>
   </a>
-  <Favorite type="artist" {id} />
+  <Favorite type="artist" id={item.id} />
 </div>
 
 <style>
