@@ -5,18 +5,22 @@ import {
 import { interpret } from "xstate";
 import ItemCard from "./_item-card.svelte";
 import Waypoint from "~/components/waypoint.svelte";
-import type { AlbumsQueryVariables } from "~/graphql/types";
-import { albumsMachine } from "~/machines/albums-machine";
-import type { albumsServiceType } from "~/machines/albums-machine";
+import { AlbumsDocument } from "~/graphql/types";
+import type {
+  Album, AlbumsQuery, AlbumsQueryVariables
+} from "~/graphql/types";
+import { itemsMachine } from "~/machines/items-machine";
 
 export let params: { [key: string]: any } | undefined = undefined;
 export let variables: AlbumsQueryVariables | undefined = undefined;
 
-let service: albumsServiceType;
+let service: any;
 
 onMount(() => {
 
-  service = interpret(albumsMachine).start();
+  service = interpret(
+    itemsMachine<Album, AlbumsQuery>("album", AlbumsDocument)
+  ).start();
 
 });
 
@@ -48,14 +52,15 @@ $: if (service) {
 
 }
 
-$: albums = $service?.context.albums || [];
+let items: Album[];
+$: items = $service?.context.items || [];
 
 const { getElement } = getContext("content");
 const elementScroll: HTMLElement = getElement();
 </script>
 
-{#each albums as album, index (`${album.id}_${index}`)}
-  <ItemCard id={album.id} name={album.name} src={album.artworkM.url || ""} />
+{#each items as item, index (`${item.id}_${index}`)}
+  <ItemCard id={item.id} name={item.name} src={item.artworkM.url || ""} />
 {/each}
 
 <Waypoint
