@@ -24,7 +24,14 @@ $: if (params) {
 </script>
 
 {#if keyword || favorite}
-  <Items {params} type="track" document={TracksDocument} let:item>
-    <ItemCard {item} />
+  <Items
+    {params}
+    type="track"
+    document={TracksDocument}
+    let:items
+    let:item
+    let:index
+  >
+    <ItemCard {items} {item} {index} />
   </Items>
 {/if}

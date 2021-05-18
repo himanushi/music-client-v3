@@ -57,7 +57,7 @@ const elementScroll: HTMLElement = getElement();
 </script>
 
 {#each items as item, index (`${item.id}_${index}`)}
-  <slot {item} />
+  <slot {items} {item} {index} />
 {/each}
 
 <Waypoint

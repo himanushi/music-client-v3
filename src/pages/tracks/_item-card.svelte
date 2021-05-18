@@ -1,14 +1,18 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
+import PlayButton from "./_play-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import type { Track } from "~/graphql/types";
 
+export let index: number;
 export let item: Track;
+export let items: Track[];
 
 const path = `/tracks/${item.id}`;
 </script>
 
 <div class="w-40">
+  <PlayButton name={item.name} {index} tracks={items} />
   <a class="card" href={$url(path)}>
     <span class="name">{item.name}</span>
   </a>

@@ -11,9 +11,3 @@ import Tracks from "./_tracks.svelte";
 <div>
   <Tracks params={$params} />
 </div>
-
-<style>
-div {
-  @apply flex flex-wrap;
-}
-</style>
