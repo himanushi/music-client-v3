@@ -38,6 +38,7 @@ const showPlayer = () => modals.open(Player);
       <ul>
         <li class="clickable" on:click={go("/artists")}>アーティスト</li>
         <li class="clickable" on:click={go("/albums")}>アルバム</li>
+        <li class="clickable" on:click={go("/tracks")}>曲</li>
         <li class="clickable" on:click={go("/playlist")}>プレイリスト</li>
         <li class="clickable" on:click={go("/playlist", { pm: "1" })}>
           マイプレイリスト

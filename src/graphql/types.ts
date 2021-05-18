@@ -1335,6 +1335,35 @@ export type SpotifyLogoutQueryVariables = Exact<{ [key: string]: never }>;
 
 export type SpotifyLogoutQuery = Pick<Query, "spotifyLogout">;
 
+export type TracksQueryVariables = Exact<{
+  cursor?: Maybe<CursorInputObject>;
+  sort?: Maybe<TracksSortInputObject>;
+  conditions?: Maybe<TracksConditionsInputObject>;
+}>;
+
+export type TracksQuery = {
+  readonly items: ReadonlyArray<
+    Pick<
+      Track,
+      | "id"
+      | "isrc"
+      | "name"
+      | "discNumber"
+      | "trackNumber"
+      | "durationMs"
+      | "previewUrl"
+      | "popularity"
+    > & {
+      readonly appleMusicTracks?: Maybe<
+        ReadonlyArray<Pick<AppleMusicTrack, "id">>
+      >;
+      readonly itunesTracks?: Maybe<ReadonlyArray<Pick<AppleMusicTrack, "id">>>;
+      readonly spotifyTracks?: Maybe<ReadonlyArray<Pick<SpotifyTrack, "id">>>;
+      readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
+    }
+  >;
+};
+
 export const AddPlaylistItemsDocument: DocumentNode<
   AddPlaylistItemsMutation,
   AddPlaylistItemsMutationVariables
@@ -2860,6 +2889,142 @@ export const SpotifyLogoutDocument: DocumentNode<
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "spotifyLogout" } },
+        ],
+      },
+    },
+  ],
+};
+export const TracksDocument: DocumentNode<TracksQuery, TracksQueryVariables> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Tracks" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "cursor" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "CursorInputObject" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "TracksSortInputObject" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "conditions" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "TracksConditionsInputObject" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "items" },
+            name: { kind: "Name", value: "tracks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cursor" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cursor" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "sort" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "sort" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "conditions" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "conditions" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "isrc" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "discNumber" } },
+                { kind: "Field", name: { kind: "Name", value: "trackNumber" } },
+                { kind: "Field", name: { kind: "Name", value: "durationMs" } },
+                { kind: "Field", name: { kind: "Name", value: "previewUrl" } },
+                { kind: "Field", name: { kind: "Name", value: "popularity" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "appleMusicTracks" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "itunesTracks" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "spotifyTracks" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "artworkM" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "url" } },
+                      { kind: "Field", name: { kind: "Name", value: "width" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
         ],
       },
     },
