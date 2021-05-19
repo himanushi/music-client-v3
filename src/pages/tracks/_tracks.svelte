@@ -14,7 +14,7 @@ $: if (params) {
   const preKeyword = params[SearchParams.track.keyword];
   favorite = params[SearchParams.track.favorite] === "1";
 
-  if (preKeyword && preKeyword.length >= 3) {
+  if (preKeyword && preKeyword.length >= 2) {
 
     keyword = preKeyword;
 
