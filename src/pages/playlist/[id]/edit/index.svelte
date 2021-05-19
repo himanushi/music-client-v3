@@ -5,9 +5,9 @@ import {
 import {
   mutation, query
 } from "svelte-apollo";
-import PlayButton from "../_play-button.svelte";
 import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
+import PlayButton from "~/components/play-button.svelte";
 import Text from "~/components/text.svelte";
 import {
   PlaylistDocument, UpsertPlaylistDocument

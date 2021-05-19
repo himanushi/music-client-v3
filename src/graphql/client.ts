@@ -49,7 +49,9 @@ const offsetLimitPagination = {
 
 const cache = new InMemoryCache({ typePolicies: { Query: { fields: {
   albums: offsetLimitPagination,
-  artists: offsetLimitPagination
+  artists: offsetLimitPagination,
+  playlists: offsetLimitPagination,
+  tracks: offsetLimitPagination
 } } } });
 
 export default new ApolloClient({

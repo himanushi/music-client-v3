@@ -1,7 +1,7 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
-import PlayButton from "./_play-button.svelte";
 import Favorite from "~/components/favorite.svelte";
+import PlayButton from "~/components/play-button.svelte";
 import type { Track } from "~/graphql/types";
 
 export let index: number;

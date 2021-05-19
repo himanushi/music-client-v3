@@ -1,7 +1,7 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import { query } from "svelte-apollo";
-import PlayButton from "./_play-button.svelte";
+import PlayButton from "~/components/play-button.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { PlaylistDocument } from "~/graphql/types";
