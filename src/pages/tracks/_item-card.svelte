@@ -18,7 +18,7 @@ const path = `/tracks/${item.id}`;
     <span class="name">{item.name}</span>
   </a>
   <Favorite type="track" id={item.id} />
-  <AddPlaylistButton track={item} />
+  <AddPlaylistButton tracks={[item]} />
 </div>
 
 <style>

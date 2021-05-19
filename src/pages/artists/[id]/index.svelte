@@ -1,5 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
+import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { ArtistDocument } from "~/graphql/types";
@@ -35,9 +36,8 @@ const variables: AlbumsQueryVariables = {
 </script>
 
 {#if artist}
-  {#if artist.artworkL.url}
-    <Image src={artist.artworkL.url} class="h-16 w-16" />
-  {/if}
+  <Favorite type="artist" id={artist.id} />
+  <Image src={artist.artworkL?.url} class="h-16 w-16" />
   <Text>{artist.name}</Text>
   <Albums {variables} />
 {/if}

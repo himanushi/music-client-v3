@@ -1,6 +1,8 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import { query } from "svelte-apollo";
+import AddPlaylistButton from "~/components/add-playlist-button.svelte";
+import Favorite from "~/components/favorite.svelte";
 import PlayButton from "~/components/play-button.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
@@ -34,10 +36,9 @@ const edit = () => {
 </script>
 
 {#if playlist}
-  {#if playlist.track}
-    <Image src={playlist.track.artworkL.url} class="h-16 w-16" />
-  {/if}
-
+  <Favorite type="playlist" id={playlist.id} />
+  <AddPlaylistButton tracks={playlist.items.map((item) => item.track)} />
+  <Image src={playlist.track?.artworkL?.url} class="h-16 w-16" />
   <Text>{playlist.name}</Text>
   <Text>{playlist.description}</Text>
 

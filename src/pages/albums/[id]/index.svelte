@@ -1,5 +1,7 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
+import AddPlaylistButton from "~/components/add-playlist-button.svelte";
+import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { AlbumDocument } from "~/graphql/types";
@@ -34,6 +36,8 @@ const variables: AlbumsQueryVariables = {
 </script>
 
 {#if album && album.artworkL.url}
+  <Favorite type="album" id={album.id} />
+  <AddPlaylistButton tracks={album.tracks.map((track) => track)} />
   <Image src={album.artworkL.url} class="h-16 w-16" />
   <Text>{album.name}</Text>
   <Text>{album.copyright}</Text>

@@ -15,7 +15,7 @@ import type {
 } from "~/graphql/types";
 import AddPlaylistIcon from "~/icons/add-playlist.svelte";
 
-export let track: Track;
+export let tracks: Track[];
 
 const addPlaylist = mutation<unknown, AddPlaylistItemsMutationVariables>(
   AddPlaylistItemsDocument
@@ -52,7 +52,7 @@ const showMyPlaylist = async () => {
 
           await addPlaylist({ variables: { input: {
             playlistId: playlsit.id,
-            trackIds: [track.id]
+            trackIds: tracks.map((track) => track.id)
           } } });
 
         },
