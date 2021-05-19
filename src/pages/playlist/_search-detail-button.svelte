@@ -5,4 +5,4 @@ import { modals } from "~/components/modals.svelte";
 const showModal = () => modals.open(SearchDetail);
 </script>
 
-<button on:click={showModal}>...</button>
+<button on:click={showModal}>検索</button>

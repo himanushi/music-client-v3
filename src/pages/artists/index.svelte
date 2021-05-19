@@ -1,11 +1,9 @@
 <script lang="ts">
 import { params } from "@roxi/routify";
 import Artists from "./_artists.svelte";
-import SearchBar from "./_search-bar.svelte";
 import SearchDetailButton from "./_search-detail-button.svelte";
 </script>
 
-<SearchBar />
 <SearchDetailButton />
 
 <div>
