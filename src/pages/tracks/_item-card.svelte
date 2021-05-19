@@ -1,5 +1,6 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
+import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import PlayButton from "~/components/play-button.svelte";
 import type { Track } from "~/graphql/types";
@@ -17,6 +18,7 @@ const path = `/tracks/${item.id}`;
     <span class="name">{item.name}</span>
   </a>
   <Favorite type="track" id={item.id} />
+  <AddPlaylistButton track={item} />
 </div>
 
 <style>
