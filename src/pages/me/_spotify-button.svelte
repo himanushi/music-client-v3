@@ -2,11 +2,7 @@
 import Text from "~/components/text.svelte";
 import { accountService } from "~/machines/spotify-account-machine";
 
-const onClick = () => {
-
-  accountService.send("LOGIN_OR_LOGOUT");
-
-};
+const onClick = () => accountService.send("LOGIN_OR_LOGOUT");
 
 let meta: any;
 

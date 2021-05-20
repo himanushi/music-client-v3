@@ -1,5 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
+import AccountButton from "./_account-button.svelte";
 import AppleMusicButton from "./_apple-music-button.svelte";
 import SpotifyButton from "./_spotify-button.svelte";
 import Text from "~/components/text.svelte";
@@ -19,6 +20,7 @@ $: me = $meQuery?.data?.me as CurrentUser;
   <Text>ユーザー名 : {me.username || "未設定"}</Text>
   <Text>権限 : {me.role.name}</Text>
 
+  <AccountButton />
   <AppleMusicButton />
   <SpotifyButton />
 {/if}
