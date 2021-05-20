@@ -20,6 +20,7 @@ mutation Login($input: LoginInput!) {
         albumIds
         artistIds
         trackIds
+        playlistIds
       }
     }
     error

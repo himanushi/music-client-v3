@@ -20,6 +20,7 @@ mutation Logout($input: LogoutInput!) {
         albumIds
         artistIds
         trackIds
+        playlistIds
       }
     }
     error
