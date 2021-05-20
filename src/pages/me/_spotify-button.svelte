@@ -1,17 +1,11 @@
 <script lang="ts">
 import Text from "~/components/text.svelte";
-import { accountService } from "~/machines/spotify-account-machine";
+import { mergeMeta } from "~/lib/merge-meta";
+import { accountService as account } from "~/machines/spotify-account-machine";
 
-const onClick = () => accountService.send("LOGIN_OR_LOGOUT");
+const onClick = () => account.send("LOGIN_OR_LOGOUT");
 
-let meta: any;
-
-$: {
-
-  meta = $accountService.meta as any;
-  meta = meta[Object.keys(meta)[0]];
-
-}
+$: meta = mergeMeta<{ label: string }>($account.meta);
 </script>
 
 <Text>Spotify</Text>

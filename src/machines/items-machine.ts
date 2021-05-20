@@ -45,7 +45,7 @@ export const itemsMachine = <
     states: {
       active: {};
       loading: {};
-      fetching: {};
+      moreFetching: {};
     };
   };
 
@@ -109,7 +109,7 @@ export const itemsMachine = <
 
           EXECUTE_QUERY: "loading",
 
-          FETCH_MORE: "fetching"
+          FETCH_MORE: "moreFetching"
         } },
 
         loading: {
@@ -150,7 +150,7 @@ export const itemsMachine = <
           }
         },
 
-        fetching: {
+        moreFetching: {
           invoke: { src: ({
             variables, watchQuery, items
           }) => (callback) => {

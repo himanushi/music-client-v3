@@ -1,10 +1,11 @@
 <script lang="ts">
 import Text from "~/components/text.svelte";
-import { accountService } from "~/machines/apple-music-account-machine";
+import { mergeMeta } from "~/lib/merge-meta";
+import { accountService as account } from "~/machines/apple-music-account-machine";
 
-const onClick = () => accountService.send("LOGIN_OR_LOGOUT");
+const onClick = () => account.send("LOGIN_OR_LOGOUT");
 
-$: meta = $accountService.meta[`${accountService.id}.${$accountService.value}`];
+$: meta = mergeMeta<{ label: string }>($account.meta);
 </script>
 
 <Text>Apple Music</Text>
