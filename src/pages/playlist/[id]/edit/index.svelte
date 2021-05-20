@@ -1,7 +1,5 @@
 <script lang="ts">
-import {
-  goto, params
-} from "@roxi/routify";
+import { goto } from "@roxi/routify";
 import {
   mutation, query
 } from "svelte-apollo";
@@ -18,8 +16,11 @@ import type {
   PlaylistPublicTypeEnum,
   UpsertPlaylistMutationVariables
 } from "~/graphql/types";
+import {
+  isAllowed, meQuery
+} from "~/lib/me";
 
-const id = $params.id as string;
+export let id = "";
 
 let name = "";
 let description = "";
@@ -33,9 +34,10 @@ const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
 });
 
 // 初期化
+let playlist: Playlist;
 $: if ($playlistQuery.data && initialize) {
 
-  const playlist = $playlistQuery.data.playlist as Playlist;
+  playlist = $playlistQuery.data.playlist as Playlist;
 
   ({
     name, description, publicType
@@ -84,32 +86,37 @@ const changeItems = (
   ({ items } = event.detail);
 
 };
+
+const meq = meQuery();
+$: me = $meq?.data?.me;
 </script>
 
-<form on:submit|preventDefault>
-  <label for="name"> 名前 </label>
-  <input id="name" type="text" bind:value={name} />
+{#if me && isAllowed(me, "upsertPlaylist") && me.username === playlist?.author?.username}
+  <form on:submit|preventDefault>
+    <label for="name"> 名前 </label>
+    <input id="name" type="text" bind:value={name} />
 
-  <label for="description"> 説明 </label>
-  <input id="description" type="text" bind:value={description} />
+    <label for="description"> 説明 </label>
+    <input id="description" type="text" bind:value={description} />
 
-  <label for="public-option">公開設定</label>
-  <select id="public-option" bind:value={publicType}>
-    <option value="NON_OPEN">非公開</option>
-    <option value="OPEN">公開</option>
-    <option value="ANONYMOUS_OPEN">匿名公開</option>
-  </select>
+    <label for="public-option">公開設定</label>
+    <select id="public-option" bind:value={publicType}>
+      <option value="NON_OPEN">非公開</option>
+      <option value="OPEN">公開</option>
+      <option value="ANONYMOUS_OPEN">匿名公開</option>
+    </select>
 
-  <DndSelection
-    on:remove={changeItems}
-    on:decide={changeItems}
-    {items}
-    let:item
-    let:index
-  >
-    <PlayButton {name} {index} tracks={items.map((it) => it.item)} />
-    <Text>{item.item.name}</Text>
-  </DndSelection>
+    <DndSelection
+      on:remove={changeItems}
+      on:decide={changeItems}
+      {items}
+      let:item
+      let:index
+    >
+      <PlayButton {name} {index} tracks={items.map((it) => it.item)} />
+      <Text>{item.item.name}</Text>
+    </DndSelection>
 
-  <button on:click={update}>保存</button>
-</form>
+    <button on:click={update}>保存</button>
+  </form>
+{/if}

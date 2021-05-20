@@ -5,8 +5,13 @@ import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import Player from "~/components/player.svelte";
 import ChevronLeft from "~/icons/chevron-left.svelte";
+import {
+  isAllowed, meQuery
+} from "~/lib/me";
 
 const close = () => modals.close();
+
+const showPlayer = () => modals.open(Player);
 
 const go = (path: string, params: Record<string, string> = {}) => () => {
 
@@ -15,7 +20,8 @@ const go = (path: string, params: Record<string, string> = {}) => () => {
 
 };
 
-const showPlayer = () => modals.open(Player);
+const query = meQuery();
+$: me = $query?.data?.me;
 </script>
 
 <nav
@@ -36,13 +42,27 @@ const showPlayer = () => modals.open(Player);
     <section>
       <h5>検索</h5>
       <ul>
-        <li class="clickable" on:click={go("/artists")}>アーティスト</li>
-        <li class="clickable" on:click={go("/albums")}>アルバム</li>
-        <li class="clickable" on:click={go("/tracks")}>曲</li>
-        <li class="clickable" on:click={go("/playlist")}>プレイリスト</li>
-        <li class="clickable" on:click={go("/playlist", { pm: "1" })}>
-          マイプレイリスト
-        </li>
+        {#if me && isAllowed(me, "artists")}
+          <li class="clickable" on:click={go("/artists")}>アーティスト</li>
+        {/if}
+        {#if me && isAllowed(me, "albums")}
+          <li class="clickable" on:click={go("/albums")}>アルバム</li>
+        {/if}
+        {#if me && isAllowed(me, "tracks")}
+          <li class="clickable" on:click={go("/tracks")}>曲</li>
+        {/if}
+        {#if me && isAllowed(me, "playlists")}
+          <li class="clickable" on:click={go("/playlist")}>プレイリスト</li>
+        {/if}
+        {#if me && isAllowed(me, [
+            "playlists",
+            "upsertPlaylist",
+            "addPlaylistItems"
+          ])}
+          <li class="clickable" on:click={go("/playlist", { pm: "1" })}>
+            マイプレイリスト
+          </li>
+        {/if}
         <li class="clickable" on:click={go("/me")}>設定</li>
         <li class="clickable" on:click={showPlayer}>音楽プレイヤー</li>
       </ul>

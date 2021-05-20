@@ -1,11 +1,15 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
+import {
+  isAllowed, meQuery
+} from "~/lib/me";
 
-const create = () => {
+const create = () => $goto("/playlist/new");
 
-  $goto("/playlist/new");
-
-};
+const query = meQuery();
+$: me = $query?.data?.me;
 </script>
 
-<button on:click={create}>プレイリスト作成</button>
+{#if me && isAllowed(me, "upsertPlaylist")}
+  <button on:click={create}>プレイリスト作成</button>
+{/if}

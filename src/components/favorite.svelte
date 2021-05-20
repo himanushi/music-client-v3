@@ -1,44 +1,28 @@
 <script>
-import {
-  mutation, query
-} from "svelte-apollo";
+import { mutation } from "svelte-apollo";
 import IconButton from "./icon-button.svelte";
 import type { Mutable } from "~/@types/extends";
-import {
-  ChangeFavoritesDocument, MeDocument
-} from "~/graphql/types";
+import { ChangeFavoritesDocument } from "~/graphql/types";
 import type {
-  CurrentUser,
   ChangeFavoritesMutationVariables,
-  ChangeFavoritesInput,
-  MeQuery
+  ChangeFavoritesInput
 } from "~/graphql/types";
 import HeartIcon from "~/icons/heart.svelte";
+import {
+  isAllowed, isFavorite, meQuery
+} from "~/lib/me";
 
 export let id: string;
 export let type: "album" | "artist" | "track" | "playlist";
 
-$: meQuery = query<MeQuery>(MeDocument, { fetchPolicy: "cache-first" });
+const query = meQuery();
+$: me = $query?.data?.me;
 
-let me: CurrentUser;
 let favorite = false;
 
-$: {
+$: if (me) {
 
-  if ($meQuery?.data?.me) {
-
-    me = $meQuery?.data?.me as CurrentUser;
-
-    const favoriteIds = [
-      ...me.favorite.artistIds,
-      ...me.favorite.albumIds,
-      ...me.favorite.trackIds,
-      ...me.favorite.playlistIds
-    ];
-
-    favorite = favoriteIds.includes(id);
-
-  }
+  favorite = isFavorite(me, id);
 
 }
 
@@ -73,10 +57,12 @@ const onClick = async () => {
 };
 </script>
 
-<IconButton on:click={onClick} class="h-7 w-7">
-  {#if favorite}
-    <HeartIcon size="h-7 w-7" />
-  {:else}
-    <HeartIcon size="h-7 w-7" color="text-black" />
-  {/if}
-</IconButton>
+{#if me && isAllowed(me, "changeFavorites")}
+  <IconButton on:click={onClick} class="h-7 w-7">
+    {#if favorite}
+      <HeartIcon size="h-7 w-7" />
+    {:else}
+      <HeartIcon size="h-7 w-7" color="text-black" />
+    {/if}
+  </IconButton>
+{/if}

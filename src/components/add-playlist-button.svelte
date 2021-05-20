@@ -14,6 +14,9 @@ import type {
   Track, AddPlaylistItemsMutationVariables
 } from "~/graphql/types";
 import AddPlaylistIcon from "~/icons/add-playlist.svelte";
+import {
+  isAllowed, meQuery
+} from "~/lib/me";
 
 export let tracks: Track[];
 
@@ -63,8 +66,16 @@ const showMyPlaylist = async () => {
   }
 
 };
+
+const query = meQuery();
+$: me = $query?.data?.me;
 </script>
 
-<IconButton on:click={showMyPlaylist}>
-  <AddPlaylistIcon />
-</IconButton>
+{#if me && isAllowed(me, [
+"playlists",
+"addPlaylistItems"
+])}
+  <IconButton on:click={showMyPlaylist}>
+    <AddPlaylistIcon />
+  </IconButton>
+{/if}

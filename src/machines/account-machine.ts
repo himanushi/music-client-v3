@@ -36,13 +36,11 @@ export type accountSchema = {
 };
 
 export type accountEvent =
-  | { type: "LOGIN_OR_LOGOUT" }
-  | { type: "LOGIN"; username?: string; password?: string }
+  | { type: "LOGIN" }
   | { type: "LOGOUT" }
   | { type: "AUTHORIZED" }
   | { type: "UNAUTHORIZED" }
   | { type: "IDLE" }
-  | { type: "LOADING"; username?: string; password?: string }
   | { type: "SET_ME"; me: CurrentUser }
   | { type: "SET_LOGIN_INFO"; username?: string; password?: string };
 

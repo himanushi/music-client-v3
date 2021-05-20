@@ -1,18 +1,12 @@
 <script lang="ts">
-import { query } from "svelte-apollo";
 import AccountButton from "./_account-button.svelte";
 import AppleMusicButton from "./_apple-music-button.svelte";
 import SpotifyButton from "./_spotify-button.svelte";
 import Text from "~/components/text.svelte";
-import { MeDocument } from "~/graphql/types";
-import type {
-  CurrentUser, MeQuery
-} from "~/graphql/types";
+import { meQuery } from "~/lib/me";
 
-$: meQuery = query<MeQuery>(MeDocument, { fetchPolicy: "cache-first" });
-
-let me: CurrentUser;
-$: me = $meQuery?.data?.me as CurrentUser;
+const query = meQuery();
+$: me = $query?.data?.me;
 </script>
 
 {#if me}
