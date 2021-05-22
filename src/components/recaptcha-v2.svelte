@@ -42,7 +42,6 @@ onMount(() => {
 onDestroy(() => {
 
   resetCookie();
-  grecaptcha.reset(widgetId);
 
 });
 </script>
