@@ -12,7 +12,7 @@ const customizer = (objValue: any, srcValue: any) => {
 
 };
 
-export const errorInputs = (error: ApolloError): Record<string, string[]> => {
+export const errorMessages = (error: ApolloError): Record<string, string[]> => {
 
   const labels = error.graphQLErrors.map((err) => {
 

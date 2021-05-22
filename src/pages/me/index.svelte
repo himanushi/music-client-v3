@@ -12,7 +12,7 @@ $: me = $query?.data?.me;
 {#if me}
   <Text>名前 : {me.name || "未設定"}</Text>
   <Text>ユーザー名 : {me.username || "未設定"}</Text>
-  <Text>権限 : {me.role.name}</Text>
+  <Text>権限 : {me.role.description}</Text>
 
   <AccountButton />
   <AppleMusicButton />

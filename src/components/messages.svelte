@@ -1,8 +1,10 @@
 <script lang="ts">
-// export let type: "info" | "warn" | "error" = "info";
-export let messages: string[];
+export let type: "info" | "warn" | "error" = "info";
+export let messages: string[] | undefined;
 </script>
 
-{#each messages as message}
-  <p>{message}</p>
-{/each}
+{#if messages}
+  {#each messages as message}
+    <p>{message}</p>
+  {/each}
+{/if}

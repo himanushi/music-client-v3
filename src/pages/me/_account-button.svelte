@@ -1,21 +1,21 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
+import LogoutButton from "./_logout-button.svelte";
 import Text from "~/components/text.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
-import { accountService as account } from "~/machines/account-machine";
 
-const logout = () => account.send("LOGOUT");
+let logouted = false;
 
-const query = meQuery();
+$: query = meQuery();
 $: me = $query?.data?.me;
 </script>
 
 <Text>アカウント</Text>
 
-{#if me && isAllowed(me, "logout") && $account.matches("authorized")}
-  <button on:click={logout}>ログアウト</button>
+{#if me && isAllowed(me, "logout") && me.registered}
+  <LogoutButton bind:logouted />
 {:else if me && isAllowed(me, "login")}
   <a class="card" href={$url("/me/login")}>ログイン</a>
 {/if}
