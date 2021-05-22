@@ -1,0 +1,7 @@
+mutation Signup($input: SignupInput!) {
+  signup(input: $input) {
+    currentUser {
+      ...CurrentUserFields
+    }
+  }
+}

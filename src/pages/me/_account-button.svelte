@@ -6,8 +6,6 @@ import {
   isAllowed, meQuery
 } from "~/lib/me";
 
-let logouted = false;
-
 $: query = meQuery();
 $: me = $query?.data?.me;
 </script>
@@ -15,7 +13,8 @@ $: me = $query?.data?.me;
 <Text>アカウント</Text>
 
 {#if me && isAllowed(me, "logout") && me.registered}
-  <LogoutButton bind:logouted />
+  <LogoutButton />
 {:else if me && isAllowed(me, "login")}
-  <a class="card" href={$url("/me/login")}>ログイン</a>
+  <a href={$url("/me/login")}>ログイン</a>
+  <a href={$url("/me/signup")}>登録する</a>
 {/if}

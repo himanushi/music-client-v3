@@ -7,6 +7,11 @@ export let label = "";
 export let errorMessages: string[] | undefined = undefined;
 export let value = "";
 export let type = "text";
+export let autocomplete:
+  | "off"
+  | "username"
+  | "new-password"
+  | "current-password" = "off";
 
 const handleInput = (event: any) => {
 
@@ -18,7 +23,7 @@ const handleInput = (event: any) => {
 <div>
   <label>
     {label}
-    <input {type} {value} {placeholder} on:input={handleInput} />
+    <input {autocomplete} {type} {value} {placeholder} on:input={handleInput} />
   </label>
   <Messages type="error" messages={errorMessages} />
 </div>

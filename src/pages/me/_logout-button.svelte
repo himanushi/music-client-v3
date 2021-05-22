@@ -11,8 +11,6 @@ import type {
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
 
-export let logouted: boolean;
-
 let messages: Record<string, string[]> = {};
 
 const mutate = mutation<LogoutMutation, LogoutMutationVariables>(
@@ -34,7 +32,6 @@ const logout = async () => {
 
     if (error instanceof ApolloError) {
 
-      logouted = true;
       messages = errorMessages(error);
 
     }
