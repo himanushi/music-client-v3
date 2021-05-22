@@ -10,7 +10,8 @@ module.exports = {
     MediaMetadata: true,
     MusicKit: false,
     NodeJS: false,
-    Spotify: false
+    Spotify: false,
+    grecaptcha: false
   },
   overrides: [
     {

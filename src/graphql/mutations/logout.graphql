@@ -1,27 +1,7 @@
 mutation Logout($input: LogoutInput!) {
   logout(input: $input) {
     currentUser {
-      id
-      name
-      username
-      registered
-      version
-      publicInformations {
-        id
-        publicType
-      }
-      role {
-        id
-        name
-        description
-        allowedActions
-      }
-      favorite {
-        albumIds
-        artistIds
-        trackIds
-        playlistIds
-      }
+      ...CurrentUserFields
     }
     error
   }
