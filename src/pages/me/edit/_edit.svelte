@@ -44,7 +44,6 @@ const signup = async () => {
     if (error instanceof ApolloError) {
 
       messages = errorMessages(error);
-      console.log({ messages });
 
     }
 
