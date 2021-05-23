@@ -3,13 +3,13 @@ import { goto } from "@roxi/routify";
 import { query } from "svelte-apollo";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
-import PlayButton from "~/components/play-button.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { PlaylistDocument } from "~/graphql/types";
 import type {
   Playlist, PlaylistQuery
 } from "~/graphql/types";
+import ItemCard from "~/pages/tracks/_item-card.svelte";
 
 export let id = "";
 
@@ -46,12 +46,11 @@ const edit = () => {
     <button on:click={edit}>編集</button>
   {/if}
 
-  {#each playlist.items as item, index ((item.id, index))}
-    <PlayButton
-      name={playlist.name}
+  {#each playlist.items as item, index (`${item.id}_${index}`)}
+    <ItemCard
+      item={item.track}
+      items={playlist.items.map((it) => it.track)}
       {index}
-      tracks={playlist.items.map((it) => it.track)}
     />
-    <Text>{item.track.name}</Text>
   {/each}
 {/if}
