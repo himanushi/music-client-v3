@@ -12,6 +12,10 @@ $: me = $query?.data?.me;
 
 <Text>アカウント</Text>
 
+{#if me && isAllowed(me, "updateMe") && me.registered}
+  <a href={$url("/me/edit")}>設定を変更する</a>
+{/if}
+
 {#if me && isAllowed(me, "logout") && me.registered}
   <LogoutButton />
 {:else if me && isAllowed(me, "login")}

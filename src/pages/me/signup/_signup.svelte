@@ -15,8 +15,8 @@ import { errorMessages } from "~/lib/error";
 
 let name: string;
 let username: string;
-let password: string;
-let passwordConfirmation: string;
+let newPassword: string;
+let newPasswordConfirmation: string;
 let recaptcha: RecaptchaV2;
 let messages: Record<string, string[]> = {};
 
@@ -32,8 +32,8 @@ const signup = async () => {
       refetchQueries: [{ query: MeDocument }],
       variables: { input: {
         name,
-        password,
-        passwordConfirmation,
+        newPassword,
+        newPasswordConfirmation,
         username
       } }
     });
@@ -65,16 +65,15 @@ const signup = async () => {
   <InputText
     label="パスワード"
     type="password"
-    bind:value={password}
-    errorMessages={messages.password}
+    bind:value={newPassword}
+    errorMessages={messages.newPassword}
     autocomplete="new-password"
   />
   <InputText
     label="再確認パスワード"
     type="password"
-    bind:value={passwordConfirmation}
-    errorMessages={messages.passwordConfirmation}
-    autocomplete="new-password"
+    bind:value={newPasswordConfirmation}
+    errorMessages={messages.newPasswordConfirmation}
   />
   <RecaptchaV2 bind:this={recaptcha} />
 

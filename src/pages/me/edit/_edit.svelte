@@ -4,23 +4,26 @@ import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import InputText from "~/components/input-text.svelte";
 import Messages from "~/components/messages.svelte";
-import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
 import {
-  LoginDocument, MeDocument
+  UpdateMeDocument, MeDocument
 } from "~/graphql/types";
 import type {
-  LoginMutationVariables, LoginMutation
+  UpdateMeMutationVariables,
+  UpdateMeMutation
 } from "~/graphql/types";
 import { errorMessages } from "~/lib/error";
 
+export let name: string;
 let currentPassword: string;
-let username: string;
-let recaptcha: RecaptchaV2;
+let newPassword: string;
+let newPasswordConfirmation: string;
 let messages: Record<string, string[]> = {};
 
-const mutate = mutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+const mutate = mutation<UpdateMeMutation, UpdateMeMutationVariables>(
+  UpdateMeDocument
+);
 
-const login = async () => {
+const signup = async () => {
 
   try {
 
@@ -28,7 +31,9 @@ const login = async () => {
       refetchQueries: [{ query: MeDocument }],
       variables: { input: {
         currentPassword,
-        username
+        name,
+        newPassword,
+        newPasswordConfirmation
       } }
     });
 
@@ -39,7 +44,6 @@ const login = async () => {
     if (error instanceof ApolloError) {
 
       messages = errorMessages(error);
-      recaptcha.reset();
 
     }
 
@@ -49,23 +53,29 @@ const login = async () => {
 </script>
 
 <form on:submit|preventDefault>
+  <InputText label="名前" bind:value={name} errorMessages={messages.name} />
   <InputText
-    label="ユーザー名"
-    bind:value={username}
-    errorMessages={messages.username}
-    autocomplete="username"
-  />
-  <InputText
-    label="パスワード"
+    label="現在のパスワード"
     type="password"
     bind:value={currentPassword}
     errorMessages={messages.currentPassword}
-    autocomplete="current-password"
+    autocomplete="new-password"
   />
-  <RecaptchaV2 bind:this={recaptcha} />
+  <InputText
+    label="新しいパスワード"
+    type="password"
+    bind:value={newPassword}
+    errorMessages={messages.newPassword}
+    autocomplete="new-password"
+  />
+  <InputText
+    label="新しいパスワードの再確認"
+    type="password"
+    bind:value={newPasswordConfirmation}
+    errorMessages={messages.newPasswordConfirmation}
+    autocomplete="new-password"
+  />
 
-  <Messages type="error" messages={messages.recaptcha} />
   <Messages type="error" messages={messages._} />
-
-  <input on:click={login} type="submit" value="ログイン" />
+  <input on:click={signup} type="submit" value="更新" />
 </form>
