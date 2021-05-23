@@ -11,6 +11,9 @@ query Playlists(
       name
       username
     }
+    track {
+      ...TrackFields
+    }
     createdAt
     updatedAt
   }

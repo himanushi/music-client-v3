@@ -7,8 +7,7 @@ import { modals } from "~/components/modals.svelte";
 import Selection from "~/components/selection.svelte";
 import type { selectionType } from "~/components/selection.svelte";
 import {
-  SelectPlaylistsDocument,
-  AddPlaylistItemsDocument
+  PlaylistsDocument, AddPlaylistItemsDocument
 } from "~/graphql/types";
 import type {
   Track, AddPlaylistItemsMutationVariables
@@ -30,7 +29,7 @@ const showMyPlaylist = async () => {
 
   const result = await client.query({
     fetchPolicy: "no-cache",
-    query: SelectPlaylistsDocument,
+    query: PlaylistsDocument,
     variables: {
       conditions: { isMine: true },
       cursor: {
@@ -44,7 +43,7 @@ const showMyPlaylist = async () => {
     }
   });
 
-  const playlists = result?.data?.playlists;
+  const playlists = result?.data?.items;
 
   if (playlists) {
 

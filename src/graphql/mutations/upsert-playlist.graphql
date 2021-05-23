@@ -1,36 +1,7 @@
 mutation UpsertPlaylist($input: UpsertPlaylistInput!) {
   upsertPlaylist(input: $input) {
     playlist {
-      id
-      author {
-        id
-        name
-        username
-      }
-      track {
-        name
-        artworkM {
-          url
-          width
-          height
-        }
-      }
-      name
-      description
-      publicType
-      createdAt
-      updatedAt
-      items {
-        track {
-          name
-          artworkM {
-            url
-            width
-            height
-          }
-        }
-        trackNumber
-      }
+      ...PlaylistFields
     }
   }
 }

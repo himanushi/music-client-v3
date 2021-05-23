@@ -1,0 +1,23 @@
+fragment PlaylistFields on Playlist {
+  id
+  name
+  description
+  publicType
+  isMine
+  createdAt
+  updatedAt
+  track {
+    ...TrackFields
+  }
+  author {
+    id
+    name
+    username
+  }
+  items {
+    trackNumber
+    track {
+      ...TrackFields
+    }
+  }
+}

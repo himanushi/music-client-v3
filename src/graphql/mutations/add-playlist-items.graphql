@@ -1,8 +1,7 @@
 mutation AddPlaylistItems($input: AddPlaylistItemsInput!) {
   addPlaylistItems(input: $input) {
     playlist {
-      id
-      name
+      ...PlaylistFields
     }
   }
 }

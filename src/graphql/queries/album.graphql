@@ -3,6 +3,7 @@ query Album($id: TTID!) {
     id
     totalTracks
     name
+    status
     releaseDate
     recordLabel
     copyright
