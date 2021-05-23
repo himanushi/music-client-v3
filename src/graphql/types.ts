@@ -1025,8 +1025,6 @@ export type UpsertArtistPayload = {
 export type UpsertPlaylistInput = {
   /** IDがない場合は作成 */
   readonly playlistId?: Maybe<Scalars['TTID']>;
-  /** ジャケットトラックID */
-  readonly trackId?: Maybe<Scalars['TTID']>;
   /** タイトル */
   readonly name: Scalars['String'];
   /** 説明 */
