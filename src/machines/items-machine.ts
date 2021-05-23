@@ -20,7 +20,7 @@ import type { ParameterPrefix } from "~/lib/build-parameters";
 export type ItemsQueryVariables = {
   cursor?: Maybe<CursorInputObject>;
   sort?: { order?: string; type?: string };
-  conditions?: { favorite?: number };
+  conditions?: { favorite?: number; isMine?: boolean };
 };
 
 const limit = 50;
@@ -214,7 +214,20 @@ export const itemsMachine = <
 
       setWatchQuery: assign({ watchQuery: (_, event) => "watchQuery" in event ? event.watchQuery : undefined }),
 
-      setFetchPolicy: assign({ fetchPolicy: ({ variables }) => variables?.conditions?.favorite ? "no-cache" : "cache-first" }),
+      setFetchPolicy: assign({ fetchPolicy: ({ variables }) => {
+
+        if (
+          variables?.conditions?.favorite ||
+              variables?.conditions?.isMine
+        ) {
+
+          return "no-cache";
+
+        }
+
+        return "cache-first";
+
+      } }),
 
       setParameters: assign({ variables: ({ variables }, event) => {
 

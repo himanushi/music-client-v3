@@ -3,6 +3,5 @@ mutation Logout($input: LogoutInput!) {
     currentUser {
       ...CurrentUserFields
     }
-    error
   }
 }

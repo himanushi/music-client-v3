@@ -1,9 +1,9 @@
 mutation UpsertPlaylist($input: UpsertPlaylistInput!) {
   upsertPlaylist(input: $input) {
-    error
     playlist {
       id
       author {
+        id
         name
         username
       }

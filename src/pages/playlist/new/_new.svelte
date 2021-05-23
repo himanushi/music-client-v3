@@ -1,19 +1,26 @@
 <script lang="ts">
+import { ApolloError } from "@apollo/client/core";
+import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
-import { modals } from "~/components/modals.svelte";
+import InputText from "~/components/input-text.svelte";
+import Messages from "~/components/messages.svelte";
 import { UpsertPlaylistDocument } from "~/graphql/types";
 import type {
   PlaylistPublicTypeEnum,
-  UpsertPlaylistMutationVariables
+  UpsertPlaylistMutationVariables,
+  UpsertPlaylistMutation
 } from "~/graphql/types";
+import { errorMessages } from "~/lib/error";
 
-const upsertPlaylist = mutation<unknown, UpsertPlaylistMutationVariables>(
-  UpsertPlaylistDocument
-);
+const upsertPlaylist = mutation<
+  UpsertPlaylistMutation,
+  UpsertPlaylistMutationVariables
+>(UpsertPlaylistDocument);
 
 let name = "";
 let description = "";
 let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
+let messages: Record<string, string[]> = {};
 
 const create = async () => {
 
@@ -26,21 +33,29 @@ const create = async () => {
       trackIds: []
     } } });
 
-    modals.close();
+    $goto("/playlist", { pm: "1" });
 
   } catch (error) {
-    // console.error({ error });
+
+    if (error instanceof ApolloError) {
+
+      messages = errorMessages(error);
+
+    }
+
   }
 
 };
 </script>
 
 <form on:submit|preventDefault>
-  <label for="name"> 名前 </label>
-  <input id="name" type="text" bind:value={name} />
+  <InputText label="タイトル" bind:value={name} errorMessages={messages.name} />
 
-  <label for="description"> 説明 </label>
-  <input id="description" type="text" bind:value={description} />
+  <InputText
+    label="説明"
+    bind:value={description}
+    errorMessages={messages.description}
+  />
 
   <label for="public-option">公開設定</label>
   <select id="public-option" bind:value={publicType}>
@@ -48,6 +63,8 @@ const create = async () => {
     <option value="OPEN">公開</option>
     <option value="ANONYMOUS_OPEN">匿名公開</option>
   </select>
+  <Messages messages={messages.publicType} />
 
+  <Messages messages={messages._} />
   <button on:click={create}>保存</button>
 </form>
