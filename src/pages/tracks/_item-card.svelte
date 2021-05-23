@@ -8,12 +8,14 @@ import type { Track } from "~/graphql/types";
 export let index: number;
 export let item: Track;
 export let items: Track[];
+// eslint-disable-next-line prefer-destructuring
+export let name = item.name;
 
 const path = `/tracks/${item.id}`;
 </script>
 
 <div class="w-40">
-  <PlayButton name={item.name} {index} tracks={items} />
+  <PlayButton {name} {index} tracks={items} />
   <a class="card" href={$url(path)}>
     <span class="name">{item.name}</span>
   </a>

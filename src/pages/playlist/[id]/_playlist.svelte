@@ -48,6 +48,7 @@ const edit = () => {
 
   {#each playlist.items as item, index (`${item.id}_${index}`)}
     <ItemCard
+      name={playlist.name}
       item={item.track}
       items={playlist.items.map((it) => it.track)}
       {index}

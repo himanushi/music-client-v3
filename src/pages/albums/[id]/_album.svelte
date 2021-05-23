@@ -43,7 +43,12 @@ const variables: AlbumsQueryVariables = {
   <Text>{album.copyright}</Text>
 
   {#each album.tracks as track, index (track.id)}
-    <ItemCard item={track} items={album.tracks.map((trk) => trk)} {index} />
+    <ItemCard
+      name={album.name}
+      item={track}
+      items={album.tracks.map((trk) => trk)}
+      {index}
+    />
   {/each}
 
   <Artists {variables} />
