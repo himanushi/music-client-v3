@@ -1,4 +1,6 @@
 <script lang="ts">
+import AddPlaylistButton from "../add-playlist-button.svelte";
+import Favorite from "../favorite.svelte";
 import RepeatButton from "./repeat-button.svelte";
 import IconButton from "~/components/icon-button.svelte";
 import PuaseIcon from "~/icons/pause.svelte";
@@ -52,3 +54,8 @@ const skip = () => {
 <IconButton {disabled} on:click={skip}>
   <SkipIcon color="text-gray-900" />
 </IconButton>
+
+{#if player && $player.context.track}
+  <Favorite type="track" id={$player.context.track.id} />
+  <AddPlaylistButton tracks={[$player.context.track]} />
+{/if}
