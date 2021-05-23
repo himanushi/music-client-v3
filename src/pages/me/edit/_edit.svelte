@@ -44,6 +44,7 @@ const signup = async () => {
     if (error instanceof ApolloError) {
 
       messages = errorMessages(error);
+      console.log({ messages });
 
     }
 
@@ -69,7 +70,7 @@ const signup = async () => {
     autocomplete="new-password"
   />
   <InputText
-    label="新しいパスワードの再確認"
+    label="新しいパスワード再確認"
     type="password"
     bind:value={newPasswordConfirmation}
     errorMessages={messages.newPasswordConfirmation}

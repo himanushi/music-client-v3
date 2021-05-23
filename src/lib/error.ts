@@ -1,5 +1,7 @@
 import { ApolloError } from "@apollo/client/core";
-import { mergeWith } from "lodash";
+import {
+  mergeWith, camelCase
+} from "lodash";
 
 const customizer = (objValue: any, srcValue: any) => {
 
@@ -16,7 +18,17 @@ export const errorMessages = (error: ApolloError): Record<string, string[]> => {
 
   const labels = error.graphQLErrors.map((err) => {
 
-    const path = (err.extensions?.path || "_") as string;
+    let path: string;
+
+    if (err.extensions?.path) {
+
+      path = camelCase(err.extensions?.path as string);
+
+    } else {
+
+      path = "_";
+
+    }
 
     const label: Record<string, string[]> = {};
     label[path] = [err.message];

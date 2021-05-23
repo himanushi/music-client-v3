@@ -70,7 +70,7 @@ const signup = async () => {
     autocomplete="new-password"
   />
   <InputText
-    label="再確認パスワード"
+    label="パスワード再確認"
     type="password"
     bind:value={newPasswordConfirmation}
     errorMessages={messages.newPasswordConfirmation}
