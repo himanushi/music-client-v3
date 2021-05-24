@@ -1,0 +1,5 @@
+query Track($id: TTID!) {
+  track(id: $id) {
+    ...TrackFields
+  }
+}

@@ -85,21 +85,6 @@ export type AlbumsConditionsInputObject = {
   readonly favorite?: Maybe<Scalars['Boolean']>;
 };
 
-export type AlbumsCountConditionsInputObject = {
-  /** ユーザー名 */
-  readonly usernames?: Maybe<ReadonlyArray<Scalars['String']>>;
-  /** アーティストID */
-  readonly artists?: Maybe<IdInputObject>;
-  /** トラックID */
-  readonly tracks?: Maybe<IdInputObject>;
-  /** アルバム名(あいまい検索) */
-  readonly name?: Maybe<Scalars['String']>;
-  /** 表示ステータス */
-  readonly status?: Maybe<ReadonlyArray<StatusEnum>>;
-  /** お気に入り */
-  readonly favorite?: Maybe<Scalars['Boolean']>;
-};
-
 export type AlbumsQueryOrderEnum =
   /** 追加順 */
   | 'NEW'
@@ -125,16 +110,6 @@ export type AppleMusicAlbum = {
   readonly name: Scalars['String'];
 };
 
-/** Apple Music アーティスト */
-export type AppleMusicArtist = {
-  /** Apple Music ID */
-  readonly appleMusicId: Scalars['String'];
-  /** ID */
-  readonly id: Scalars['TTID'];
-  /** 名前 */
-  readonly name: Scalars['String'];
-};
-
 /** Apple Music トラック */
 export type AppleMusicTrack = {
   /** Apple Music ID */
@@ -147,10 +122,6 @@ export type AppleMusicTrack = {
 
 /** アーティスト */
 export type Artist = {
-  /** 関連アルバム */
-  readonly albums?: Maybe<ReadonlyArray<Album>>;
-  /** Apple Music アーティスト */
-  readonly appleMusicArtists?: Maybe<ReadonlyArray<AppleMusicArtist>>;
   /** 大型アートワーク */
   readonly artworkL: Artwork;
   /** 中型アートワーク */
@@ -163,12 +134,8 @@ export type Artist = {
   readonly name: Scalars['String'];
   /** 発売日 */
   readonly releaseDate: Scalars['ISO8601DateTime'];
-  /** Spotify アーティスト */
-  readonly spotifyArtists?: Maybe<ReadonlyArray<SpotifyArtist>>;
   /** ステータス */
   readonly status: StatusEnum;
-  /** 関連曲 */
-  readonly tracks?: Maybe<ReadonlyArray<Track>>;
 };
 
 export type ArtistsConditionsInputObject = {
@@ -707,8 +674,6 @@ export type Query = {
   readonly album?: Maybe<Album>;
   /** アルバム一覧取得 */
   readonly albums: ReadonlyArray<Album>;
-  /** アルバム件数取得 */
-  readonly albumsCount: Scalars['Int'];
   /** Apple Music Token */
   readonly appleMusicToken: Scalars['String'];
   /** アーティスト取得 */
@@ -727,6 +692,8 @@ export type Query = {
   readonly spotifyLogin: Scalars['String'];
   /** spotify 関連の cookie を削除する */
   readonly spotifyLogout: Scalars['String'];
+  /** トラック情報取得 */
+  readonly track?: Maybe<Track>;
   /** トラック一覧取得 */
   readonly tracks: ReadonlyArray<Track>;
 };
@@ -741,11 +708,6 @@ export type Query_AlbumsArgs = {
   cursor?: Maybe<CursorInputObject>;
   sort?: Maybe<AlbumsSortInputObject>;
   conditions?: Maybe<AlbumsConditionsInputObject>;
-};
-
-
-export type Query_AlbumsCountArgs = {
-  conditions?: Maybe<AlbumsCountConditionsInputObject>;
 };
 
 
@@ -780,6 +742,11 @@ export type Query_SpotifyLoginArgs = {
 
 export type Query_SpotifyLogoutArgs = {
   code?: Maybe<Scalars['String']>;
+};
+
+
+export type Query_TrackArgs = {
+  id: Scalars['TTID'];
 };
 
 
@@ -829,16 +796,6 @@ export type SpotifyAlbum = {
   /** ID */
   readonly id: Scalars['TTID'];
   /** タイトル */
-  readonly name: Scalars['String'];
-  /** Spotify ID */
-  readonly spotifyId: Scalars['String'];
-};
-
-/** Spotify アーティスト */
-export type SpotifyArtist = {
-  /** ID */
-  readonly id: Scalars['TTID'];
-  /** 名前 */
   readonly name: Scalars['String'];
   /** Spotify ID */
   readonly spotifyId: Scalars['String'];
@@ -1231,6 +1188,13 @@ export type SpotifyLogoutQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type SpotifyLogoutQuery = Pick<Query, 'spotifyLogout'>;
 
+export type TrackQueryVariables = Exact<{
+  id: Scalars['TTID'];
+}>;
+
+
+export type TrackQuery = { readonly track?: Maybe<TrackFieldsFragment> };
+
 export type TracksQueryVariables = Exact<{
   cursor?: Maybe<CursorInputObject>;
   sort?: Maybe<TracksSortInputObject>;
@@ -1260,4 +1224,5 @@ export const PlaylistDocument: DocumentNode<PlaylistQuery, PlaylistQueryVariable
 export const PlaylistsDocument: DocumentNode<PlaylistsQuery, PlaylistsQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Playlists"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CursorInputObject"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sort"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PlaylistsSortInputObject"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"conditions"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PlaylistsConditionsInputObject"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"items"},"name":{"kind":"Name","value":"playlists"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"cursor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}}},{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sort"}}},{"kind":"Argument","name":{"kind":"Name","value":"conditions"},"value":{"kind":"Variable","name":{"kind":"Name","value":"conditions"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TrackFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}},...TrackFieldsFragmentDoc.definitions]};
 export const SpotifyLoginDocument: DocumentNode<SpotifyLoginQuery, SpotifyLoginQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SpotifyLogin"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"code"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"spotifyLogin"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"code"},"value":{"kind":"Variable","name":{"kind":"Name","value":"code"}}}]}]}}]};
 export const SpotifyLogoutDocument: DocumentNode<SpotifyLogoutQuery, SpotifyLogoutQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SpotifyLogout"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"spotifyLogout"}}]}}]};
+export const TrackDocument: DocumentNode<TrackQuery, TrackQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Track"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TTID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"track"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TrackFields"}}]}}]}},...TrackFieldsFragmentDoc.definitions]};
 export const TracksDocument: DocumentNode<TracksQuery, TracksQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Tracks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CursorInputObject"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sort"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TracksSortInputObject"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"conditions"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TracksConditionsInputObject"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"items"},"name":{"kind":"Name","value":"tracks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"cursor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}}},{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sort"}}},{"kind":"Argument","name":{"kind":"Name","value":"conditions"},"value":{"kind":"Variable","name":{"kind":"Name","value":"conditions"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TrackFields"}}]}}]}},...TrackFieldsFragmentDoc.definitions]};

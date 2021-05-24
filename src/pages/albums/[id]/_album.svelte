@@ -6,7 +6,7 @@ import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { AlbumDocument } from "~/graphql/types";
 import type {
-  Album, AlbumQuery, AlbumsQueryVariables
+  Album, AlbumQuery, ArtistsQueryVariables
 } from "~/graphql/types";
 import Artists from "~/pages/artists/_artists.svelte";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
@@ -26,7 +26,7 @@ $: if ($albumQuery.data) {
 
 }
 
-const variables: AlbumsQueryVariables = {
+const variables: ArtistsQueryVariables = {
   conditions: { albums: { id: [id] } },
   sort: {
     order: "POPULARITY",
