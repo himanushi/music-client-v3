@@ -39,6 +39,7 @@ export const itemsMachine = <
     variables?: ItemsQueryVariables;
     watchQuery?: ObservableQuery<ItemsQuery, ItemsQueryVariables>;
     fetchPolicy: WatchQueryFetchPolicy;
+    hasNext: boolean;
   }
 
   type itemsSchema = {
@@ -63,6 +64,10 @@ export const itemsMachine = <
         watchQuery: ObservableQuery<ItemsQuery, ItemsQueryVariables>;
       }
     | {
+        type: "SET_HAS_NEXT";
+        hasNext: boolean;
+      }
+    | {
         type: "SET_ITEMS";
         items: ItemType[];
       }
@@ -83,6 +88,7 @@ export const itemsMachine = <
       initial: "active",
 
       context: {
+        hasNext: true,
         variables: {
           cursor: {
             limit,
@@ -130,10 +136,23 @@ export const itemsMachine = <
 
             const subscribe = watchQuery.subscribe((data) => {
 
-              callback({
-                type: "SET_ITEMS",
-                items: data.data.items
-              });
+              const items = data.data.items as any[];
+
+              if (items.length > 0) {
+
+                callback({
+                  type: "SET_ITEMS",
+                  items: data.data.items
+                });
+
+              } else {
+
+                callback({
+                  type: "SET_HAS_NEXT",
+                  hasNext: false
+                });
+
+              }
 
               callback("ACTIVE");
 
@@ -144,6 +163,7 @@ export const itemsMachine = <
           } },
 
           on: {
+            SET_HAS_NEXT: { actions: "setHasNext" },
             SET_WATCH_QUERY: { actions: "setWatchQuery" },
             SET_ITEMS: { actions: "setItems" },
             ACTIVE: "active"
@@ -152,32 +172,46 @@ export const itemsMachine = <
 
         moreFetching: {
           invoke: { src: ({
-            variables, watchQuery, items
+            variables, watchQuery, items, hasNext
           }) => (callback) => {
 
-            if (watchQuery) {
+            (async () => {
 
-              (async () => {
+              if (watchQuery && hasNext) {
 
                 const result = await watchQuery.fetchMore({ variables: { cursor: {
                   limit: variables?.cursor?.limit || limit,
                   offset: items.length
                 } } });
 
-                callback({
-                  type: "ADD_ITEMS",
-                  items: result.data.items
-                });
+                const resultItems = result.data.items as any[];
 
-                callback("ACTIVE");
+                if (resultItems.length > 0) {
 
-              })();
+                  callback({
+                    type: "ADD_ITEMS",
+                    items: resultItems
+                  });
 
-            }
+                } else {
+
+                  callback({
+                    type: "SET_HAS_NEXT",
+                    hasNext: false
+                  });
+
+                }
+
+              }
+
+              callback("ACTIVE");
+
+            })();
 
           } },
 
           on: {
+            SET_HAS_NEXT: { actions: "setHasNext" },
             ADD_ITEMS: { actions: "addItems" },
             ACTIVE: "active"
           }
@@ -213,6 +247,8 @@ export const itemsMachine = <
       ] : items }),
 
       setWatchQuery: assign({ watchQuery: (_, event) => "watchQuery" in event ? event.watchQuery : undefined }),
+
+      setHasNext: assign({ hasNext: (_, event) => "hasNext" in event ? event.hasNext : true }),
 
       setFetchPolicy: assign({ fetchPolicy: ({ variables }) => {
 

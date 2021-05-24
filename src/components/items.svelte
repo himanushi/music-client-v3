@@ -60,6 +60,10 @@ const elementScroll: HTMLElement = getElement();
   <slot {items} {item} {index} />
 {/each}
 
+{#if service && !$service.matches("active")}
+  loading...
+{/if}
+
 <Waypoint
   threshold={300}
   {elementScroll}
