@@ -1,6 +1,6 @@
 <script lang="ts">
 import { setContext } from "svelte";
-import ScrollLock from "./_scroll-lock.svelte";
+import ChangePage from "./_change-page.svelte";
 
 let content: HTMLElement;
 
@@ -11,7 +11,7 @@ let invisible = true;
 </script>
 
 <main data-routify="scroll-lock" bind:this={content} class:invisible>
-  <ScrollLock
+  <ChangePage
     on:pageChange={() => invisible = true}
     on:pageLoad={() => invisible = false}
   />
