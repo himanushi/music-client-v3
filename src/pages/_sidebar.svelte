@@ -65,6 +65,14 @@ $: me = $query?.data?.me;
         {/if}
         <li class="clickable" on:click={go("/me")}>設定</li>
         <li class="clickable" on:click={showPlayer}>音楽プレイヤー</li>
+        <li class="clickable" on:click={go("/about")}>このサイトについて</li>
+        <li class="clickable" on:click={go("/terms")}>利用規約</li>
+        <li class="clickable" on:click={go("/privacy")}>
+          プレイバシーポリシー
+        </li>
+        <li class="clickable" on:click={go("/cookie-policy")}>
+          クッキーポリシー
+        </li>
       </ul>
     </section>
   </main>
