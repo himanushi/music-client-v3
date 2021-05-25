@@ -4,7 +4,8 @@ import Content from "./_content.svelte";
 import Footer from "./_footer.svelte";
 import Header from "./_header.svelte";
 import Initializer from "~/components/initializers/initializer.svelte";
-import Modal from "~/components/modals.svelte";
+import Modals from "~/components/modals.svelte";
+import Toasts from "~/components/toasts.svelte";
 import client from "~/graphql/client";
 
 setClient(client);
@@ -14,7 +15,8 @@ setClient(client);
 <Header />
 <Content><slot /></Content>
 <Footer />
-<Modal />
+<Modals />
+<Toasts />
 
 <style lang="scss">
 :global(body) {

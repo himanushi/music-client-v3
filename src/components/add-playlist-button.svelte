@@ -2,10 +2,12 @@
 import {
   getClient, mutation
 } from "svelte-apollo";
+import AddPlaylistMessage from "./toast-messages/add-playlist-message.svelte";
 import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import Selection from "~/components/selection.svelte";
 import type { selectionType } from "~/components/selection.svelte";
+import { toasts } from "~/components/toasts.svelte";
 import {
   PlaylistsDocument, AddPlaylistItemsDocument
 } from "~/graphql/types";
@@ -45,7 +47,7 @@ const showMyPlaylist = async () => {
 
   const playlists = result?.data?.items;
 
-  if (playlists) {
+  if (playlists.length > 0) {
 
     modals.open<selectionType>({
       component: Selection,
@@ -60,6 +62,13 @@ const showMyPlaylist = async () => {
         },
         text: playlsit.name
       })) }
+    });
+
+  } else {
+
+    toasts.open({
+      component: AddPlaylistMessage,
+      type: "info"
     });
 
   }
