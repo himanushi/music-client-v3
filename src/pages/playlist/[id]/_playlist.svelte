@@ -13,7 +13,7 @@ import ItemCard from "~/pages/tracks/_item-card.svelte";
 
 export let id = "";
 
-const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
+$: playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
   fetchPolicy: "no-cache",
   variables: { id }
 });

@@ -10,11 +10,11 @@ export type selectionType = {
 </script>
 
 <script lang="ts">
-export let lists: listType[] = [];
+export let props: selectionType;
 </script>
 
 <ul>
-  {#each lists as list}
+  {#each props.lists as list}
     <li on:click={() => list.onClick()}>{list.text}</li>
   {/each}
 </ul>

@@ -57,12 +57,23 @@ const close = () => {
   toasts.close();
 
 };
+
+const args = (props?: {}) => {
+
+  if (props) {
+
+    return { props };
+
+  }
+  return {};
+
+};
 </script>
 
 {#if $toasts.length > 0}
   {#each $toasts as toast}
     <div transition:fade={{ duration: 100 }}>
-      <svelte:component this={toast.component} {...toast.props} />
+      <svelte:component this={toast.component} {...args(toast.props)} />
       {#if toast.okClick}
         <span on:click={toast.okClick}>ok</span>
       {:else}

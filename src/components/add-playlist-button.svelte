@@ -2,14 +2,18 @@
 import {
   getClient, mutation
 } from "svelte-apollo";
-import AddPlaylistMessage from "./toast-messages/add-playlist-message.svelte";
 import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import Selection from "~/components/selection.svelte";
 import type { selectionType } from "~/components/selection.svelte";
+import type { Props } from "~/components/toast-messages/added-playlist-message.svelte";
+import AddedPlaylistMessage from "~/components/toast-messages/added-playlist-message.svelte";
+import NoPlaylistMessage from "~/components/toast-messages/no-playlist-message.svelte";
 import { toasts } from "~/components/toasts.svelte";
 import {
-  PlaylistsDocument, AddPlaylistItemsDocument
+  PlaylistsDocument,
+  AddPlaylistItemsDocument,
+  PlaylistDocument
 } from "~/graphql/types";
 import type {
   Track, AddPlaylistItemsMutationVariables
@@ -27,6 +31,7 @@ const addPlaylist = mutation<unknown, AddPlaylistItemsMutationVariables>(
 
 const client = getClient();
 
+// eslint-disable-next-line max-lines-per-function
 const showMyPlaylist = async () => {
 
   const result = await client.query({
@@ -54,10 +59,27 @@ const showMyPlaylist = async () => {
       props: { lists: playlists.map((playlsit) => ({
         onClick: async () => {
 
-          await addPlaylist({ variables: { input: {
-            playlistId: playlsit.id,
-            trackIds: tracks.map((track) => track.id)
-          } } });
+          await addPlaylist({
+            refetchQueries: [
+              {
+                query: PlaylistDocument,
+                variables: { id: playlsit.id }
+              }
+            ],
+            variables: { input: {
+              playlistId: playlsit.id,
+              trackIds: tracks.map((track) => track.id)
+            } }
+          });
+
+          toasts.open<Props>({
+            component: AddedPlaylistMessage,
+            props: {
+              id: playlsit.id,
+              name: playlsit.name
+            },
+            type: "info"
+          });
 
         },
         text: playlsit.name
@@ -67,7 +89,7 @@ const showMyPlaylist = async () => {
   } else {
 
     toasts.open({
-      component: AddPlaylistMessage,
+      component: NoPlaylistMessage,
       type: "info"
     });
 

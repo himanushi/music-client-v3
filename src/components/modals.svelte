@@ -68,6 +68,17 @@ const close = (modal: modalType<any>) => () => {
   }
 
 };
+
+const args = (props?: {}) => {
+
+  if (props) {
+
+    return { props };
+
+  }
+  return {};
+
+};
 </script>
 
 {#if $modals.length > 0}
@@ -76,7 +87,7 @@ const close = (modal: modalType<any>) => () => {
       class={`bg-black bg-opacity-30 w-full h-full ${modal.class}`}
       on:click={close(modal)}
     >
-      <svelte:component this={modal.component} {...modal.props} />
+      <svelte:component this={modal.component} {...args(modal.props)} />
     </div>
   {/each}
 {/if}
