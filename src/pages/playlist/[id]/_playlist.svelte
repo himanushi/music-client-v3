@@ -1,6 +1,7 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
 import { query } from "svelte-apollo";
+import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
@@ -45,6 +46,12 @@ const edit = () => {
   {#if isMyPlaylist}
     <button on:click={edit}>編集</button>
   {/if}
+
+  <AddAppleMusicPlaylistButton
+    name={playlist.name}
+    description={`${location.origin}/playlist/${playlist.id}`}
+    tracks={playlist.items.map((it) => it.track)}
+  />
 
   {#each playlist.items as item, index (`${item.id}_${index}`)}
     <ItemCard
