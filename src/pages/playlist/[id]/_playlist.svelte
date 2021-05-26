@@ -10,6 +10,7 @@ import { PlaylistDocument } from "~/graphql/types";
 import type {
   Playlist, PlaylistQuery
 } from "~/graphql/types";
+import { accountService as service } from "~/machines/apple-music-account-machine";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
 
 export let id = "";
@@ -47,11 +48,13 @@ const edit = () => {
     <button on:click={edit}>編集</button>
   {/if}
 
-  <AddAppleMusicPlaylistButton
-    name={playlist.name}
-    description={`${location.origin}/playlist/${playlist.id}`}
-    tracks={playlist.items.map((it) => it.track)}
-  />
+  {#if $service.matches("authorized")}
+    <AddAppleMusicPlaylistButton
+      name={playlist.name}
+      description={`${location.origin}/playlist/${playlist.id}`}
+      tracks={playlist.items.map((it) => it.track)}
+    />
+  {/if}
 
   {#each playlist.items as item, index (`${item.id}_${index}`)}
     <ItemCard
