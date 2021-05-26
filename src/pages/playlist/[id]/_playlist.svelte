@@ -2,6 +2,7 @@
 import { goto } from "@roxi/routify";
 import { query } from "svelte-apollo";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
+import AddAppleSpotifyButton from "~/components/add-apple-spotify-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
@@ -55,6 +56,12 @@ const edit = () => {
       tracks={playlist.items.map((it) => it.track)}
     />
   {/if}
+
+  <AddAppleSpotifyButton
+    name={playlist.name}
+    description={`${location.origin}/playlist/${playlist.id}`}
+    tracks={playlist.items.map((it) => it.track)}
+  />
 
   {#each playlist.items as item, index (`${item.id}_${index}`)}
     <ItemCard

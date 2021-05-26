@@ -258,7 +258,9 @@ export const accountMachine = machine<
       const scopes = [
         "streaming",
         "user-read-email",
-        "user-read-private"
+        "user-read-private",
+        "playlist-modify-public",
+        "playlist-modify-private"
       ].join(" ");
 
       const url =

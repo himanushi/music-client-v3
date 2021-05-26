@@ -6,7 +6,7 @@ import ErrorMessage from "~/components/toast-messages/error-message.svelte";
 import { toasts } from "~/components/toasts.svelte";
 import type { Track } from "~/graphql/types";
 import AddPlaylistIcon from "~/icons/add-playlist.svelte";
-import { service } from "~/machines/apple-music-create-playlist";
+import { service } from "~/machines/spotify-create-playlist";
 
 export let name: string;
 export let description: string;
@@ -27,7 +27,7 @@ $: if ($service.matches("done")) {
 
   toasts.open<Props>({
     component: AddedMusicServicePlaylistMessage,
-    props: { name: "Apple Music" },
+    props: { name: "Spotify" },
     type: "info"
   });
 
@@ -41,7 +41,7 @@ $: if ($service.matches("done")) {
 }
 </script>
 
-Apple Music に追加
+Spotify に追加
 <IconButton on:click={addPlaylist}>
   <AddPlaylistIcon />
 </IconButton>
