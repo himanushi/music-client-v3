@@ -123,16 +123,15 @@ export const JukeboxMachine = machine<
       id: "mediaController",
       src: () => (callback) => {
 
-        const cb = (type: string) => () => callback({ type });
-
         if (navigator.mediaSession) {
 
-          navigator.mediaSession.setActionHandler("play", cb("PLAY"));
-          navigator.mediaSession.setActionHandler("pause", cb("PAUSE"));
-          navigator.mediaSession.setActionHandler("nexttrack", cb("NEXT_PLAY"));
-          navigator.mediaSession.setActionHandler(
-            "previoustrack",
-            cb("PREVIOUS_PLAY")
+          navigator.mediaSession.setActionHandler("play", () => callback("PLAY")
+          );
+          navigator.mediaSession.setActionHandler("pause", () => callback("PAUSE")
+          );
+          navigator.mediaSession.setActionHandler("nexttrack", () => callback("NEXT_PLAY")
+          );
+          navigator.mediaSession.setActionHandler("previoustrack", () => callback("PREVIOUS_PLAY")
           );
 
         }
