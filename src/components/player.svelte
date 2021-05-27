@@ -21,7 +21,9 @@ const tabs = [
   }}
   class="player"
 >
-  <svelte:component this={tabs[tabIndex]} />
+  <div>
+    <svelte:component this={tabs[tabIndex]} />
+  </div>
   <button on:click={close} class="close">x</button>
   <button on:click={() => tabIndex = 0}>player</button>
   <button on:click={() => tabIndex = 1}>queue</button>
@@ -29,6 +31,10 @@ const tabs = [
 
 <style lang="scss">
 .player {
-  @apply h-full w-full bg-gray-500;
+  height: fit-content;
+  width: fit-content;
+  @apply absolute inset-0 m-auto;
+
+  @apply bg-gray-500 rounded;
 }
 </style>

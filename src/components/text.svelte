@@ -5,4 +5,4 @@ export { className as class };
 
 <!-- webfont 使うかもしないので text を噛ませる -->
 
-<p class={className}><slot /></p>
+<span class={className}><slot /></span>

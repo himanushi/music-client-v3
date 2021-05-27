@@ -49,11 +49,20 @@ const remove = (
 };
 </script>
 
-<DndSelection on:decide={decide} on:remove={remove} {items} let:index let:item>
-  {#if playbackNo === index}
-    <Text>○</Text>
-  {:else}
-    <div on:click={play(index)}>|></div>
-  {/if}
-  <Text>{item.item.name}</Text>
-</DndSelection>
+<div>
+  <DndSelection
+    on:decide={decide}
+    on:remove={remove}
+    {items}
+    let:index
+    let:item
+    class={"h-96"}
+  >
+    {#if playbackNo === index}
+      <Text>○</Text>
+    {:else}
+      <div on:click={play(index)}>|></div>
+    {/if}
+    <Text>{item.item.name}</Text>
+  </DndSelection>
+</div>

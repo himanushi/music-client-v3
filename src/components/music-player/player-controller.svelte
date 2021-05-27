@@ -14,7 +14,7 @@ $: player = $playerService.context.musicPlayerRef;
 
 $: disabled = player && $player.value === "loading";
 
-const play_or_pause = () => {
+const playOrPause = () => {
 
   playerService.send("PLAY_OR_PAUSE");
 
@@ -33,29 +33,45 @@ const skip = () => {
 };
 </script>
 
-<RepeatButton />
+<div>
+  <div>
+    <IconButton {disabled} on:click={rewind}>
+      <RewindIcon color="text-gray-900" />
+    </IconButton>
 
-<IconButton {disabled} on:click={rewind}>
-  <RewindIcon color="text-gray-900" />
-</IconButton>
-
-{#if player}
-  <IconButton {disabled} on:click={play_or_pause}>
-    {#if $player.value === "playing"}
-      <PuaseIcon color="text-gray-900" />
-    {:else if $player.value === "loading"}
-      <LoadingIcon color="text-gray-900" />
-    {:else}
-      <PlayIcon color="text-gray-900" />
+    {#if player}
+      <IconButton {disabled} on:click={playOrPause}>
+        {#if $player.value === "playing"}
+          <PuaseIcon color="text-gray-900" />
+        {:else if $player.value === "loading"}
+          <LoadingIcon color="text-gray-900" />
+        {:else}
+          <PlayIcon color="text-gray-900" />
+        {/if}
+      </IconButton>
     {/if}
-  </IconButton>
-{/if}
 
-<IconButton {disabled} on:click={skip}>
-  <SkipIcon color="text-gray-900" />
-</IconButton>
+    <IconButton {disabled} on:click={skip}>
+      <SkipIcon color="text-gray-900" />
+    </IconButton>
+  </div>
 
-{#if player && $player.context.track}
-  <Favorite type="track" id={$player.context.track.id} />
-  <AddPlaylistButton tracks={[$player.context.track]} />
-{/if}
+  <div>
+    <RepeatButton />
+
+    {#if player && $player.context.track}
+      <Favorite type="track" id={$player.context.track.id} />
+      <AddPlaylistButton tracks={[$player.context.track]} />
+    {/if}
+  </div>
+</div>
+
+<style lang="scss">
+div {
+  @apply flex flex-col items-center justify-center;
+
+  div {
+    @apply w-full flex flex-row items-center;
+  }
+}
+</style>

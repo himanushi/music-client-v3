@@ -16,8 +16,10 @@ import { flip } from "svelte/animate";
 
 const dispatch = createEventDispatcher();
 
+let className: string;
 export let items: ItemsType;
 export const flipDurationMs = 100;
+export { className as class };
 
 let dragDisabled = true;
 
@@ -124,6 +126,7 @@ const remove = (index: number) => () => {
   }}
   on:consider={moving}
   on:finalize={decide}
+  class={className}
 >
   {#each items as item, index (item.id)}
     <div animate:flip={{ duration: flipDurationMs }}>
@@ -136,7 +139,7 @@ const remove = (index: number) => () => {
 
 <style lang="scss">
 section {
-  @apply h-3/4 overflow-y-scroll;
+  @apply overflow-y-scroll;
 }
 
 div {
