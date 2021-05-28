@@ -43,5 +43,5 @@ $: if ($service.matches("done")) {
 
 Apple Music に追加
 <IconButton on:click={addPlaylist}>
-  <AddPlaylistIcon />
+  <AddPlaylistIcon class="h-10 w-10" />
 </IconButton>

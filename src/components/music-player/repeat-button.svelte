@@ -1,6 +1,6 @@
 <script>
 import IconButton from "~/components/icon-button.svelte";
-import RefreshIcon from "~/icons/refresh.svelte";
+import RepeatIcon from "~/icons/repeat.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
 $: enable = $playerService.context.repeat ? "" : "opacity-50";
@@ -13,5 +13,5 @@ const repeat = () => {
 </script>
 
 <IconButton on:click={repeat}>
-  <RefreshIcon color={`text-gray-900 ${enable}`} />
+  <RepeatIcon class={`text-gray-900 ${enable}`} />
 </IconButton>

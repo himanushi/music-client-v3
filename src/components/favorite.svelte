@@ -60,9 +60,9 @@ const onClick = async () => {
 {#if me && isAllowed(me, "changeFavorites")}
   <IconButton on:click={onClick} class="h-7 w-7">
     {#if favorite}
-      <HeartIcon size="h-7 w-7" />
+      <HeartIcon class="h-7 w-7" />
     {:else}
-      <HeartIcon size="h-7 w-7" color="text-black" />
+      <HeartIcon class="text-black h-7 w-7" />
     {/if}
   </IconButton>
 {/if}

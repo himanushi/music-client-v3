@@ -13,12 +13,13 @@ const close = () => modals.close();
 
 const showPlayer = () => modals.open(Player);
 
-const go = (path: string, params: Record<string, string> = {}) => () => {
+const go =
+  (path: string, params: Record<string, string> = {}) => () => {
 
-  $goto(path, params);
-  modals.close();
+    $goto(path, params);
+    modals.close();
 
-};
+  };
 
 const query = meQuery();
 $: me = $query?.data?.me;
@@ -34,7 +35,7 @@ $: me = $query?.data?.me;
 >
   <header>
     <IconButton class="h-10 w-10" on:click={close}>
-      <ChevronLeft color="text-black" size="h-5 w-5" />
+      <ChevronLeft class="text-black h-5 w-5" />
     </IconButton>
     <h4>メニュー</h4>
   </header>
@@ -55,10 +56,10 @@ $: me = $query?.data?.me;
           <li class="clickable" on:click={go("/playlist")}>プレイリスト</li>
         {/if}
         {#if me && isAllowed(me, [
-            "playlists",
-            "upsertPlaylist",
-            "addPlaylistItems"
-          ])}
+"playlists",
+"upsertPlaylist",
+"addPlaylistItems"
+])}
           <li class="clickable" on:click={go("/playlist", { pm: "1" })}>
             マイプレイリスト
           </li>

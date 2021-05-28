@@ -43,5 +43,5 @@ $: if ($service.matches("done")) {
 
 Spotify に追加
 <IconButton on:click={addPlaylist}>
-  <AddPlaylistIcon />
+  <AddPlaylistIcon class="w-10 h-10" />
 </IconButton>

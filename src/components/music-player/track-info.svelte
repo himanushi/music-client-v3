@@ -7,9 +7,7 @@ import { playerService } from "~/machines/jukebox-machine";
 let currentTrack: Track | undefined;
 let name: string | undefined;
 
-$: ({
-  currentTrack, name
-} = $playerService.context);
+$: ({ currentTrack, name } = $playerService.context);
 </script>
 
 {#if currentTrack && name}
@@ -30,18 +28,18 @@ $: ({
 
 <style lang="scss">
 .track-info {
-  @apply flex flex-col items-center;
+  @apply flex flex-col items-center text-white text-center;
+
+  .title {
+    @apply inline m-2;
+  }
 
   .image {
     @apply inline;
   }
 
-  .title {
-    @apply inline;
-  }
-
   .track-name {
-    @apply inline;
+    @apply inline m-2;
   }
 }
 </style>

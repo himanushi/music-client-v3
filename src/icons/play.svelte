@@ -1,20 +1,13 @@
 <script lang="ts">
-import {
-  size as defaultSize, color as defaultColor
-} from "./default";
-export let size = defaultSize;
-export let color = defaultColor;
+let className: string = "";
+export { className as class };
 </script>
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 20 20"
-  fill="currentColor"
-  class="{color} {size}"
+  fill="none"
+  class={className}
+  viewBox="0 0 24 24"
 >
-  <path
-    fill-rule="evenodd"
-    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-    clip-rule="evenodd"
-  />
+  <path d="M15 12.3301L9 16.6603L9 8L15 12.3301Z" fill="currentColor" />
 </svg>

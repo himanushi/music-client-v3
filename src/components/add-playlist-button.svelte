@@ -106,6 +106,6 @@ $: me = $query?.data?.me;
 "addPlaylistItems"
 ])}
   <IconButton on:click={showMyPlaylist}>
-    <AddPlaylistIcon />
+    <AddPlaylistIcon class="h-10 w-10" />
   </IconButton>
 {/if}

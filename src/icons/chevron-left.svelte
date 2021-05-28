@@ -1,22 +1,16 @@
 <script lang="ts">
-import {
-  size as defaultSize, color as defaultColor
-} from "./default";
-export let size = defaultSize;
-export let color = defaultColor;
+let className: string = "";
+export { className as class };
 </script>
 
 <svg
-  xmlns="http://www.w3.org/2000/svg"
-  fill="none"
   viewBox="0 0 24 24"
-  stroke="currentColor"
-  class="{color} {size}"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  class={className}
 >
   <path
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    stroke-width="2"
-    d="M15 19l-7-7 7-7"
+    d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z"
+    fill="currentColor"
   />
 </svg>

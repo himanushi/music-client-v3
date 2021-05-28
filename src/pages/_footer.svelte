@@ -4,9 +4,9 @@ import { modals } from "~/components/modals.svelte";
 import Player from "~/components/player.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
+import LoadingIcon from "~/icons/loading.svelte";
 import PuaseIcon from "~/icons/pause.svelte";
 import PlayIcon from "~/icons/play.svelte";
-import LoadingIcon from "~/icons/refresh.svelte";
 import SkipIcon from "~/icons/skip.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
@@ -49,17 +49,17 @@ const showPlayer = () => {
   {#if player}
     <IconButton on:click={play_or_pause}>
       {#if $player.value === "playing"}
-        <PuaseIcon color="text-gray-900" />
+        <PuaseIcon class="text-gray-900" />
       {:else if $player.value === "loading"}
-        <LoadingIcon color="text-gray-900" />
+        <LoadingIcon class="text-gray-900" />
       {:else}
-        <PlayIcon color="text-gray-900" />
+        <PlayIcon class="text-gray-900 h-10 w-10" />
       {/if}
     </IconButton>
   {/if}
 
   <IconButton on:click={skip}>
-    <SkipIcon color="text-gray-900" />
+    <SkipIcon class="text-gray-900" />
   </IconButton>
 </footer>
 

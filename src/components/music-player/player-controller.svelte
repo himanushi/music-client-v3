@@ -3,9 +3,9 @@ import AddPlaylistButton from "../add-playlist-button.svelte";
 import Favorite from "../favorite.svelte";
 import RepeatButton from "./repeat-button.svelte";
 import IconButton from "~/components/icon-button.svelte";
+import LoadingIcon from "~/icons/loading.svelte";
 import PuaseIcon from "~/icons/pause.svelte";
 import PlayIcon from "~/icons/play.svelte";
-import LoadingIcon from "~/icons/refresh.svelte";
 import RewindIcon from "~/icons/rewind.svelte";
 import SkipIcon from "~/icons/skip.svelte";
 import { playerService } from "~/machines/jukebox-machine";
@@ -36,23 +36,23 @@ const skip = () => {
 <div>
   <div>
     <IconButton {disabled} on:click={rewind}>
-      <RewindIcon color="text-gray-900" />
+      <RewindIcon class="text-white" />
     </IconButton>
 
     {#if player}
-      <IconButton {disabled} on:click={playOrPause}>
+      <IconButton {disabled} class="h-16 w-16" on:click={playOrPause}>
         {#if $player.value === "playing"}
-          <PuaseIcon color="text-gray-900" />
+          <PuaseIcon class="text-white" />
         {:else if $player.value === "loading"}
-          <LoadingIcon color="text-gray-900" />
+          <LoadingIcon />
         {:else}
-          <PlayIcon color="text-gray-900" />
+          <PlayIcon class="text-white w-20 h-20" />
         {/if}
       </IconButton>
     {/if}
 
     <IconButton {disabled} on:click={skip}>
-      <SkipIcon color="text-gray-900" />
+      <SkipIcon class="text-white" />
     </IconButton>
   </div>
 

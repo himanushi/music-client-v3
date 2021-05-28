@@ -6,10 +6,7 @@ import Queue from "~/components/queue/index.svelte";
 
 const close = () => modals.close();
 let tabIndex = 0;
-const tabs = [
-  Player,
-  Queue
-];
+const tabs = [Player, Queue];
 </script>
 
 <div
@@ -17,7 +14,7 @@ const tabs = [
   transition:fly={{
     duration: 400,
     opacity: 100,
-    y: document.body.clientHeight
+    y: document.body.clientHeight,
   }}
   class="player"
 >
@@ -25,8 +22,8 @@ const tabs = [
     <svelte:component this={tabs[tabIndex]} />
   </div>
   <button on:click={close} class="close">x</button>
-  <button on:click={() => tabIndex = 0}>player</button>
-  <button on:click={() => tabIndex = 1}>queue</button>
+  <button on:click={() => (tabIndex = 0)}>player</button>
+  <button on:click={() => (tabIndex = 1)}>queue</button>
 </div>
 
 <style lang="scss">
@@ -35,6 +32,6 @@ const tabs = [
   width: fit-content;
   @apply absolute inset-0 m-auto;
 
-  @apply bg-gray-500 rounded;
+  @apply bg-gray-800 rounded;
 }
 </style>
