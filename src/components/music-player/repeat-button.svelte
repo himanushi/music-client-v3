@@ -3,7 +3,10 @@ import IconButton from "~/components/icon-button.svelte";
 import RepeatIcon from "~/icons/repeat.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
-$: enable = $playerService.context.repeat ? "" : "opacity-50";
+let className = "h-10 w-10";
+export { className as class };
+
+$: enable = $playerService.context.repeat ? "" : "opacity-30";
 
 const repeat = () => {
 
@@ -12,6 +15,6 @@ const repeat = () => {
 };
 </script>
 
-<IconButton on:click={repeat}>
-  <RepeatIcon class={`text-gray-900 ${enable}`} />
+<IconButton class={className} on:click={repeat}>
+  <RepeatIcon class={` text-white ${className} ${enable}`} />
 </IconButton>

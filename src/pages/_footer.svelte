@@ -51,20 +51,19 @@ const showPlayer = () => {
       {#if $player.value === "playing"}
         <PuaseIcon class="text-gray-900" />
       {:else if $player.value === "loading"}
-        <LoadingIcon class="text-gray-900" />
+        <LoadingIcon />
       {:else}
         <PlayIcon class="text-gray-900 h-10 w-10" />
       {/if}
     </IconButton>
   {/if}
 
-  <IconButton on:click={skip}>
+  <IconButton class="w-10 h-10" on:click={skip}>
     <SkipIcon class="text-gray-900" />
   </IconButton>
 </footer>
 
 <style lang="scss">
-/* デザインはあとで */
 footer {
   @apply bg-green-800;
 }

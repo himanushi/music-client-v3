@@ -7,11 +7,14 @@ import type {
   ChangeFavoritesMutationVariables,
   ChangeFavoritesInput
 } from "~/graphql/types";
+import HeartFillIcon from "~/icons/heart-fill.svelte";
 import HeartIcon from "~/icons/heart.svelte";
 import {
   isAllowed, isFavorite, meQuery
 } from "~/lib/me";
 
+let className = "";
+export { className as class };
 export let id: string;
 export let type: "album" | "artist" | "track" | "playlist";
 
@@ -58,11 +61,11 @@ const onClick = async () => {
 </script>
 
 {#if me && isAllowed(me, "changeFavorites")}
-  <IconButton on:click={onClick} class="h-7 w-7">
+  <IconButton on:click={onClick} class={className}>
     {#if favorite}
-      <HeartIcon class="h-7 w-7" />
+      <HeartFillIcon class={`text-red-500 ${className}`} />
     {:else}
-      <HeartIcon class="text-black h-7 w-7" />
+      <HeartIcon class={`text-black ${className}`} />
     {/if}
   </IconButton>
 {/if}

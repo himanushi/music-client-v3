@@ -5,6 +5,7 @@ import {
 } from "svelte-apollo";
 import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
+import Messages from "~/components/messages.svelte";
 import PlayButton from "~/components/play-button.svelte";
 import Text from "~/components/text.svelte";
 import {
@@ -16,6 +17,7 @@ import type {
   PlaylistPublicTypeEnum,
   UpsertPlaylistMutationVariables
 } from "~/graphql/types";
+import { errorMessages } from "~/lib/error";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -27,6 +29,7 @@ let description = "";
 let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
 let initialize = true;
 let items: ItemsType = [];
+let messages: Record<string, string[]> = {};
 
 const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
   fetchPolicy: "no-cache",
@@ -72,7 +75,9 @@ const update = async () => {
     $goto("/playlist/:id", { id });
 
   } catch (error) {
-    // console.error({ error });
+
+    messages = errorMessages(error);
+
   }
 
 };
@@ -117,6 +122,7 @@ $: me = $meq?.data?.me;
       <Text>{item.item.name}</Text>
     </DndSelection>
 
+    <Messages type="error" messages={messages._} />
     <button on:click={update}>保存</button>
   </form>
 {/if}

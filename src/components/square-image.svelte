@@ -20,5 +20,7 @@ div {
 
   /* img */
   @apply bg-cover bg-center bg-no-repeat;
+
+  @apply h-full w-full;
 }
 </style>

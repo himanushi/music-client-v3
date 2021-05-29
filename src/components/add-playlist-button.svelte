@@ -23,6 +23,8 @@ import {
   isAllowed, meQuery
 } from "~/lib/me";
 
+let className = "";
+export { className as class };
 export let tracks: Track[];
 
 const addPlaylist = mutation<unknown, AddPlaylistItemsMutationVariables>(
@@ -105,7 +107,7 @@ $: me = $query?.data?.me;
 "playlists",
 "addPlaylistItems"
 ])}
-  <IconButton on:click={showMyPlaylist}>
-    <AddPlaylistIcon class="h-10 w-10" />
+  <IconButton on:click={showMyPlaylist} class={className}>
+    <AddPlaylistIcon class={`text-white ${className}`} />
   </IconButton>
 {/if}

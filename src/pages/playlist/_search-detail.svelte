@@ -97,7 +97,7 @@ const close = () => modals.close();
       {/each}
     </select>
     <IconButton on:click={onClock}>
-      <SearchIcon />
+      <SearchIcon class="w-10 h-10" />
     </IconButton>
   </form>
 </div>

@@ -7,17 +7,16 @@ import { playerService } from "~/machines/jukebox-machine";
 let currentTrack: Track | undefined;
 let name: string | undefined;
 
-$: ({ currentTrack, name } = $playerService.context);
+$: ({
+  currentTrack, name
+} = $playerService.context);
 </script>
 
 {#if currentTrack && name}
   {#key currentTrack.id}
     <div class="track-info">
-      <div class="title">
-        <Text>{name}</Text>
-      </div>
       <div class="image">
-        <Image src={currentTrack.artworkM.url} class="w-60 h-60" />
+        <Image src={currentTrack.artworkM.url} />
       </div>
       <div class="track-name">
         <Text>{currentTrack.name}</Text>
@@ -30,16 +29,12 @@ $: ({ currentTrack, name } = $playerService.context);
 .track-info {
   @apply flex flex-col items-center text-white text-center;
 
-  .title {
-    @apply inline m-2;
-  }
-
   .image {
-    @apply inline;
+    @apply inline w-[300px] h-[300px];
   }
 
   .track-name {
-    @apply inline m-2;
+    @apply inline m-2 truncate w-[270px];
   }
 }
 </style>

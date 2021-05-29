@@ -35,33 +35,33 @@ const skip = () => {
 
 <div>
   <div>
-    <IconButton {disabled} on:click={rewind}>
-      <RewindIcon class="text-white" />
+    <IconButton {disabled} class="h-16 w-16" on:click={rewind}>
+      <RewindIcon class="text-white h-16 w-16" />
     </IconButton>
 
     {#if player}
       <IconButton {disabled} class="h-16 w-16" on:click={playOrPause}>
         {#if $player.value === "playing"}
-          <PuaseIcon class="text-white" />
+          <PuaseIcon class="text-white h-16 w-16" />
         {:else if $player.value === "loading"}
           <LoadingIcon />
         {:else}
-          <PlayIcon class="text-white w-20 h-20" />
+          <PlayIcon class="text-white h-16 w-16" />
         {/if}
       </IconButton>
     {/if}
 
-    <IconButton {disabled} on:click={skip}>
-      <SkipIcon class="text-white" />
+    <IconButton {disabled} class="h-16 w-16" on:click={skip}>
+      <SkipIcon class="text-white h-16 w-16" />
     </IconButton>
   </div>
 
   <div>
-    <RepeatButton />
+    <RepeatButton class="h-11 w-11" />
 
     {#if player && $player.context.track}
-      <Favorite type="track" id={$player.context.track.id} />
-      <AddPlaylistButton tracks={[$player.context.track]} />
+      <Favorite class="h-7 w-7" type="track" id={$player.context.track.id} />
+      <AddPlaylistButton class="h-11 w-11" tracks={[$player.context.track]} />
     {/if}
   </div>
 </div>
@@ -71,7 +71,7 @@ div {
   @apply flex flex-col items-center justify-center;
 
   div {
-    @apply w-full flex flex-row items-center;
+    @apply grid grid-flow-col gap-2;
   }
 }
 </style>
