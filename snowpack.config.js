@@ -5,6 +5,7 @@ module.exports = {
     routify: "./.routify",
     "~": "./src"
   },
+  devOptions: { tailwindConfig: "./tailwind.config.js" },
   mount: {
     ".routify": { url: "/" },
     public: {
