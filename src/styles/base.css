@@ -1,4 +1,3 @@
-<style global>
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,4 +21,3 @@ body {
   /* click */
   @apply active_bg-opacity-50;
 }
-</style>
