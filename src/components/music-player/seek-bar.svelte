@@ -1,5 +1,6 @@
 <script lang="ts">
 import { tweened } from "svelte/motion";
+import SeekBar from "~/components/seek-bar.svelte";
 import Text from "~/components/text.svelte";
 import { playerService } from "~/machines/jukebox-machine";
 
@@ -40,43 +41,59 @@ const toMMSS = (duration: number) => {
 
 };
 
-const onChangeSeek = (event: Event) => {
+let seeking = false;
+let seekValue = 0;
 
-  const { target } = event;
+const onStart = (event: { detail: { value: number } }) => {
 
-  if (!(target instanceof HTMLInputElement)) {
+  seeking = true;
+  seekValue = event.detail.value;
 
-    return;
+};
 
-  }
+const onStop = (event: { detail: { value: number } }) => {
 
-  const { value } = target;
+  seeking = false;
 
-  if (player && value) {
+  if (player) {
 
     player.send({
-      seek: parseInt(value, 10),
+      seek: event.detail.value,
       type: "CHANGE_SEEK"
     });
 
   }
 
 };
+
+$: seekValue = seeking ? seekValue : $seek;
 </script>
 
 {#if player}
-  <Text>{toMMSS($player.context.seek)}</Text>
-  <input
-    type="range"
-    max={$player.context.duration}
-    bind:value={$seek}
-    on:change={onChangeSeek}
-  />
-  <Text>{toMMSS($player.context.duration)}</Text>
+  <div>
+    <div class="text">
+      <Text class="text-white m-2">{toMMSS($player.context.seek)}</Text>
+      <Text class="text-white m-2">{toMMSS($player.context.duration)}</Text>
+    </div>
+    <div class="seek">
+      <SeekBar
+        value={seekValue}
+        min={0}
+        max={$player.context.duration}
+        formatter={toMMSS}
+        on:start={onStart}
+        on:stop={onStop}
+      />
+    </div>
+  </div>
 {/if}
 
 <style lang="scss">
-input {
+div {
   @apply w-full;
+
+  .text {
+    @apply flex justify-between;
+  }
 }
 </style>
