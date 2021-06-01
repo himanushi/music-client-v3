@@ -72,8 +72,10 @@ $: seekValue = seeking ? seekValue : $seek;
 {#if player}
   <div>
     <div class="text">
-      <Text class="text-white m-2">{toMMSS($player.context.seek)}</Text>
-      <Text class="text-white m-2">{toMMSS($player.context.duration)}</Text>
+      <Text class="text-white px-4 pt-3">{toMMSS($player.context.seek)}</Text>
+      <Text class="text-white px-4 pt-3"
+        >{toMMSS($player.context.duration)}</Text
+      >
     </div>
     <div class="seek">
       <SeekBar
