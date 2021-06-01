@@ -1,5 +1,5 @@
 <script lang="ts">
-import "~/styles/base.css";
+import "~/app.css";
 
 import { Router } from "@roxi/routify";
 import { routes } from "routify/routes";

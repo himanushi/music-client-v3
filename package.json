@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "snowpack dev",
+    "start": "run-p route dev",
+    "dev": "snowpack dev",
     "build": "routify -b && snowpack build",
     "lint": "prettier --write . && eslint --fix --debug --ext .js,.ts . && eslint --fix --debug --ext .svelte .",
     "route": "routify -b",
