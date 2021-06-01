@@ -13,6 +13,8 @@ import {
   dndzone, SOURCES, TRIGGERS
 } from "svelte-dnd-action";
 import { flip } from "svelte/animate";
+import Close from "~/icons/close.svelte";
+import Menu from "~/icons/menu.svelte";
 
 const dispatch = createEventDispatcher();
 
@@ -129,20 +131,41 @@ const remove = (index: number) => () => {
   class={className}
 >
   {#each items as item, index (item.id)}
-    <div animate:flip={{ duration: flipDurationMs }}>
-      <div on:mousedown={startDrag} on:touchstart={startDrag}>三</div>
-      <slot {item} {index} />
-      <div on:click={remove(index)}>-</div>
+    <div class="item clickable" animate:flip={{ duration: flipDurationMs }}>
+      <span class="move" on:mousedown={startDrag} on:touchstart={startDrag}>
+        <Menu class="h-7 w-7 text-white" />
+      </span>
+      <span class="content">
+        <slot {item} {index} />
+      </span>
+      <span class="delete" on:click={remove(index)}>
+        <Close class="h-7 w-7 text-red-400" />
+      </span>
     </div>
   {/each}
 </section>
 
 <style lang="scss">
 section {
-  @apply overflow-y-scroll;
-}
+  @apply p-2 overflow-y-scroll;
+  @apply flex flex-col;
 
-div {
-  @apply flex flex-row;
+  .item {
+    @apply p-2 flex flex-row;
+    @apply rounded items-center;
+
+    .move {
+      @apply flex-shrink-0;
+    }
+
+    .content {
+      @apply flex-grow;
+      @apply items-center;
+    }
+
+    .delete {
+      @apply flex-shrink-0;
+    }
+  }
 }
 </style>
