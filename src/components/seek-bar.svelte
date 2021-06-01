@@ -39,6 +39,9 @@ const range = "min" as unknown as boolean;
   .rangeHandle > .rangeNub {
     @apply bg-teal-500;
   }
+  .rangeHandle > .rangeFloat {
+    @apply bg-teal-500;
+  }
   .rangeBar {
     @apply bg-teal-500;
   }

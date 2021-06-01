@@ -34,7 +34,7 @@ $: ({
   }
 
   .track-name {
-    @apply inline m-2 truncate w-[270px];
+    @apply inline m-2 truncate w-10/12;
   }
 }
 </style>

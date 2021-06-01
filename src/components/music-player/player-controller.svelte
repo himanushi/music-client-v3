@@ -60,7 +60,7 @@ const skip = () => {
     <RepeatButton class="h-11 w-11" />
 
     {#if player && $player.context.track}
-      <Favorite class="h-7 w-7" type="track" id={$player.context.track.id} />
+      <Favorite type="track" id={$player.context.track.id} />
       <AddPlaylistButton class="h-11 w-11" tracks={[$player.context.track]} />
     {/if}
   </div>

@@ -13,10 +13,12 @@ import {
   isAllowed, isFavorite, meQuery
 } from "~/lib/me";
 
-let className = "";
-export { className as class };
+export let size: "s" | "m" = "s";
 export let id: string;
 export let type: "album" | "artist" | "track" | "playlist";
+
+const iconSize = size === "s" ? "h-8 w-8" : "h-10 w-10";
+const buttonSize = size === "s" ? "h-10 w-10" : "h-12 w-12";
 
 const query = meQuery();
 $: me = $query?.data?.me;
@@ -61,11 +63,11 @@ const onClick = async () => {
 </script>
 
 {#if me && isAllowed(me, "changeFavorites")}
-  <IconButton on:click={onClick} class={className}>
+  <IconButton on:click={onClick} class={buttonSize}>
     {#if favorite}
-      <HeartFillIcon class={`text-red-500 ${className}`} />
+      <HeartFillIcon class={`text-red-500 ${iconSize}`} />
     {:else}
-      <HeartIcon class={`text-black ${className}`} />
+      <HeartIcon class={`text-white ${iconSize}`} />
     {/if}
   </IconButton>
 {/if}
