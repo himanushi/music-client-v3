@@ -1,4 +1,5 @@
 <script lang="ts">
+import { fly } from "svelte/transition";
 import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import Player from "~/components/player.svelte";
@@ -32,39 +33,67 @@ const showPlayer = () => {
 };
 </script>
 
-<footer>
-  {#if track}
+{#if track}
+  <footer
+    transition:fly={{
+      duration: 200,
+      opacity: 100,
+      y: 56
+    }}
+  >
     {#key track.id}
-      <div class="track-info">
-        <div class="clickable" on:click={showPlayer}>
+      <span class="track-info clickable" on:click={showPlayer}>
+        <span class="image">
           <Image src={track.artworkM.url} class="h-10 w-10" />
-          <span class="title">
-            <Text>{track.name}</Text>
-          </span>
-        </div>
-      </div>
+        </span>
+        <span class="title">
+          <Text>{track.name}</Text>
+        </span>
+      </span>
+
+      <span class="buttons">
+        {#if player}
+          <IconButton class="w-10 h-10" on:click={play_or_pause}>
+            {#if $player.value === "playing"}
+              <PuaseIcon class="text-gray-900" />
+            {:else if $player.value === "loading"}
+              <LoadingIcon />
+            {:else}
+              <PlayIcon class="text-gray-900 h-10 w-10" />
+            {/if}
+          </IconButton>
+
+          <IconButton class="w-10 h-10" on:click={skip}>
+            <SkipIcon class="text-gray-900" />
+          </IconButton>
+        {/if}
+      </span>
     {/key}
-  {/if}
-
-  {#if player}
-    <IconButton on:click={play_or_pause}>
-      {#if $player.value === "playing"}
-        <PuaseIcon class="text-gray-900" />
-      {:else if $player.value === "loading"}
-        <LoadingIcon />
-      {:else}
-        <PlayIcon class="text-gray-900 h-10 w-10" />
-      {/if}
-    </IconButton>
-  {/if}
-
-  <IconButton class="w-10 h-10" on:click={skip}>
-    <SkipIcon class="text-gray-900" />
-  </IconButton>
-</footer>
+  </footer>
+{/if}
 
 <style lang="scss">
 footer {
-  @apply bg-green-800;
+  @apply flex flex-row;
+  @apply bg-teal-600;
+
+  .track-info {
+    @apply flex-1 w-0;
+    @apply flex flex-row items-center;
+    @apply rounded p-2;
+
+    .image {
+      @apply h-10 w-10 inline-block mr-2;
+    }
+
+    .title {
+      @apply truncate;
+    }
+  }
+
+  .buttons {
+    @apply flex-shrink-0;
+    @apply flex flex-row items-center;
+  }
 }
 </style>
