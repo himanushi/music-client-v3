@@ -11,11 +11,10 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "albums")}
-  <SearchDetailButton />
-
   <div>
     <Albums params={$params} />
   </div>
+  <SearchDetailButton />
 {/if}
 
 <style>
