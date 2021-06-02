@@ -5,6 +5,7 @@ import {
 } from "svelte";
 import { interpret } from "xstate";
 import Waypoint from "~/components/waypoint.svelte";
+import Loading from "~/icons/loading.svelte";
 import type { ParameterPrefix } from "~/lib/build-parameters";
 import { itemsMachine } from "~/machines/items-machine";
 
@@ -61,11 +62,11 @@ const elementScroll: HTMLElement = getElement();
 {/each}
 
 {#if service && !$service.matches("active")}
-  loading...
+  <Loading />
 {/if}
 
 <Waypoint
-  threshold={300}
+  threshold={0}
   {elementScroll}
   on:loadMore={() => service.send("FETCH_MORE")}
 />
