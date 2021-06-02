@@ -10,7 +10,7 @@ export let index: number;
 export let item: Track;
 export let items: Track[];
 // eslint-disable-next-line prefer-destructuring
-export let name = item.name;
+export let name = "曲一覧";
 
 const path = `/tracks/${item.id}`;
 </script>

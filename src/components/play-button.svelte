@@ -16,7 +16,7 @@ const onClick = () => {
       type: "SET_NAME"
     },
     {
-      link: location.pathname,
+      link: location.pathname + location.search,
       type: "SET_LINK"
     },
     {
