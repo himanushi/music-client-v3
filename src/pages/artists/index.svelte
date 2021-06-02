@@ -11,15 +11,17 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "artists")}
-  <SearchDetailButton />
-
   <div>
     <Artists params={$params} />
   </div>
+  <SearchDetailButton />
 {/if}
 
 <style>
 div {
-  @apply flex flex-wrap;
+  grid-template-columns: repeat(auto-fill, 175px);
+
+  @apply my-2 w-full;
+  @apply grid gap-1 justify-center justify-items-center items-center;
 }
 </style>

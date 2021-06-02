@@ -14,19 +14,26 @@ const path = `/artists/${item.id}`;
     <Image src={item.artworkM?.url} class="h-40 w-40" />
     <span class="name">{item.name}</span>
   </a>
-  <Favorite type="artist" id={item.id} />
+  <span class="favorite">
+    <Favorite type="artist" id={item.id} />
+  </span>
 </div>
 
-<style>
-.card {
-  /* 子要素の位置 */
-  @apply flex flex-col;
-}
+<style lang="scss">
+div {
+  @apply relative;
 
-.name {
-  /* フォント */
-  @apply truncate text-gray-400 text-xs;
-  /* レイアウト */
-  @apply p-1;
+  .card {
+    @apply flex flex-col;
+
+    .name {
+      @apply truncate text-gray-400 text-xs;
+      @apply p-1;
+    }
+  }
+
+  .favorite {
+    @apply absolute top-0 right-0;
+  }
 }
 </style>
