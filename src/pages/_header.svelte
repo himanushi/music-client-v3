@@ -9,18 +9,23 @@ const showSidebar = () => modals.open(Sidebar);
 </script>
 
 <header>
-  <IconButton on:click={showSidebar}>
+  <IconButton class="h-10 w-10 mr-2" on:click={showSidebar}>
     <MenuIcon class="h-7 w-7" />
   </IconButton>
 
-  <h1>
-    <a href={$url("./albums")} class="clickable">ゲーム音楽</a>
+  <h1 class="clickable">
+    <a href={$url("./albums")}>ゲーム音楽</a>
   </h1>
 </header>
 
 <style lang="scss">
 header {
-  @apply bg-blue-800;
+  @apply flex flex-row items-center p-2;
+  @apply bg-gray-900 text-white;
+
+  h1 {
+    @apply p-2 rounded;
+  }
 }
 /* デザインはあとで */
 </style>
