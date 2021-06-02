@@ -119,7 +119,7 @@ const remove = (index: number) => () => {
 };
 </script>
 
-<section
+<ul
   use:dndzone={{
     dragDisabled,
     dropTargetStyle: {},
@@ -131,7 +131,7 @@ const remove = (index: number) => () => {
   class={className}
 >
   {#each items as item, index (item.id)}
-    <div class="item clickable" animate:flip={{ duration: flipDurationMs }}>
+    <li class="item clickable" animate:flip={{ duration: flipDurationMs }}>
       <span class="move" on:mousedown={startDrag} on:touchstart={startDrag}>
         <Menu class="h-7 w-7 text-white" />
       </span>
@@ -141,14 +141,14 @@ const remove = (index: number) => () => {
       <span class="delete" on:click={remove(index)}>
         <Close class="h-7 w-7 text-red-400" />
       </span>
-    </div>
+    </li>
   {/each}
-</section>
+</ul>
 
 <style lang="scss">
-section {
+ul {
   @apply p-2 overflow-y-scroll;
-  @apply flex flex-col;
+  @apply grid grid-flow-row;
 
   .item {
     @apply p-2 flex flex-row;
@@ -159,7 +159,7 @@ section {
     }
 
     .content {
-      @apply flex-grow;
+      @apply flex-shrink w-full;
       @apply items-center;
     }
 

@@ -28,7 +28,7 @@ $: playlistClass = tabIndex === 1 ? "text-teal-400" : "text-white";
   }}
   class="player"
 >
-  <div>
+  <div class="content">
     <svelte:component this={tabs[tabIndex]} />
   </div>
   <div class="buttons">
