@@ -3,6 +3,7 @@ import { url } from "@roxi/routify";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import PlayButton from "~/components/play-button.svelte";
+import Text from "~/components/text.svelte";
 import type { Track } from "~/graphql/types";
 
 export let index: number;
@@ -14,25 +15,35 @@ export let name = item.name;
 const path = `/tracks/${item.id}`;
 </script>
 
-<div class="w-40">
-  <PlayButton {name} {index} tracks={items} />
-  <a class="card" href={$url(path)}>
-    <span class="name">{item.name}</span>
+<div>
+  <span class="paly">
+    <PlayButton {name} {index} tracks={items} />
+  </span>
+  <a class="name clickable" href={$url(path)}>
+    <Text>{item.name}</Text>
   </a>
-  <Favorite type="track" id={item.id} />
-  <AddPlaylistButton tracks={[item]} />
+  <span class="buttons">
+    <Favorite type="track" id={item.id} />
+    <AddPlaylistButton tracks={[item]} />
+  </span>
 </div>
 
-<style>
-.card {
-  /* 子要素の位置 */
-  @apply flex flex-col;
-}
+<style lang="scss">
+div {
+  @apply flex flex-row justify-center items-center w-full;
+  @apply py-2;
 
-.name {
-  /* フォント */
-  @apply truncate text-gray-400 text-xs;
-  /* レイアウト */
-  @apply p-1;
+  .paly {
+    @apply flex-shrink-0 mr-2;
+  }
+
+  .name {
+    @apply flex-1;
+    @apply truncate text-white p-2 rounded;
+  }
+
+  .buttons {
+    @apply flex-shrink-0 ml-2;
+  }
 }
 </style>

@@ -27,11 +27,16 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "tracks")}
-  <SearchDetailButton />
-
   {#if canSearch}
     <div>
       <Tracks params={$params} />
     </div>
   {/if}
+  <SearchDetailButton />
 {/if}
+
+<style lang="scss">
+div {
+  @apply my-2 mx-4 divide-y divide-gray-700;
+}
+</style>
