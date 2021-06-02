@@ -14,6 +14,10 @@ const onClick = () => {
       type: "SET_NAME"
     },
     {
+      link: location.pathname,
+      type: "SET_LINK"
+    },
+    {
       currentPlaybackNo: index,
       tracks: tracks.map((track) => track),
       type: "REPLACE_AND_PLAY"

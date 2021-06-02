@@ -21,6 +21,7 @@ import {
 
 export type JukeboxContext = {
   name: string;
+  link: string;
   currentPlaybackNo: number;
   tracks: Track[];
   currentTrack?: Track;
@@ -74,6 +75,7 @@ const move = (arr: any[], from: number, to: number) => {
 export type JukeboxEvent =
   // Queue
   | { type: "SET_NAME"; name: string }
+  | { type: "SET_LINK"; link: string }
   | {
       type: "REPLACE_AND_PLAY";
       tracks: JukeboxContext["tracks"];
@@ -111,6 +113,7 @@ export const JukeboxMachine = machine<
     context: {
       currentPlaybackNo: 0,
       name: "",
+      link: "/",
       repeat: false,
       tracks: []
     },
@@ -231,6 +234,8 @@ export const JukeboxMachine = machine<
       },
 
       SET_NAME: { actions: ["setName"] },
+
+      SET_LINK: { actions: ["setLink"] },
 
       STOPPED: "stopped"
     }
@@ -368,6 +373,8 @@ export const JukeboxMachine = machine<
       },
 
       setName: assign({ name: (_, event) => "name" in event ? event.name : "" }),
+
+      setLink: assign({ link: (_, event) => "link" in event ? event.link : "/" }),
 
       setTrack: send(
         ({ currentTrack }) => ({

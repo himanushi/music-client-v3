@@ -1,5 +1,7 @@
 <script lang="ts">
+import { goto } from "@roxi/routify";
 import IconButton from "../icon-button.svelte";
+import { modals } from "../modals.svelte";
 import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
 import Text from "~/components/text.svelte";
@@ -51,6 +53,13 @@ const remove = (
   });
 
 };
+
+const link = () => {
+
+  modals.close();
+  $goto($playerService.context.link);
+
+};
 </script>
 
 <div>
@@ -62,7 +71,7 @@ const remove = (
         </Text>
       </span>
       <span class="link">
-        <IconButton class="h-7 w-7">
+        <IconButton on:click={link} class="h-7 w-7">
           <Link class="h-7 w-7" />
         </IconButton>
       </span>
