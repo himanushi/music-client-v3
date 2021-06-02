@@ -3,6 +3,7 @@ import IconButton from "../icon-button.svelte";
 import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
 import Text from "~/components/text.svelte";
+import Link from "~/icons/link.svelte";
 import MusicNote from "~/icons/music-note.svelte";
 import Play from "~/icons/play.svelte";
 import { playerService } from "~/machines/jukebox-machine";
@@ -52,33 +53,62 @@ const remove = (
 };
 </script>
 
-<DndSelection
-  on:decide={decide}
-  on:remove={remove}
-  {items}
-  let:index
-  let:item
-  class={"h-[520px]"}
->
-  <span class="item">
-    {#if playbackNo === index}
-      <span class="icon">
-        <MusicNote class="h-7 w-7 text-teal-400" />
+<div>
+  {#if playerService}
+    <div class="title">
+      <span class="name">
+        <Text>
+          {$playerService.context.name}
+        </Text>
       </span>
-    {:else}
-      <span class="icon" on:click={play(index)}>
-        <IconButton class="h-7 w-7" on:click={play(index)}>
-          <Play class="h-7 w-7 text-white" />
+      <span class="link">
+        <IconButton class="h-7 w-7">
+          <Link class="h-7 w-7" />
         </IconButton>
       </span>
-    {/if}
-    <span class="name">
-      <Text class="text-white">{item.item.name}</Text>
+    </div>
+  {/if}
+  <DndSelection
+    on:decide={decide}
+    on:remove={remove}
+    {items}
+    let:index
+    let:item
+    class={"h-[450px]"}
+  >
+    <span class="item">
+      {#if playbackNo === index}
+        <span class="icon">
+          <MusicNote class="h-7 w-7 text-teal-400" />
+        </span>
+      {:else}
+        <span class="icon" on:click={play(index)}>
+          <IconButton class="h-7 w-7" on:click={play(index)}>
+            <Play class="h-7 w-7 text-white" />
+          </IconButton>
+        </span>
+      {/if}
+      <span>
+        <Text class="text-white">{item.item.name}</Text>
+      </span>
     </span>
-  </span>
-</DndSelection>
+  </DndSelection>
+</div>
 
 <style lang="scss">
+.title {
+  @apply flex flex-row justify-center;
+  @apply my-4 w-full text-white text-base;
+
+  .name {
+    @apply w-9/12 truncate;
+  }
+
+  .link {
+    @apply ml-2;
+  }
+}
+
 .item {
   @apply flex flex-row items-center;
 
