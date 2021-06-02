@@ -55,7 +55,7 @@ const showPlayer = () => {
         {#if player}
           <IconButton class="w-10 h-10" on:click={play_or_pause}>
             {#if $player.value === "playing"}
-              <PuaseIcon class="text-gray-900" />
+              <PuaseIcon class="text-gray-900 h-10 w-10" />
             {:else if $player.value === "loading"}
               <LoadingIcon />
             {:else}
@@ -64,7 +64,7 @@ const showPlayer = () => {
           </IconButton>
 
           <IconButton class="w-10 h-10" on:click={skip}>
-            <SkipIcon class="text-gray-900" />
+            <SkipIcon class="text-gray-900 h-10 w-10" />
           </IconButton>
         {/if}
       </span>

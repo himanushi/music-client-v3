@@ -147,7 +147,7 @@ const remove = (index: number) => () => {
 
 <style lang="scss">
 ul {
-  @apply p-2 overflow-y-scroll;
+  @apply h-auto p-2 overflow-y-scroll;
   @apply grid grid-flow-row;
 
   .item {

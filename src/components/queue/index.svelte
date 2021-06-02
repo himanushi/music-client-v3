@@ -83,7 +83,7 @@ const link = () => {
     {items}
     let:index
     let:item
-    class={"h-[450px]"}
+    class={"max-h-[450px]"}
   >
     <span class="item">
       {#if playbackNo === index}
@@ -110,7 +110,7 @@ const link = () => {
   @apply my-4 w-full text-white text-base;
 
   .name {
-    @apply w-9/12 truncate;
+    @apply w-9/12 truncate self-center;
   }
 
   .link {
