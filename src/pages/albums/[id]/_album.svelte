@@ -1,6 +1,7 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
 import AppleMusicButton from "./_apple-music-button.svelte";
+import ItunesButton from "./_itunes-button.svelte";
 import SpotifyButton from "./_spotify-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
@@ -57,10 +58,13 @@ const variables: ArtistsQueryVariables = {
     </div>
     <div class="services">
       {#if album.appleMusicAlbum}
-        <AppleMusicButton />
+        <AppleMusicButton id={album.appleMusicAlbum.appleMusicId} />
+      {/if}
+      {#if album.itunesAlbum}
+        <ItunesButton id={album.itunesAlbum.appleMusicId} />
       {/if}
       {#if album.spotifyAlbum}
-        <SpotifyButton />
+        <SpotifyButton id={album.spotifyAlbum.spotifyId} />
       {/if}
     </div>
 
@@ -107,7 +111,7 @@ const variables: ArtistsQueryVariables = {
   }
 
   .services {
-    @apply mt-2;
+    @apply mt-2 space-x-2;
   }
 
   .tracks {
@@ -115,11 +119,11 @@ const variables: ArtistsQueryVariables = {
   }
 
   .separate {
-    @apply mt-2 border-b-2 w-28 border-gray-500 text-lg text-center;
+    @apply my-6 border-b-2 w-28 border-gray-500 text-lg text-center;
   }
 
   .artists {
-    @apply mt-4;
+    @apply mt-2;
 
     grid-template-columns: repeat(auto-fill, 175px);
     @apply my-2 w-full;
