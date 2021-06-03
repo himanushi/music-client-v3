@@ -5,25 +5,22 @@ import type { Track } from "~/graphql/types";
 import { playerService } from "~/machines/jukebox-machine";
 
 let currentTrack: Track | undefined;
-let name: string | undefined;
 
 $: ({
   currentTrack, name
 } = $playerService.context);
 </script>
 
-{#if currentTrack && name}
-  {#key currentTrack.id}
-    <div class="track-info">
-      <div class="image">
-        <Image src={currentTrack.artworkM.url} class="w-[300px] h-[300px]" />
-      </div>
-      <div class="track-name">
-        <Text>{currentTrack.name}</Text>
-      </div>
+{#key currentTrack?.id}
+  <div class="track-info">
+    <div class="image">
+      <Image src={currentTrack?.artworkM?.url} class="w-[300px] h-[300px]" />
     </div>
-  {/key}
-{/if}
+    <div class="track-name">
+      <Text>{currentTrack?.name || ""}</Text>
+    </div>
+  </div>
+{/key}
 
 <style lang="scss">
 .track-info {

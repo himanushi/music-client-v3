@@ -119,48 +119,47 @@ export const itemsMachine = <
         } },
 
         loading: {
-          invoke: { src: ({
-            variables, fetchPolicy
-          }) => (callback) => {
+          invoke: { src:
+              ({
+                variables, fetchPolicy
+              }) => (callback) => {
 
-            const watchQuery = client.watchQuery({
-              query: itemsDocument,
-              variables,
-              fetchPolicy
-            });
-
-            callback({
-              type: "SET_WATCH_QUERY",
-              watchQuery
-            });
-
-            const subscribe = watchQuery.subscribe((data) => {
-
-              const items = data.data.items as any[];
-
-              if (items.length > 0) {
-
-                callback({
-                  type: "SET_ITEMS",
-                  items: data.data.items
+                const watchQuery = client.watchQuery({
+                  query: itemsDocument,
+                  variables,
+                  fetchPolicy
                 });
 
-              } else {
-
                 callback({
-                  type: "SET_HAS_NEXT",
-                  hasNext: false
+                  type: "SET_WATCH_QUERY",
+                  watchQuery
                 });
 
-              }
+                const subscribe = watchQuery.subscribe((data) => {
 
-              callback("ACTIVE");
+                  const items = data.data.items as any[];
 
-            });
+                  callback({
+                    type: "SET_ITEMS",
+                    items: data.data.items
+                  });
 
-            return () => subscribe.unsubscribe();
+                  if (items.length === 0) {
 
-          } },
+                    callback({
+                      type: "SET_HAS_NEXT",
+                      hasNext: false
+                    });
+
+                  }
+
+                  callback("ACTIVE");
+
+                });
+
+                return () => subscribe.unsubscribe();
+
+              } },
 
           on: {
             SET_HAS_NEXT: { actions: "setHasNext" },
@@ -171,44 +170,45 @@ export const itemsMachine = <
         },
 
         moreFetching: {
-          invoke: { src: ({
-            variables, watchQuery, items, hasNext
-          }) => (callback) => {
+          invoke: { src:
+              ({
+                variables, watchQuery, items, hasNext
+              }) => (callback) => {
 
-            (async () => {
+                (async () => {
 
-              if (watchQuery && hasNext) {
+                  if (watchQuery && hasNext) {
 
-                const result = await watchQuery.fetchMore({ variables: { cursor: {
-                  limit: variables?.cursor?.limit || limit,
-                  offset: items.length
-                } } });
+                    const result = await watchQuery.fetchMore({ variables: { cursor: {
+                      limit: variables?.cursor?.limit || limit,
+                      offset: items.length
+                    } } });
 
-                const resultItems = result.data.items as any[];
+                    const resultItems = result.data.items as any[];
 
-                if (resultItems.length > 0) {
+                    if (resultItems.length > 0) {
 
-                  callback({
-                    type: "ADD_ITEMS",
-                    items: resultItems
-                  });
+                      callback({
+                        type: "ADD_ITEMS",
+                        items: resultItems
+                      });
 
-                } else {
+                    } else {
 
-                  callback({
-                    type: "SET_HAS_NEXT",
-                    hasNext: false
-                  });
+                      callback({
+                        type: "SET_HAS_NEXT",
+                        hasNext: false
+                      });
 
-                }
+                    }
 
-              }
+                  }
 
-              callback("ACTIVE");
+                  callback("ACTIVE");
 
-            })();
+                })();
 
-          } },
+              } },
 
           on: {
             SET_HAS_NEXT: { actions: "setHasNext" },
