@@ -2,6 +2,7 @@
 import { goto } from "@roxi/routify";
 import IconButton from "../icon-button.svelte";
 import { modals } from "../modals.svelte";
+import AddPlaylistButton from "~/components//add-playlist-button.svelte";
 import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
 import Text from "~/components/text.svelte";
@@ -70,10 +71,14 @@ const link = () => {
           {$playerService.context.name}
         </Text>
       </span>
-      <span class="link">
+      <span class="buttons">
         <IconButton on:click={link} class="h-7 w-7">
           <Link class="h-7 w-7" />
         </IconButton>
+        <AddPlaylistButton
+          class="w-7 h-7"
+          tracks={$playerService.context.tracks}
+        />
       </span>
     </div>
   {/if}
@@ -110,11 +115,11 @@ const link = () => {
   @apply my-4 w-full text-white text-base;
 
   .name {
-    @apply w-9/12 truncate self-center;
+    @apply w-7/12 truncate self-center;
   }
 
-  .link {
-    @apply ml-2;
+  .buttons {
+    @apply ml-2 flex flex-row space-x-2;
   }
 }
 

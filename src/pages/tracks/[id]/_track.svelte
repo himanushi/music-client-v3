@@ -49,14 +49,72 @@ $: albumsVariables = {
 };
 </script>
 
-{#if track && track.artworkL.url}
-  <Favorite type="track" id={track.id} />
-  <AddPlaylistButton tracks={[track]} />
-  <Image src={track.artworkL.url} class="h-16 w-16" />
-  <Text>{track.name}</Text>
+<div class="track">
+  {#if track && track.artworkL.url}
+    <div class="iamge">
+      <Image src={track.artworkL.url} class="h-80 w-80" />
+    </div>
+    <div class="name">
+      <Text>{track.name}</Text>
+    </div>
 
-  <ItemCard name={track.name} item={track} items={[track]} index={0} />
+    <div class="buttons">
+      <Favorite type="track" id={track.id} />
+      <AddPlaylistButton class="w-10 h-10" tracks={[track]} />
+    </div>
 
-  <Artists variables={artistsVariables} />
-  <Albums variables={albumsVariables} />
-{/if}
+    <div class="separate">
+      <Text class="text-white">Track</Text>
+    </div>
+    <div class="tracks">
+      <ItemCard name={track.name} item={track} items={[track]} index={0} />
+    </div>
+
+    <div class="separate">
+      <Text class="text-white">Artists</Text>
+    </div>
+    <div class="artists">
+      <Artists variables={artistsVariables} />
+    </div>
+
+    <div class="separate">
+      <Text class="text-white">Albums</Text>
+    </div>
+    <div class="albums">
+      <Albums variables={albumsVariables} />
+    </div>
+  {/if}
+</div>
+
+<style lang="scss">
+.track {
+  @apply flex flex-col items-center;
+  @apply my-2;
+
+  .name {
+    @apply mt-2 text-center text-lg text-white;
+  }
+
+  .buttons {
+    @apply mt-2;
+    @apply flex flex-row space-x-2;
+  }
+
+  .separate {
+    @apply my-6 border-b-2 w-28 border-gray-500 text-lg text-center;
+  }
+
+  .tracks {
+    @apply w-full px-4 divide-y divide-gray-700;
+  }
+
+  .artists,
+  .albums {
+    @apply mt-2;
+
+    grid-template-columns: repeat(auto-fill, 175px);
+    @apply my-2 w-full;
+    @apply grid gap-1 justify-center justify-items-center items-center;
+  }
+}
+</style>

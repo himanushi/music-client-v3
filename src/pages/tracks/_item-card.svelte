@@ -24,7 +24,7 @@ const path = `/tracks/${item.id}`;
   </a>
   <span class="buttons">
     <Favorite type="track" id={item.id} />
-    <AddPlaylistButton tracks={[item]} />
+    <AddPlaylistButton class="w-10 h-10" tracks={[item]} />
   </span>
 </div>
 
@@ -44,6 +44,7 @@ div {
 
   .buttons {
     @apply flex-shrink-0 ml-2;
+    @apply flex flex-row space-x-2;
   }
 }
 </style>
