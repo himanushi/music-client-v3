@@ -35,9 +35,51 @@ const variables: AlbumsQueryVariables = {
 };
 </script>
 
-{#if artist}
-  <Favorite type="artist" id={artist.id} />
-  <Image src={artist.artworkL?.url} class="h-16 w-16" />
-  <Text>{artist.name}</Text>
-  <Albums {variables} />
-{/if}
+<div class="artist">
+  {#if artist}
+    <div class="iamge">
+      <Image src={artist.artworkL?.url} class="h-80 w-80" />
+    </div>
+    <div class="name">
+      <Text>{artist.name}</Text>
+    </div>
+    <div class="buttons">
+      <Favorite type="artist" id={artist.id} />
+    </div>
+
+    <div class="separate">
+      <Text class="text-white">Albums</Text>
+    </div>
+    <div class="albums">
+      <Albums {variables} />
+    </div>
+  {/if}
+</div>
+
+<style lang="scss">
+.artist {
+  @apply flex flex-col items-center;
+  @apply my-2;
+
+  .name {
+    @apply mt-2 text-center text-lg text-white;
+  }
+
+  .buttons {
+    @apply mt-2;
+    @apply flex flex-row space-x-2;
+  }
+
+  .separate {
+    @apply my-6 border-b-2 w-28 border-gray-500 text-lg text-center;
+  }
+
+  .albums {
+    @apply mt-2;
+
+    grid-template-columns: repeat(auto-fill, 175px);
+    @apply my-2 w-full;
+    @apply grid gap-1 justify-center justify-items-center items-center;
+  }
+}
+</style>
