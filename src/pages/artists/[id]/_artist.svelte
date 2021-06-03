@@ -37,6 +37,9 @@ const variables: AlbumsQueryVariables = {
 
 <div class="artist">
   {#if artist}
+    <div class="separate">
+      <Text class="text-white">Artist</Text>
+    </div>
     <div class="iamge">
       <Image src={artist.artworkL?.url} class="h-80 w-80" />
     </div>
@@ -59,10 +62,10 @@ const variables: AlbumsQueryVariables = {
 <style lang="scss">
 .artist {
   @apply flex flex-col items-center;
-  @apply my-2;
+  @apply mb-2;
 
   .name {
-    @apply mt-2 text-center text-lg text-white;
+    @apply mt-2 text-center text-lg text-white w-80;
   }
 
   .buttons {

@@ -37,6 +37,6 @@ $: me = $query?.data?.me;
 
 <style lang="scss">
 div {
-  @apply my-2 mx-4 divide-y divide-gray-700;
+  @apply mt-2 mb-20 mx-4 divide-y divide-gray-700;
 }
 </style>

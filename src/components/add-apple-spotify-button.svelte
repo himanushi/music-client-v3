@@ -1,11 +1,10 @@
 <script lang="ts">
-import IconButton from "~/components/icon-button.svelte";
 import type { Props } from "~/components/toast-messages/added-music-service-playlist-message.svelte";
 import AddedMusicServicePlaylistMessage from "~/components/toast-messages/added-music-service-playlist-message.svelte";
 import ErrorMessage from "~/components/toast-messages/error-message.svelte";
 import { toasts } from "~/components/toasts.svelte";
 import type { Track } from "~/graphql/types";
-import AddPlaylistIcon from "~/icons/add-playlist.svelte";
+import { accountService } from "~/machines/spotify-account-machine";
 import { service } from "~/machines/spotify-create-playlist";
 
 export let name: string;
@@ -41,7 +40,13 @@ $: if ($service.matches("done")) {
 }
 </script>
 
-Spotify に追加
-<IconButton on:click={addPlaylist}>
-  <AddPlaylistIcon class="w-10 h-10" />
-</IconButton>
+{#if accountService && $accountService.matches("authorized")}
+  <button on:click={addPlaylist}>Spotify に追加</button>
+{/if}
+
+<style lang="scss">
+button {
+  @apply rounded p-2;
+  @apply bg-green-500 hover_bg-green-400 active_bg-green-300;
+}
+</style>

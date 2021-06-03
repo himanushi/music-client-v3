@@ -1,7 +1,5 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
-import AddPlaylistButton from "~/components/add-playlist-button.svelte";
-import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { TrackDocument } from "~/graphql/types";
@@ -51,20 +49,14 @@ $: albumsVariables = {
 
 <div class="track">
   {#if track && track.artworkL.url}
+    <div class="separate">
+      <Text class="text-white">Track</Text>
+    </div>
     <div class="iamge">
       <Image src={track.artworkL.url} class="h-80 w-80" />
     </div>
     <div class="name">
       <Text>{track.name}</Text>
-    </div>
-
-    <div class="buttons">
-      <Favorite type="track" id={track.id} />
-      <AddPlaylistButton class="w-10 h-10" tracks={[track]} />
-    </div>
-
-    <div class="separate">
-      <Text class="text-white">Track</Text>
     </div>
     <div class="tracks">
       <ItemCard name={track.name} item={track} items={[track]} index={0} />
@@ -89,15 +81,10 @@ $: albumsVariables = {
 <style lang="scss">
 .track {
   @apply flex flex-col items-center;
-  @apply my-2;
+  @apply mb-2;
 
   .name {
-    @apply mt-2 text-center text-lg text-white;
-  }
-
-  .buttons {
-    @apply mt-2;
-    @apply flex flex-row space-x-2;
+    @apply mt-2 text-center text-lg text-white w-80;
   }
 
   .separate {
