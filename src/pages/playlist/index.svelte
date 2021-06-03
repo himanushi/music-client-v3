@@ -12,17 +12,15 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "playlists")}
-  <SearchDetailButton />
-
-  <NewButton />
-
   <div>
     <Playlists params={$params} />
   </div>
+  <SearchDetailButton />
+  <NewButton />
 {/if}
 
-<style>
+<style lang="scss">
 div {
-  @apply flex flex-wrap;
+  @apply my-2 mx-4 divide-y divide-gray-700;
 }
 </style>

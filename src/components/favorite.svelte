@@ -13,12 +13,12 @@ import {
   isAllowed, isFavorite, meQuery
 } from "~/lib/me";
 
-export let size: "s" | "m" = "s";
+export let size: "s" | "m" = "m";
 export let id: string;
 export let type: "album" | "artist" | "track" | "playlist";
 
-const iconSize = size === "s" ? "h-8 w-8" : "h-10 w-10";
-const buttonSize = size === "s" ? "h-10 w-10" : "h-12 w-12";
+const iconSize = size === "m" ? "h-8 w-8" : "h-5 w-5";
+const buttonSize = size === "m" ? "h-10 w-10" : "h-8 w-8";
 
 const query = meQuery();
 $: me = $query?.data?.me;

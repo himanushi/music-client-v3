@@ -1,5 +1,7 @@
 <script lang="ts">
 import { goto } from "@roxi/routify";
+import IconButton from "~/components/icon-button.svelte";
+import Plus from "~/icons/plus.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -11,5 +13,18 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "upsertPlaylist")}
-  <button on:click={create}>プレイリスト作成</button>
+  <span on:click={create}>
+    <IconButton class="w-8 h-8">
+      <Plus class="w-8 h-8" />
+    </IconButton>
+  </span>
 {/if}
+
+<style lang="scss">
+span {
+  @apply fixed bottom-20 right-24;
+  @apply flex items-center justify-center;
+  @apply h-10 w-10 rounded-full bg-white;
+  @apply shadow;
+}
+</style>

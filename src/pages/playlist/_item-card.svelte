@@ -2,6 +2,7 @@
 import { url } from "@roxi/routify";
 import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
+import Text from "~/components/text.svelte";
 import type { Playlist } from "~/graphql/types";
 
 export let item: Playlist;
@@ -9,24 +10,31 @@ export let item: Playlist;
 const path = `/playlist/${item.id}`;
 </script>
 
-<div class="w-40">
-  <a class="card" href={$url(path)}>
-    <Image src={item.track?.artworkM?.url} class="h-40 w-40" />
-    <span class="name">{item.name}</span>
+<div>
+  <a class="clickable" href={$url(path)}>
+    <span class="image">
+      <Image src={item.track?.artworkM?.url} class="h-16 w-16" />
+    </span>
+    <span class="name">
+      <Text>{item.name}</Text>
+    </span>
   </a>
-  <Favorite type="playlist" id={item.id} />
+  <span class="favorite">
+    <Favorite type="playlist" id={item.id} />
+  </span>
 </div>
 
-<style>
-.card {
-  /* 子要素の位置 */
-  @apply flex flex-col;
-}
+<style lang="scss">
+div {
+  @apply relative flex flex-row items-center;
+  @apply py-2;
 
-.name {
-  /* フォント */
-  @apply truncate text-gray-400 text-xs;
-  /* レイアウト */
-  @apply p-1;
+  a {
+    @apply w-full flex flex-row rounded;
+
+    .name {
+      @apply text-white m-2 self-center;
+    }
+  }
 }
 </style>

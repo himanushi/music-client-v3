@@ -146,7 +146,11 @@ export const MusicPlayerMachine = machine<
 
       idle: { entry: ["initPlayers"] },
 
-      loading: { on: { PLAYING: "playing" } },
+      loading: {
+        // 10秒間再生できない音楽はスキップ
+        after: { 10000: { target: "finished" } },
+        on: { PLAYING: "playing" }
+      },
 
       paused: {
         entry: [sendParent("PAUSED")],
