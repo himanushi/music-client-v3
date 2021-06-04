@@ -131,6 +131,11 @@ export const itemsMachine = <
                 });
 
                 callback({
+                  type: "SET_ITEMS",
+                  items: []
+                });
+
+                callback({
                   type: "SET_WATCH_QUERY",
                   watchQuery
                 });

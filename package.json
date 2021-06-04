@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",
+    "@tailwindcss/forms": "^0.3.3",
     "@types/howler": "^2.2.2",
     "@xstate/inspect": "^0.4.1",
     "@xstate/svelte": "^0.1.0",

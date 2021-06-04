@@ -2,7 +2,7 @@ const colors = require("tailwindcss/colors");
 
 module.exports = {
   mode: "jit",
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
   purge: {
     content: [
       "./public/*.html",

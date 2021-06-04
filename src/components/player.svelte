@@ -48,11 +48,8 @@ $: playlistClass = tabIndex === 1 ? "text-teal-400" : "text-white";
 
 <style lang="scss">
 .player {
-  /* 位置 */
   @apply absolute inset-0 m-auto overflow-hidden;
-  /* 形 */
   @apply bg-gray-800 rounded;
-  /* 大きさ */
   @apply h-[600px] w-[300px];
 
   .buttons {
