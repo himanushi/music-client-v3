@@ -1,5 +1,4 @@
 <script lang="ts">
-import Text from "~/components/text.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -15,6 +14,12 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "appleMusicToken")}
-  <Text>Apple Music</Text>
-  <button on:click={onClick}>{meta.label}</button>
+  <button on:click={onClick}>Apple Music {meta.label}</button>
 {/if}
+
+<style lang="scss">
+button {
+  @apply rounded p-2;
+  @apply bg-red-500 hover_bg-red-400 active_bg-red-300 text-black;
+}
+</style>

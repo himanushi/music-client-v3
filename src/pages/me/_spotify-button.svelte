@@ -1,5 +1,4 @@
 <script lang="ts">
-import Text from "~/components/text.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -18,6 +17,12 @@ $: me = $query?.data?.me;
 "spotifyLogin",
 "spotifyLogout"
 ])}
-  <Text>Spotify</Text>
-  <button on:click={onClick}>{meta.label}</button>
+  <button on:click={onClick}>Spotify {meta.label}</button>
 {/if}
+
+<style lang="scss">
+button {
+  @apply rounded p-2;
+  @apply bg-green-500 hover_bg-green-400 active_bg-green-300 text-black;
+}
+</style>

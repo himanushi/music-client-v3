@@ -1,7 +1,7 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
 import LogoutButton from "./_logout-button.svelte";
-import Text from "~/components/text.svelte";
+import InfoMessage from "~/components/toast-messages/info-message.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -9,8 +9,6 @@ import {
 $: query = meQuery();
 $: me = $query?.data?.me;
 </script>
-
-<Text>アカウント</Text>
 
 {#if me && isAllowed(me, "updateMe") && me.registered}
   <a href={$url("/me/edit")}>設定を変更する</a>
@@ -21,4 +19,14 @@ $: me = $query?.data?.me;
 {:else if me && isAllowed(me, "login")}
   <a href={$url("/me/login")}>ログイン</a>
   <a href={$url("/me/signup")}>登録する</a>
+  <InfoMessage class="mx-12  text-gray-300" size="s">
+    ログインすると、お気に入り登録やプレイリスト作成と公開などが出来るようになります。
+  </InfoMessage>
 {/if}
+
+<style lang="scss">
+a {
+  @apply rounded p-2;
+  @apply bg-teal-500 hover_bg-teal-400 active_bg-teal-300 text-black;
+}
+</style>

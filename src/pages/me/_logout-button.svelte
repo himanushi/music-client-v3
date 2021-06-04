@@ -13,9 +13,8 @@ import { errorMessages } from "~/lib/error";
 
 let messages: Record<string, string[]> = {};
 
-const mutate = mutation<LogoutMutation, LogoutMutationVariables>(
-  LogoutDocument
-);
+const mutate =
+  mutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 
 const logout = async () => {
 
@@ -43,3 +42,10 @@ const logout = async () => {
 
 <Messages type="error" messages={messages._} />
 <button on:click={logout}>ログアウト</button>
+
+<style lang="scss">
+button {
+  @apply rounded p-2;
+  @apply bg-red-700 hover_bg-red-600 active_bg-red-500 text-black;
+}
+</style>
