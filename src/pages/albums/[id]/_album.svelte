@@ -11,6 +11,9 @@ import { AlbumDocument } from "~/graphql/types";
 import type {
   Album, AlbumQuery, ArtistsQueryVariables
 } from "~/graphql/types";
+import {
+  convertDate, convertTime, toMs
+} from "~/lib/convert";
 import Artists from "~/pages/artists/_artists.svelte";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
 
@@ -49,8 +52,18 @@ const variables: ArtistsQueryVariables = {
     <div class="name">
       <Text class="text-lg text-white">{album.name}</Text>
     </div>
-    <div class="copyright">
+    <div class="description">
       <Text class="text-sm text-gray-400">{album.copyright}</Text>
+    </div>
+    <div class="description">
+      <Text class="text-base text-gray-400">
+        発売日/配信日 : {convertDate(album.releaseDate)}
+      </Text>
+    </div>
+    <div class="description">
+      <Text class="text-base text-gray-400">
+        再生時間 : {convertTime(toMs(album.tracks))}
+      </Text>
     </div>
     <div class="buttons">
       <Favorite type="album" id={album.id} />
@@ -104,7 +117,7 @@ const variables: ArtistsQueryVariables = {
     @apply mt-2 text-center w-80;
   }
 
-  .copyright {
+  .description {
     @apply mt-2 text-center w-80;
   }
 

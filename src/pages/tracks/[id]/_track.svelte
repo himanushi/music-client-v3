@@ -9,6 +9,7 @@ import type {
   ArtistsQueryVariables,
   AlbumsQueryVariables
 } from "~/graphql/types";
+import { convertTime } from "~/lib/convert";
 import Albums from "~/pages/albums/_albums.svelte";
 import Artists from "~/pages/artists/_artists.svelte";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
@@ -58,6 +59,11 @@ $: albumsVariables = {
     <div class="name">
       <Text>{track.name}</Text>
     </div>
+    <div class="description">
+      <Text class="text-base text-gray-400">
+        再生時間 : {convertTime(track.durationMs)}
+      </Text>
+    </div>
     <div class="tracks">
       <ItemCard name={track.name} item={track} items={[track]} index={0} />
     </div>
@@ -85,6 +91,10 @@ $: albumsVariables = {
 
   .name {
     @apply mt-2 text-center text-lg text-white w-80;
+  }
+
+  .description {
+    @apply mt-2 text-center w-80;
   }
 
   .separate {

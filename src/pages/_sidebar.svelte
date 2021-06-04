@@ -58,7 +58,7 @@ $: me = $query?.data?.me;
   </header>
   <main>
     <section>
-      <h5>検索</h5>
+      <h5>Search</h5>
       <ul>
         {#if me && isAllowed(me, "artists")}
           <li class="clickable" on:click={go("/artists")}>
@@ -85,7 +85,7 @@ $: me = $query?.data?.me;
             <PlaylistSearch class="h-5 w-5" /><Text>マイプレイリスト</Text>
           </li>
         {/if}
-        <h5>ユーザー設定</h5>
+        <h5>Setting</h5>
         <li class="clickable" on:click={go("/me")}>
           <User class="h-5 w-5" /><Text>設定</Text>
         </li>
