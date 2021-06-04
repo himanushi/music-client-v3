@@ -2,14 +2,13 @@
 import {
   goto, params
 } from "@roxi/routify";
-import { fly } from "svelte/transition";
-import IconButton from "~/components/icon-button.svelte";
 import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import InputText from "~/components/input-text.svelte";
-import { modals } from "~/components/modals.svelte";
-import Text from "~/components/text.svelte";
-import SearchIcon from "~/icons/search.svelte";
+import SearchDetail from "~/components/search-detail.svelte";
+import {
+  isAllowed, meQuery
+} from "~/lib/me";
 import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
 
@@ -43,7 +42,7 @@ const orderItems = [
   }
 ];
 
-const onClock = () => {
+const onClick = () => {
 
   const parameters: SearchParamsType = {};
   if (keyword) {
@@ -75,45 +74,15 @@ const onClock = () => {
 
 };
 
-const close = () => modals.close();
+const query = meQuery();
+$: me = $query?.data?.me;
 </script>
 
-<div
-  on:click|stopPropagation
-  transition:fly={{
-    duration: 400,
-    opacity: 100,
-    x: document.body.clientWidth
-  }}
-  class="modal"
->
-  <form on:submit|preventDefault={close}>
-    <div class="separate">
-      <Text class="text-white">Search Albums</Text>
-    </div>
-    <InputText label="検索ワード" bind:value={keyword} />
-    <InputText label="お気に入り公開ユーザーID" bind:value={username} />
-    <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
+<SearchDetail title="Search Albums" {onClick}>
+  <InputText label="検索ワード" bind:value={keyword} />
+  <InputText label="お気に入り公開ユーザーID" bind:value={username} />
+  <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
+  {#if me && isAllowed(me, "changeFavorites")}
     <InputCheckbox label="お気に入り" bind:checked={favorite} />
-    <IconButton class="w-16 h-16" on:click={onClock}>
-      <SearchIcon class="w-10 h-10 mr-2" />
-    </IconButton>
-  </form>
-</div>
-
-<style lang="scss">
-.modal {
-  @apply absolute inset-0 m-auto overflow-hidden;
-  @apply bg-gray-800 rounded;
-  @apply w-[300px];
-  height: fit-content;
-
-  .separate {
-    @apply my-6 border-b-2 w-36 border-gray-500 text-lg text-center;
-  }
-
-  form {
-    @apply flex flex-col items-center space-y-4 my-4 text-white;
-  }
-}
-</style>
+  {/if}
+</SearchDetail>

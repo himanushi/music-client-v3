@@ -2,9 +2,13 @@
 import {
   goto, params
 } from "@roxi/routify";
-import IconButton from "~/components/icon-button.svelte";
-import { modals } from "~/components/modals.svelte";
-import SearchIcon from "~/icons/search.svelte";
+import InputCheckbox from "~/components/input-checkbox.svelte";
+import InputSelection from "~/components/input-selection.svelte";
+import InputText from "~/components/input-text.svelte";
+import SearchDetail from "~/components/search-detail.svelte";
+import {
+  isAllowed, meQuery
+} from "~/lib/me";
 import { SearchParams } from "~/lib/params";
 import type { SearchParamsType } from "~/lib/params";
 
@@ -38,7 +42,7 @@ const orderItems = [
   }
 ];
 
-const onClock = () => {
+const onClick = () => {
 
   const parameters: SearchParamsType = {};
   if (keyword) {
@@ -70,38 +74,15 @@ const onClock = () => {
 
 };
 
-const close = () => modals.close();
+const query = meQuery();
+$: me = $query?.data?.me;
 </script>
 
-<div on:click|stopPropagation>
-  <form on:submit|preventDefault={close}>
-    <label
-      >検索ワード
-      <input type="text" bind:value={keyword} />
-    </label>
-    <label
-      >お気に入り
-      <input type="checkbox" bind:checked={favorite} />
-    </label>
-    <label
-      >ユーザーID
-      <input type="text" bind:value={username} />
-    </label>
-    <select bind:value={orderValue}>
-      {#each orderItems as item}
-        <option value={item.value}>
-          {item.label}
-        </option>
-      {/each}
-    </select>
-    <IconButton on:click={onClock}>
-      <SearchIcon class="w-10 h-10" />
-    </IconButton>
-  </form>
-</div>
-
-<style lang="scss">
-div {
-  @apply h-full w-full bg-gray-500;
-}
-</style>
+<SearchDetail title="Search Artists" {onClick}>
+  <InputText label="検索ワード" bind:value={keyword} />
+  <InputText label="お気に入り公開ユーザーID" bind:value={username} />
+  <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
+  {#if me && isAllowed(me, "changeFavorites")}
+    <InputCheckbox label="お気に入り" bind:checked={favorite} />
+  {/if}
+</SearchDetail>
