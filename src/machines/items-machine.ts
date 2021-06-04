@@ -146,17 +146,8 @@ export const itemsMachine = <
 
                   callback({
                     type: "SET_ITEMS",
-                    items: data.data.items
+                    items
                   });
-
-                  if (items.length === 0) {
-
-                    callback({
-                      type: "SET_HAS_NEXT",
-                      hasNext: false
-                    });
-
-                  }
 
                   callback("ACTIVE");
 
