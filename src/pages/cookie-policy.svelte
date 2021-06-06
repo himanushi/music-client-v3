@@ -1,4 +1,5 @@
 <script lang="ts">
+import Markdown from "~/components/markdown.svelte";
 import { markdown } from "~/lib/markdown";
 
 const html = markdown(`
@@ -33,4 +34,6 @@ Google Analytics により収集、記録、分析された情報には、特定
 `);
 </script>
 
-{@html html}
+<Markdown class="m-7">
+  {@html html}
+</Markdown>
