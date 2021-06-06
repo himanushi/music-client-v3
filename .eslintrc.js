@@ -61,7 +61,8 @@ module.exports = {
       { exceptions: [
         "_",
         "x",
-        "y"
+        "y",
+        "a"
       ] }
     ],
 
