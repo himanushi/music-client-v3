@@ -68,9 +68,9 @@ const login = async () => {
   <RecaptchaV2 bind:this={recaptcha} />
   <Messages class="text-center" type="error" messages={messages.recaptcha} />
 
-  <Button class="text-center" on:click={login} messages={messages._}
-    >ログイン</Button
-  >
+  <Button class="text-center" on:click={login} messages={messages._}>
+    ログイン
+  </Button>
 </form>
 
 <style lang="scss">
