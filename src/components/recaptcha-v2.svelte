@@ -8,6 +8,9 @@ let widgetId = 0;
 
 const resetCookie = () => cookie.remove("reCAPTCHAv2Token");
 
+let className = "";
+export { className as class };
+
 export const reset = () => {
 
   resetCookie();
@@ -46,4 +49,6 @@ onDestroy(() => {
 });
 </script>
 
-<div id="g-recaptcha" />
+<div class={className}>
+  <div id="g-recaptcha" />
+</div>

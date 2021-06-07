@@ -59,12 +59,14 @@ const signup = async () => {
     label="名前(変更可能)"
     bind:value={name}
     errorMessages={messages.name}
+    class="w-80"
   />
   <InputText
     label="ユーザーID(変更不可, 半角英数 と _ のみ)"
     bind:value={username}
     errorMessages={messages.username}
     autocomplete="username"
+    class="w-80"
   />
   <InputText
     label="パスワード(8文字以上, 半角英数)"
@@ -72,18 +74,22 @@ const signup = async () => {
     bind:value={newPassword}
     errorMessages={messages.newPassword}
     autocomplete="new-password"
+    class="w-80"
   />
   <InputText
     label="パスワード再確認"
     type="password"
     bind:value={newPasswordConfirmation}
     errorMessages={messages.newPasswordConfirmation}
+    class="w-80"
   />
 
   <RecaptchaV2 bind:this={recaptcha} />
-  <Messages type="error" messages={messages.recaptcha} />
+  <Messages class="text-center" type="error" messages={messages.recaptcha} />
 
-  <Button on:click={signup} messages={messages._}>登録</Button>
+  <Button class="text-center" on:click={signup} messages={messages._}>
+    登録
+  </Button>
 </form>
 
 <style lang="scss">

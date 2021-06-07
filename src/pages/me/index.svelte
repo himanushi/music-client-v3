@@ -14,8 +14,8 @@ $: me = $query?.data?.me;
 <div>
   <Separate text="User Setting" />
   {#if me?.registered}
-    <Text>名前 : {me.name || "未設定"}</Text>
-    <Text>ユーザー名 : {me.username || "未設定"}</Text>
+    <Text>名前 : {me.name}</Text>
+    <Text>ユーザーID : {me.username}</Text>
     <Text>権限 : {me.role.description}</Text>
   {/if}
   <AccountButton />

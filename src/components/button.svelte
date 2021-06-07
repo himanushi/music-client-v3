@@ -1,11 +1,15 @@
 <script lang="ts">
 import Messages from "./messages.svelte";
 
+let className = "";
+export { className as class };
 export let messages: string[] | undefined;
 </script>
 
-<Messages type="error" {messages} />
-<button on:click><slot /></button>
+<div class={className}>
+  <Messages type="error" {messages} />
+  <button on:click><slot /></button>
+</div>
 
 <style lang="scss">
 button {

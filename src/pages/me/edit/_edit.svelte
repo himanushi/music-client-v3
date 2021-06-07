@@ -2,8 +2,9 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
+import Button from "~/components/button.svelte";
 import InputText from "~/components/input-text.svelte";
-import Messages from "~/components/messages.svelte";
+import Separate from "~/components/separate.svelte";
 import {
   UpdateMeDocument, MeDocument
 } from "~/graphql/types";
@@ -19,9 +20,8 @@ let newPassword: string;
 let newPasswordConfirmation: string;
 let messages: Record<string, string[]> = {};
 
-const mutate = mutation<UpdateMeMutation, UpdateMeMutationVariables>(
-  UpdateMeDocument
-);
+const mutate =
+  mutation<UpdateMeMutation, UpdateMeMutationVariables>(UpdateMeDocument);
 
 const signup = async () => {
 
@@ -53,13 +53,28 @@ const signup = async () => {
 </script>
 
 <form on:submit|preventDefault>
-  <InputText label="名前" bind:value={name} errorMessages={messages.name} />
+  <Separate text="User" />
+
+  <InputText
+    label="名前"
+    bind:value={name}
+    errorMessages={messages.name}
+    class="w-80"
+  />
+
+  <Button class="text-center" on:click={signup} messages={messages._}>
+    更新
+  </Button>
+
+  <Separate text="Password" />
+
   <InputText
     label="現在のパスワード"
     type="password"
     bind:value={currentPassword}
     errorMessages={messages.currentPassword}
     autocomplete="new-password"
+    class="w-80"
   />
   <InputText
     label="新しいパスワード"
@@ -67,6 +82,7 @@ const signup = async () => {
     bind:value={newPassword}
     errorMessages={messages.newPassword}
     autocomplete="new-password"
+    class="w-80"
   />
   <InputText
     label="新しいパスワード再確認"
@@ -74,8 +90,16 @@ const signup = async () => {
     bind:value={newPasswordConfirmation}
     errorMessages={messages.newPasswordConfirmation}
     autocomplete="new-password"
+    class="w-80"
   />
 
-  <Messages type="error" messages={messages._} />
-  <input on:click={signup} type="submit" value="更新" />
+  <Button class="text-center" on:click={signup} messages={messages._}>
+    更新
+  </Button>
 </form>
+
+<style lang="scss">
+form {
+  @apply text-white flex flex-col items-center space-y-5 py-2;
+}
+</style>

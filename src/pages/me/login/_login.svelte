@@ -55,6 +55,7 @@ const login = async () => {
     bind:value={username}
     errorMessages={messages.username}
     autocomplete="username"
+    class="w-80"
   />
   <InputText
     label="パスワード"
@@ -62,11 +63,14 @@ const login = async () => {
     bind:value={currentPassword}
     errorMessages={messages.currentPassword}
     autocomplete="current-password"
+    class="w-80"
   />
   <RecaptchaV2 bind:this={recaptcha} />
-  <Messages type="error" messages={messages.recaptcha} />
+  <Messages class="text-center" type="error" messages={messages.recaptcha} />
 
-  <Button on:click={login} messages={messages._}>ログイン</Button>
+  <Button class="text-center" on:click={login} messages={messages._}
+    >ログイン</Button
+  >
 </form>
 
 <style lang="scss">

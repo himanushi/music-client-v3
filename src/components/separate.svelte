@@ -10,6 +10,6 @@ export let text: string;
 
 <style lang="scss">
 .separate {
-  @apply my-6 border-b-2 w-36 border-gray-500 text-lg text-center;
+  @apply mt-6 border-b-2 w-36 border-gray-500 text-lg text-center;
 }
 </style>

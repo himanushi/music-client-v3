@@ -2,6 +2,9 @@
 import { v4 as uuid } from "uuid";
 import Messages from "./messages.svelte";
 
+let className = "";
+export { className as class };
+
 // ref: https://stackoverflow.com/questions/57392773/error-type-attribute-cannot-be-dynamic-if-input-uses-two-way-binding
 export let placeholder = "";
 export let label = "";
@@ -23,7 +26,7 @@ const handleInput = (event: any) => {
 const id = uuid();
 </script>
 
-<div class="input">
+<div class={`input ${className}`}>
   <label for={id}>
     {label}
   </label>
