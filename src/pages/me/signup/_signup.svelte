@@ -2,6 +2,7 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
+import Button from "~/components/button.svelte";
 import InputText from "~/components/input-text.svelte";
 import Messages from "~/components/messages.svelte";
 import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
@@ -20,9 +21,8 @@ let newPasswordConfirmation: string;
 let recaptcha: RecaptchaV2;
 let messages: Record<string, string[]> = {};
 
-const mutate = mutation<SignupMutation, SignupMutationVariables>(
-  SignupDocument
-);
+const mutate =
+  mutation<SignupMutation, SignupMutationVariables>(SignupDocument);
 
 const signup = async () => {
 
@@ -55,15 +55,19 @@ const signup = async () => {
 </script>
 
 <form on:submit|preventDefault>
-  <InputText label="名前" bind:value={name} errorMessages={messages.name} />
   <InputText
-    label="ユーザーID"
+    label="名前(変更可能)"
+    bind:value={name}
+    errorMessages={messages.name}
+  />
+  <InputText
+    label="ユーザーID(変更不可, 半角英数 と _ のみ)"
     bind:value={username}
     errorMessages={messages.username}
     autocomplete="username"
   />
   <InputText
-    label="パスワード"
+    label="パスワード(8文字以上, 半角英数)"
     type="password"
     bind:value={newPassword}
     errorMessages={messages.newPassword}
@@ -75,9 +79,15 @@ const signup = async () => {
     bind:value={newPasswordConfirmation}
     errorMessages={messages.newPasswordConfirmation}
   />
-  <RecaptchaV2 bind:this={recaptcha} />
 
+  <RecaptchaV2 bind:this={recaptcha} />
   <Messages type="error" messages={messages.recaptcha} />
-  <Messages type="error" messages={messages._} />
-  <input on:click={signup} type="submit" value="登録" />
+
+  <Button on:click={signup} messages={messages._}>登録</Button>
 </form>
+
+<style lang="scss">
+form {
+  @apply text-white flex flex-col items-center space-y-5 py-5;
+}
+</style>

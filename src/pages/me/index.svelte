@@ -30,6 +30,6 @@ $: me = $query?.data?.me;
 
 <style lang="scss">
 div {
-  @apply flex flex-col items-center space-y-6 text-white;
+  @apply flex flex-col items-center space-y-6 text-white pb-4;
 }
 </style>

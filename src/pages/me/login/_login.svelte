@@ -2,6 +2,7 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
+import Button from "~/components/button.svelte";
 import InputText from "~/components/input-text.svelte";
 import Messages from "~/components/messages.svelte";
 import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
@@ -63,9 +64,13 @@ const login = async () => {
     autocomplete="current-password"
   />
   <RecaptchaV2 bind:this={recaptcha} />
-
   <Messages type="error" messages={messages.recaptcha} />
-  <Messages type="error" messages={messages._} />
 
-  <input on:click={login} type="submit" value="ログイン" />
+  <Button on:click={login} messages={messages._}>ログイン</Button>
 </form>
+
+<style lang="scss">
+form {
+  @apply text-white flex flex-col items-center space-y-5 py-2;
+}
+</style>
