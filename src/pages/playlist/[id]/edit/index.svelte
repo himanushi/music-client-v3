@@ -5,6 +5,8 @@ import {
 } from "svelte-apollo";
 import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
+import InputSelection from "~/components/input-selection.svelte";
+import InputText from "~/components/input-text.svelte";
 import Messages from "~/components/messages.svelte";
 import PlayButton from "~/components/play-button.svelte";
 import Text from "~/components/text.svelte";
@@ -38,7 +40,7 @@ const playlistQuery = query<PlaylistQuery>(PlaylistDocument, {
 
 // 初期化
 let playlist: Playlist;
-$: if ($playlistQuery.data && initialize) {
+$: if ($playlistQuery.data?.playlist && initialize) {
 
   playlist = $playlistQuery.data.playlist as Playlist;
 
@@ -92,37 +94,89 @@ const changeItems = (
 
 };
 
+const publicTypes = [
+  {
+    label: "非公開",
+    value: "NON_OPEN"
+  },
+  {
+    label: "公開",
+    value: "OPEN"
+  },
+  {
+    label: "匿名公開",
+    value: "ANONYMOUS_OPEN"
+  }
+];
+
 const meq = meQuery();
 $: me = $meq?.data?.me;
 </script>
 
-{#if me && isAllowed(me, "upsertPlaylist") && me.username === playlist?.author?.username}
+{#if me && isAllowed(me, "upsertPlaylist") && playlist && me.username === playlist?.author?.username}
   <form on:submit|preventDefault>
-    <label for="name"> 名前 </label>
-    <input id="name" type="text" bind:value={name} />
+    <div class="info">
+      <InputText
+        label="タイトル"
+        bind:value={name}
+        errorMessages={messages.name}
+      />
+      <InputText
+        label="説明"
+        bind:value={description}
+        errorMessages={messages.description}
+      />
+      <InputSelection
+        label="公開設定"
+        bind:value={publicType}
+        items={publicTypes}
+      />
+    </div>
 
-    <label for="description"> 説明 </label>
-    <input id="description" type="text" bind:value={description} />
-
-    <label for="public-option">公開設定</label>
-    <select id="public-option" bind:value={publicType}>
-      <option value="NON_OPEN">非公開</option>
-      <option value="OPEN">公開</option>
-      <option value="ANONYMOUS_OPEN">匿名公開</option>
-    </select>
-
-    <DndSelection
-      on:remove={changeItems}
-      on:decide={changeItems}
-      {items}
-      let:item
-      let:index
-    >
-      <PlayButton {name} {index} tracks={items.map((it) => it.item)} />
-      <Text>{item.item.name}</Text>
-    </DndSelection>
+    <div class="items">
+      <DndSelection
+        on:remove={changeItems}
+        on:decide={changeItems}
+        {items}
+        let:item
+        let:index
+        class={"max-h-[500px]"}
+      >
+        <span class="item">
+          <span class="icon">
+            <PlayButton {name} {index} tracks={items.map((it) => it.item)} />
+          </span>
+          <Text>{item.item.name}</Text>
+        </span>
+      </DndSelection>
+    </div>
 
     <Messages type="error" messages={messages._} />
     <button on:click={update}>保存</button>
   </form>
 {/if}
+
+<style lang="scss">
+form {
+  @apply text-white flex flex-col space-y-5 pb-3;
+
+  .info {
+    @apply m-7 flex flex-col space-y-5;
+  }
+
+  .items {
+    .item {
+      @apply flex flex-row items-center;
+
+      .icon {
+        @apply m-2;
+      }
+    }
+  }
+
+  button {
+    @apply p-2 rounded block w-16 self-center;
+    @apply bg-teal-500 focus_bg-teal-400 active_bg-teal-300;
+  }
+}
+</style>
