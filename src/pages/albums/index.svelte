@@ -1,7 +1,8 @@
 <script lang="ts">
 import { params } from "@roxi/routify";
 import Albums from "./_albums.svelte";
-import SearchDetailButton from "./_search-detail-button.svelte";
+import SearchDetail from "./_search-detail.svelte";
+import SearchDetailButton from "~/components/search-detail-button.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -14,7 +15,7 @@ $: me = $query?.data?.me;
   <div>
     <Albums params={$params} />
   </div>
-  <SearchDetailButton />
+  <SearchDetailButton component={SearchDetail} />
 {/if}
 
 <style>

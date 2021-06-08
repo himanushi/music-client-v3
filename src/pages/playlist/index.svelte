@@ -2,7 +2,8 @@
 import { params } from "@roxi/routify";
 import NewButton from "./_new-button.svelte";
 import Playlists from "./_playlists.svelte";
-import SearchDetailButton from "./_search-detail-button.svelte";
+import SearchDetail from "./_search-detail.svelte";
+import SearchDetailButton from "~/components/search-detail-button.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
@@ -15,7 +16,7 @@ $: me = $query?.data?.me;
   <div>
     <Playlists params={$params} />
   </div>
-  <SearchDetailButton />
+  <SearchDetailButton component={SearchDetail} />
   <NewButton />
 {/if}
 
