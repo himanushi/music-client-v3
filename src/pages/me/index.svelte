@@ -24,7 +24,8 @@ $: me = $query?.data?.me;
   <AppleMusicButton />
   <SpotifyButton />
   <InfoMessage class="mx-12 text-gray-300" size="s">
-    ログインすると、フル再生や音楽サービスにプレイリスト追加などが出来るようになります。
+    ログインすると、フル再生や音楽サービスにプレイリスト追加などが出来るようになります。Spotify
+    の場合は Premium プランのみフル再生が可能です。
   </InfoMessage>
 </div>
 
