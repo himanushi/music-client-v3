@@ -2,9 +2,9 @@
 import AccountButton from "./_account-button.svelte";
 import AppleMusicButton from "./_apple-music-button.svelte";
 import SpotifyButton from "./_spotify-button.svelte";
+import InfoMessage from "~/components/info-message.svelte";
 import Separate from "~/components/separate.svelte";
 import Text from "~/components/text.svelte";
-import InfoMessage from "~/components/toast-messages/info-message.svelte";
 import { meQuery } from "~/lib/me";
 
 const query = meQuery();

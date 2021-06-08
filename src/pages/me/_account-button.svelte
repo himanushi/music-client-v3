@@ -1,7 +1,7 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
 import LogoutButton from "./_logout-button.svelte";
-import InfoMessage from "~/components/toast-messages/info-message.svelte";
+import InfoMessage from "~/components/info-message.svelte";
 import {
   isAllowed, meQuery
 } from "~/lib/me";
