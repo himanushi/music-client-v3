@@ -3,11 +3,11 @@ import { goto } from "@roxi/routify";
 import {
   mutation, query
 } from "svelte-apollo";
+import Button from "~/components/button.svelte";
 import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import InputText from "~/components/input-text.svelte";
-import Messages from "~/components/messages.svelte";
 import PlayButton from "~/components/play-button.svelte";
 import Text from "~/components/text.svelte";
 import {
@@ -151,8 +151,9 @@ $: me = $meq?.data?.me;
       </DndSelection>
     </div>
 
-    <Messages type="error" messages={messages._} />
-    <button on:click={update}>保存</button>
+    <Button class="text-center" on:click={update} messages={messages._}>
+      保存
+    </Button>
   </form>
 {/if}
 
@@ -172,11 +173,6 @@ form {
         @apply m-2;
       }
     }
-  }
-
-  button {
-    @apply p-2 rounded block w-16 self-center;
-    @apply bg-teal-500 focus_bg-teal-400 active_bg-teal-300;
   }
 }
 </style>

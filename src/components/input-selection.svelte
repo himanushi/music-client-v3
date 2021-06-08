@@ -1,6 +1,9 @@
 <script lang="ts">
 import { v4 as uuid } from "uuid";
 
+let className = "";
+export { className as class };
+
 export let label: string;
 export let value: string;
 export let items: { value: string; label: string }[];
@@ -8,7 +11,7 @@ export let items: { value: string; label: string }[];
 const id = uuid();
 </script>
 
-<div class="input">
+<div class={`input ${className}`}>
   <label for={id}>
     {label}
   </label>

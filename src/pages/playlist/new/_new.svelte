@@ -2,6 +2,8 @@
 import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
+import Button from "~/components/button.svelte";
+import InputSelection from "~/components/input-selection.svelte";
 import InputText from "~/components/input-text.svelte";
 import Messages from "~/components/messages.svelte";
 import { UpsertPlaylistDocument } from "~/graphql/types";
@@ -46,25 +48,53 @@ const create = async () => {
   }
 
 };
+
+const publicTypes = [
+  {
+    label: "非公開",
+    value: "NON_OPEN"
+  },
+  {
+    label: "公開",
+    value: "OPEN"
+  },
+  {
+    label: "匿名公開",
+    value: "ANONYMOUS_OPEN"
+  }
+];
 </script>
 
 <form on:submit|preventDefault>
-  <InputText label="タイトル" bind:value={name} errorMessages={messages.name} />
+  <InputText
+    label="タイトル"
+    bind:value={name}
+    errorMessages={messages.name}
+    class="w-80"
+  />
 
   <InputText
     label="説明"
     bind:value={description}
     errorMessages={messages.description}
+    class="w-80"
   />
 
-  <label for="public-option">公開設定</label>
-  <select id="public-option" bind:value={publicType}>
-    <option value="NON_OPEN">非公開</option>
-    <option value="OPEN">公開</option>
-    <option value="ANONYMOUS_OPEN">匿名公開</option>
-  </select>
+  <InputSelection
+    label="公開設定"
+    bind:value={publicType}
+    items={publicTypes}
+    class="w-80"
+  />
   <Messages messages={messages.publicType} />
 
-  <Messages messages={messages._} />
-  <button on:click={create}>保存</button>
+  <Button class="text-center" on:click={create} messages={messages._}>
+    保存
+  </Button>
 </form>
+
+<style lang="scss">
+form {
+  @apply text-white flex flex-col items-center space-y-5 py-2;
+}
+</style>
