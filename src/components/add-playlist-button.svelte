@@ -6,10 +6,6 @@ import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import Selection from "~/components/selection.svelte";
 import type { selectionType } from "~/components/selection.svelte";
-import type { Props } from "~/components/toast-messages/added-playlist-message.svelte";
-import AddedPlaylistMessage from "~/components/toast-messages/added-playlist-message.svelte";
-import NoPlaylistMessage from "~/components/toast-messages/no-playlist-message.svelte";
-import { toasts } from "~/components/toasts.svelte";
 import {
   PlaylistsDocument,
   AddPlaylistItemsDocument,
@@ -74,14 +70,14 @@ const showMyPlaylist = async () => {
             } }
           });
 
-          toasts.open<Props>({
-            component: AddedPlaylistMessage,
-            props: {
-              id: playlsit.id,
-              name: playlsit.name
-            },
-            type: "info"
-          });
+          // toasts.open<Props>({
+          //   component: AddedPlaylistMessage,
+          //   props: {
+          //     id: playlsit.id,
+          //     name: playlsit.name
+          //   },
+          //   type: "info"
+          // });
 
         },
         text: playlsit.name
@@ -89,12 +85,10 @@ const showMyPlaylist = async () => {
     });
 
   } else {
-
-    toasts.open({
-      component: NoPlaylistMessage,
-      type: "info"
-    });
-
+    // toasts.open({
+    //   component: NoPlaylistMessage,
+    //   type: "info"
+    // });
   }
 
 };

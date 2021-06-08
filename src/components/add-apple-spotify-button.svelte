@@ -1,8 +1,4 @@
 <script lang="ts">
-import type { Props } from "~/components/toast-messages/added-music-service-playlist-message.svelte";
-import AddedMusicServicePlaylistMessage from "~/components/toast-messages/added-music-service-playlist-message.svelte";
-import ErrorMessage from "~/components/toast-messages/error-message.svelte";
-import { toasts } from "~/components/toasts.svelte";
 import type { Track } from "~/graphql/types";
 import { accountService } from "~/machines/spotify-account-machine";
 import { service } from "~/machines/spotify-create-playlist";
@@ -23,20 +19,16 @@ const addPlaylist = () => {
 };
 
 $: if ($service.matches("done")) {
-
-  toasts.open<Props>({
-    component: AddedMusicServicePlaylistMessage,
-    props: { name: "Spotify" },
-    type: "info"
-  });
-
+  // toasts.open<Props>({
+  //   component: AddedMusicServicePlaylistMessage,
+  //   props: { name: "Spotify" },
+  //   type: "info"
+  // });
 } else if ($service.matches("error")) {
-
-  toasts.open({
-    component: ErrorMessage,
-    type: "error"
-  });
-
+  // toasts.open({
+  //   component: ErrorMessage,
+  //   type: "error"
+  // });
 }
 </script>
 

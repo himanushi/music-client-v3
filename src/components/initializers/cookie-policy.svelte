@@ -5,16 +5,7 @@ import { cookie } from "~/lib/cookie";
 
 if (cookie.get("cookieNotice") !== "true") {
 
-  toasts.open({
-    component: CookieMessage,
-    okClick: () => {
-
-      cookie.set("cookieNotice", "true");
-      toasts.close();
-
-    },
-    type: "info"
-  });
+  toasts.open({ component: CookieMessage });
 
 }
 </script>

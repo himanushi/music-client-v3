@@ -1,11 +1,11 @@
 <script context="module" lang="ts">
 import { SvelteComponent } from "svelte";
 import { writable } from "svelte/store";
+import { v4 as uuid } from "uuid";
 
-type toastType<T> = {
+export type toastType<T> = {
+  id?: string;
   component: typeof SvelteComponent;
-  okClick?: () => void;
-  type: "info" | "warn" | "error";
   props?: T;
 };
 
@@ -33,7 +33,10 @@ const createStore = () => {
 
       update((components) => {
 
-        components.push(props);
+        components.push({
+          ...props,
+          id: uuid()
+        });
 
         return components;
 
@@ -50,13 +53,8 @@ export const toasts = createStore();
 </script>
 
 <script lang="ts">
+// eslint-disable-next-line import/order
 import { fade } from "svelte/transition";
-
-const close = () => {
-
-  toasts.close();
-
-};
 
 const args = (props?: {}) => {
 
@@ -71,20 +69,12 @@ const args = (props?: {}) => {
 </script>
 
 {#if $toasts.length > 0}
-  {#each $toasts as toast}
-    <div transition:fade={{ duration: 100 }}>
-      <svelte:component this={toast.component} {...args(toast.props)} />
-      {#if toast.okClick}
-        <span on:click={toast.okClick}>ok</span>
-      {:else}
-        <span on:click={close}>x</span>
-      {/if}
+  {#key $toasts[$toasts.length - 1].id}
+    <div transition:fade>
+      <svelte:component
+        this={$toasts[$toasts.length - 1].component}
+        {...args($toasts[$toasts.length - 1].props)}
+      />
     </div>
-  {/each}
+  {/key}
 {/if}
-
-<style lang="scss">
-div {
-  @apply absolute bg-gray-500 z-50 inline h-auto bottom-32 left-0 right-0;
-}
-</style>
