@@ -8,9 +8,9 @@ import {
   SpawnedActorRef,
   State,
   assign,
-  interpret,
   send,
-  spawn
+  spawn,
+  interpret
 } from "xstate";
 import { Track } from "~/graphql/types";
 import {
@@ -104,6 +104,36 @@ export type JukeboxEvent =
   | { type: "STOPPED" }
   | { type: "REPEAT" };
 
+export const id = "jukebox";
+
+// JSON から復元
+const getData = (name: keyof JukeboxContext, context: JukeboxContext) => {
+
+  const json = localStorage.getItem(id);
+  if (!json) {
+
+    return context[name];
+
+  }
+
+  try {
+
+    const data = JSON.parse(json)[name];
+    if (data) {
+
+      return data;
+
+    }
+    return context[name];
+
+  } catch (error) {
+
+    return context[name];
+
+  }
+
+};
+
 export const JukeboxMachine = machine<
   JukeboxContext,
   JukeboxSchema,
@@ -118,7 +148,7 @@ export const JukeboxMachine = machine<
       tracks: []
     },
 
-    id: "jukebox",
+    id,
 
     initial: "idle",
 
@@ -143,7 +173,17 @@ export const JukeboxMachine = machine<
     },
 
     states: {
-      idle: { entry: ["initMusicPlayer"] },
+      idle: {
+        entry: [
+          "initMusicPlayer",
+          "remember"
+        ],
+        on: { PLAY_OR_PAUSE: {
+          // remember 実行後のみ許可する
+          target: "loading",
+          cond: "canPlay"
+        } }
+      },
 
       loading: {
         entry: [
@@ -154,7 +194,10 @@ export const JukeboxMachine = machine<
       },
 
       playing: {
-        entry: ["setMediaMetadata"],
+        entry: [
+          "setMediaMetadata",
+          "memory"
+        ],
         on: {
           PAUSE: { actions: ["pause"] },
           PAUSED: "paused",
@@ -184,7 +227,10 @@ export const JukeboxMachine = machine<
         target: "loading"
       },
 
-      MOVE: { actions: ["moveTracks"] },
+      MOVE: { actions: [
+        "moveTracks",
+        "memory"
+      ] },
 
       NEXT_PLAY: [
         {
@@ -220,9 +266,15 @@ export const JukeboxMachine = machine<
         ] }
       ],
 
-      REMOVE: { actions: ["removeTrack"] },
+      REMOVE: { actions: [
+        "removeTrack",
+        "memory"
+      ] },
 
-      REPEAT: { actions: ["repeat"] },
+      REPEAT: { actions: [
+        "repeat",
+        "memory"
+      ] },
 
       REPLACE_AND_PLAY: {
         actions: [
@@ -384,14 +436,38 @@ export const JukeboxMachine = machine<
         { to: "musicPlayer" }
       ),
 
-      stop: send("STOP", { to: "musicPlayer" })
+      stop: send("STOP", { to: "musicPlayer" }),
+
+      memory: (context) => {
+
+        const json = JSON.stringify(context);
+
+        try {
+
+          localStorage.setItem(id, json);
+
+        } catch (error) {
+          // unable to save to localStorage
+        }
+
+      },
+
+      remember: assign({
+        tracks: (context) => getData("tracks", context),
+        currentTrack: (context) => getData("currentTrack", context),
+        currentPlaybackNo: (context) => getData("currentPlaybackNo", context),
+        name: (context) => getData("name", context),
+        link: (context) => getData("link", context),
+        repeat: (context) => getData("repeat", context)
+      })
     },
 
     guards: {
       canNextPlay: ({
         repeat, tracks, currentPlaybackNo
       }) => repeat || currentPlaybackNo + 1 !== tracks.length,
-      canPreviousPlay: ({ currentPlaybackNo }) => currentPlaybackNo !== 0
+      canPreviousPlay: ({ currentPlaybackNo }) => currentPlaybackNo !== 0,
+      canPlay: ({ currentTrack }) => Boolean(currentTrack)
     }
   }
 );
