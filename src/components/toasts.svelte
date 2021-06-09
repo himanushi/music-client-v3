@@ -6,6 +6,7 @@ import { v4 as uuid } from "uuid";
 export type toastType<T> = {
   id?: string;
   component: typeof SvelteComponent;
+  closeMs?: number | undefined;
   props?: T;
 };
 
@@ -17,9 +18,15 @@ const createStore = () => {
   } = writable<toastType<any>[]>([]);
 
   return {
-    close: () => {
+    close: (id?: string) => {
 
       update((components) => {
+
+        if (id) {
+
+          return components.filter((component) => component.id !== id);
+
+        }
 
         components.pop();
 
@@ -66,11 +73,25 @@ const args = (props?: {}) => {
   return {};
 
 };
+
+// 表示してから計測してクローズ
+const autoClose = (toast: toastType<any>) => {
+
+  if (toast.closeMs) {
+
+    setTimeout(() => toasts.close(toast.id), toast.closeMs);
+
+  }
+
+  return "";
+
+};
 </script>
 
 {#if $toasts.length > 0}
   {#key $toasts[$toasts.length - 1].id}
     <div transition:fade>
+      {autoClose($toasts[$toasts.length - 1])}
       <svelte:component
         this={$toasts[$toasts.length - 1].component}
         {...args($toasts[$toasts.length - 1].props)}
