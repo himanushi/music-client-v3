@@ -3,6 +3,8 @@ import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import Messages from "~/components/messages.svelte";
+import Message from "~/components/toast-messages/message.svelte";
+import { toasts } from "~/components/toasts.svelte";
 import {
   LogoutDocument, MeDocument
 } from "~/graphql/types";
@@ -23,6 +25,15 @@ const logout = async () => {
     await mutate({
       refetchQueries: [{ query: MeDocument }],
       variables: { input: {} }
+    });
+
+    toasts.open({
+      closeMs: 3000,
+      component: Message,
+      props: {
+        text: "ログアウトしました",
+        type: "success"
+      }
     });
 
     $goto("/me");

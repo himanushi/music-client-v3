@@ -7,10 +7,17 @@ export type Props = {
 
 <script lang="ts">
 import { url } from "@roxi/routify";
+import ToastMessage from "./toast-message.svelte";
 
 export let props: Props;
 </script>
 
-<span>
+<ToastMessage type="success">
   プレイリスト <a href={$url(`/playlist/${props.id}`)}>{props.name}</a> に追加しました。
-</span>
+</ToastMessage>
+
+<style lang="scss">
+a {
+  @apply font-bold underline;
+}
+</style>

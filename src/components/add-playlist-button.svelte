@@ -6,6 +6,10 @@ import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import Selection from "~/components/selection.svelte";
 import type { selectionType } from "~/components/selection.svelte";
+import type { Props } from "~/components/toast-messages/added-playlist-message.svelte";
+import AddedPlaylistMessage from "~/components/toast-messages/added-playlist-message.svelte";
+import Message from "~/components/toast-messages/message.svelte";
+import { toasts } from "~/components/toasts.svelte";
 import {
   PlaylistsDocument,
   AddPlaylistItemsDocument,
@@ -70,14 +74,13 @@ const showMyPlaylist = async () => {
             } }
           });
 
-          // toasts.open<Props>({
-          //   component: AddedPlaylistMessage,
-          //   props: {
-          //     id: playlsit.id,
-          //     name: playlsit.name
-          //   },
-          //   type: "info"
-          // });
+          toasts.open<Props>({
+            component: AddedPlaylistMessage,
+            props: {
+              id: playlsit.id,
+              name: playlsit.name
+            }
+          });
 
         },
         text: playlsit.name
@@ -85,10 +88,15 @@ const showMyPlaylist = async () => {
     });
 
   } else {
-    // toasts.open({
-    //   component: NoPlaylistMessage,
-    //   type: "info"
-    // });
+
+    toasts.open({
+      component: Message,
+      props: {
+        text: "エラーが発生しました。",
+        type: "error"
+      }
+    });
+
   }
 
 };

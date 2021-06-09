@@ -6,14 +6,14 @@ import Close from "~/icons/close.svelte";
 import Danger from "~/icons/danger.svelte";
 import Info from "~/icons/info.svelte";
 
-export let type: "sucsses" | "info" | "error";
+export let type: "success" | "info" | "error";
 export let okClick: (() => void) | undefined = undefined;
 
 let toastClass = "";
 let iconClass = "";
 let Icon: typeof SvelteComponent = Info;
 
-$: if (type === "sucsses") {
+$: if (type === "success") {
 
   toastClass += " bg-green-100 text-green-900";
   iconClass += " text-green-500";
@@ -47,7 +47,7 @@ const close = () => toasts.close();
     <span class="button clickable" on:click={okClick}>OK</span>
   {:else}
     <span class="button clickable" on:click={close}>
-      <Close class="w-7 h-7" />
+      <Close class="w-5 h-5" />
     </span>
   {/if}
 </div>
@@ -58,10 +58,14 @@ const close = () => toasts.close();
   @apply fixed bottom-24 left-2 right-2 z-50;
   @apply sm_left-1/2 sm_right-auto sm_transform sm_-translate-x-1/2;
   /* 形 */
-  @apply p-3 rounded flex text-sm;
+  @apply p-3 rounded flex text-sm items-center;
 
   .icon {
     @apply flex-shrink-0 mr-3;
+  }
+
+  .content {
+    @apply flex-1;
   }
 
   .button {

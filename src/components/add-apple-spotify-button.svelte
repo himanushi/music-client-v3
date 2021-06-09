@@ -1,4 +1,6 @@
 <script lang="ts">
+import Message from "./toast-messages/message.svelte";
+import { toasts } from "./toasts.svelte";
 import type { Track } from "~/graphql/types";
 import { accountService } from "~/machines/spotify-account-machine";
 import { service } from "~/machines/spotify-create-playlist";
@@ -19,20 +21,31 @@ const addPlaylist = () => {
 };
 
 $: if ($service.matches("done")) {
-  // toasts.open<Props>({
-  //   component: AddedMusicServicePlaylistMessage,
-  //   props: { name: "Spotify" },
-  //   type: "info"
-  // });
+
+  toasts.open({
+    closeMs: 5000,
+    component: Message,
+    props: {
+      text: "Spotify にプレイリストを追加しました。",
+      type: "success"
+    }
+  });
+
 } else if ($service.matches("error")) {
-  // toasts.open({
-  //   component: ErrorMessage,
-  //   type: "error"
-  // });
+
+  toasts.open({
+    closeMs: 5000,
+    component: Message,
+    props: {
+      text: "エラーが発生しました。",
+      type: "error"
+    }
+  });
+
 }
 </script>
 
-{#if accountService && $accountService.matches("authorized")}
+{#if tracks.length > 0 && accountService && $accountService.matches("authorized")}
   <button on:click={addPlaylist}>Spotify に追加</button>
 {/if}
 

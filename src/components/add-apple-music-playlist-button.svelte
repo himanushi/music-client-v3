@@ -1,4 +1,6 @@
 <script lang="ts">
+import Message from "~/components/toast-messages/message.svelte";
+import { toasts } from "~/components/toasts.svelte";
 import type { Track } from "~/graphql/types";
 import { accountService } from "~/machines/apple-music-account-machine";
 import { service } from "~/machines/apple-music-create-playlist";
@@ -19,20 +21,31 @@ const addPlaylist = () => {
 };
 
 $: if ($service.matches("done")) {
-  // toasts.open<Props>({
-  //   component: AddedMusicServicePlaylistMessage,
-  //   props: { name: "Apple Music" },
-  //   type: "info"
-  // });
+
+  toasts.open({
+    closeMs: 5000,
+    component: Message,
+    props: {
+      text: "Apple Music にプレイリストを追加しました。",
+      type: "success"
+    }
+  });
+
 } else if ($service.matches("error")) {
-  // toasts.open({
-  //   component: ErrorMessage,
-  //   type: "error"
-  // });
+
+  toasts.open({
+    closeMs: 5000,
+    component: Message,
+    props: {
+      text: "エラーが発生しました。",
+      type: "error"
+    }
+  });
+
 }
 </script>
 
-{#if accountService && $accountService.matches("authorized")}
+{#if tracks.length > 0 && accountService && $accountService.matches("authorized")}
   <button on:click={addPlaylist}> Apple Music に追加 </button>
 {/if}
 

@@ -5,6 +5,8 @@ import { mutation } from "svelte-apollo";
 import Button from "~/components/button.svelte";
 import InputText from "~/components/input-text.svelte";
 import Separate from "~/components/separate.svelte";
+import Message from "~/components/toast-messages/message.svelte";
+import { toasts } from "~/components/toasts.svelte";
 import {
   UpdateMeDocument, MeDocument
 } from "~/graphql/types";
@@ -35,6 +37,15 @@ const signup = async () => {
         newPassword,
         newPasswordConfirmation
       } }
+    });
+
+    toasts.open({
+      closeMs: 3000,
+      component: Message,
+      props: {
+        text: "更新しました",
+        type: "success"
+      }
     });
 
     $goto("/me");

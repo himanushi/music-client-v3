@@ -6,6 +6,8 @@ import Button from "~/components/button.svelte";
 import InputText from "~/components/input-text.svelte";
 import Messages from "~/components/messages.svelte";
 import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
+import Message from "~/components/toast-messages/message.svelte";
+import { toasts } from "~/components/toasts.svelte";
 import {
   LoginDocument, MeDocument
 } from "~/graphql/types";
@@ -31,6 +33,15 @@ const login = async () => {
         currentPassword,
         username
       } }
+    });
+
+    toasts.open({
+      closeMs: 3000,
+      component: Message,
+      props: {
+        text: "ログインしました",
+        type: "success"
+      }
     });
 
     $goto("/me");

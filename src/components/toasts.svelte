@@ -90,7 +90,7 @@ const autoClose = (toast: toastType<any>) => {
 
 {#if $toasts.length > 0}
   {#key $toasts[$toasts.length - 1].id}
-    <div transition:fade>
+    <div transition:fade={{ duration: 200 }}>
       {autoClose($toasts[$toasts.length - 1])}
       <svelte:component
         this={$toasts[$toasts.length - 1].component}
