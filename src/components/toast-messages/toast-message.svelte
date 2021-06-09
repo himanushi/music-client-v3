@@ -7,7 +7,7 @@ import Danger from "~/icons/danger.svelte";
 import Info from "~/icons/info.svelte";
 
 export let type: "sucsses" | "info" | "error";
-export let okClick: () => void | undefined;
+export let okClick: (() => void) | undefined = undefined;
 
 let toastClass = "";
 let iconClass = "";
