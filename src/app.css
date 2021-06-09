@@ -11,16 +11,6 @@ body {
   @apply bg-gray-800;
 }
 
-/* markdown */
-/* @layer base {
-  h1 {
-    @apply text-2xl border-b-2 border-gray-400;
-  }
-  h2 {
-    @apply text-xl;
-  }
-} */
-
 .clickable {
   /* color */
   @apply bg-white bg-opacity-0;

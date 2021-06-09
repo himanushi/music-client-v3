@@ -44,7 +44,9 @@ $: if ($playlistQuery.data) {
     </div>
     {#if playlist.author}
       <div class="user">
-        <Text class="text-sm text-white">作者 : {playlist.author.name}</Text>
+        <Text class="text-sm text-white">
+          作者 : {playlist.author.name}(@{playlist.author.username})
+        </Text>
       </div>
     {/if}
     <div class="description">
