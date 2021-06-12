@@ -24,8 +24,8 @@ import {
   PreviewPlayerStateEvent
 } from "~/machines/preview-player-machine";
 import {
-  spotifyAccessToken,
-  spotifyPremiumUser
+  spotifyPremiumUser,
+  spotifyRefreshToken
 } from "~/machines/spotify-account-machine";
 import {
   SpotifyPlayerMachine,
@@ -84,12 +84,12 @@ const spotifyPlayerId = "spotify-player";
 
 const selectPlayer = (context: MusicPlayerContext) => {
 
-  const accessToken = cookie.get(spotifyAccessToken);
+  const refreshToken = cookie.get(spotifyRefreshToken);
   const premiumUser = cookie.get(spotifyPremiumUser) === "true";
 
   if (
     premiumUser &&
-    accessToken &&
+    refreshToken &&
     context.track?.spotifyTracks?.find((track) => track)?.spotifyId
   ) {
 

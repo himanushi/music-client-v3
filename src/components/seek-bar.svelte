@@ -24,39 +24,22 @@ const range = "min" as unknown as boolean;
   {range}
 />
 
-<style global lang="scss">
-// ref: https://simeydotme.github.io/svelte-range-slider-pips/#styling
-.rangeSlider.min {
-  @apply bg-gray-200;
-}
-.rangeSlider.range {
-  @apply bg-gray-200;
-}
-
-.rangeSlider {
-  @apply bg-teal-500;
-
-  .rangeHandle > .rangeNub {
+<style lang="scss">
+:global(.rangeSlider.range.min) {
+  @apply bg-gray-300;
+  :global(.rangeNub) {
     @apply bg-teal-500;
   }
-  .rangeHandle > .rangeFloat {
+  :global(.rangeFloat) {
     @apply bg-teal-500;
   }
-  .rangeBar {
+  :global(.rangeBar) {
     @apply bg-teal-500;
   }
 }
 
-.rangeSlider.focus {
-  @apply bg-gray-200;
-
-  .rangeHandle > .rangeNub {
-    @apply bg-teal-500;
-  }
-  .rangeHandle > .rangeFloat {
-    @apply bg-teal-500;
-  }
-  .rangeBar {
+:global(.rangeSlider.range.min.focus) {
+  :global(.rangeNub) {
     @apply bg-teal-500;
   }
 }
