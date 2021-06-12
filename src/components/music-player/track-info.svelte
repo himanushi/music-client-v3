@@ -14,7 +14,7 @@ $: ({
 {#key currentTrack?.id}
   <div class="track-info">
     <div class="image">
-      <Image src={currentTrack?.artworkM?.url} class="w-[300px] h-[300px]" />
+      <Image src={currentTrack?.artworkL?.url} class="w-[300px] h-[300px]" />
     </div>
     <div class="track-name">
       <Text>{currentTrack?.name || ""}</Text>
