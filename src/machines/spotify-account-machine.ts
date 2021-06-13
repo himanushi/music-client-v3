@@ -85,54 +85,55 @@ export const accountMachine = machine<
 
       waiting: {
         // eslint-disable-next-line max-lines-per-function
-        invoke: { src: ({ login }) => (callback) => {
+        invoke: { src:
+            ({ login }) => (callback) => {
 
-          const refreshTokenToken = cookie.get(spotifyRefreshToken);
+              const refreshTokenToken = cookie.get(spotifyRefreshToken);
 
-          if (refreshTokenToken) {
+              if (refreshTokenToken) {
 
-            (async () => {
+                (async () => {
 
-              // 一旦トークンを更新しておく
-              await login();
+                  // 一旦トークンを更新しておく
+                  await login();
 
-              const accessToken = cookie.get(spotifyAccessToken);
+                  const accessToken = cookie.get(spotifyAccessToken);
 
-              try {
+                  try {
 
-                const spotify = new SpotifyWebApi({ accessToken });
-                const me = await spotify.getMe();
+                    const spotify = new SpotifyWebApi({ accessToken });
+                    const me = await spotify.getMe();
 
-                // 有料アカウントのみフル再生が可能なためメモ
-                if (me && me.body.product === "premium") {
+                    // 有料アカウントのみフル再生が可能なためメモ
+                    if (me && me.body.product === "premium") {
 
-                  cookie.set(spotifyPremiumUser, "true");
+                      cookie.set(spotifyPremiumUser, "true");
 
-                } else {
+                    } else {
 
-                  cookie.set(spotifyPremiumUser, "false");
+                      cookie.set(spotifyPremiumUser, "false");
 
-                }
+                    }
 
-                callback("AUTHORIZED");
+                    callback("AUTHORIZED");
 
-              } catch (error) {
+                  } catch (error) {
 
-                // eslint-disable-next-line no-console
-                console.log(error);
+                    // eslint-disable-next-line no-console
+                    console.log(error);
+                    callback("UNAUTHORIZED");
+
+                  }
+
+                })();
+
+              } else {
+
                 callback("UNAUTHORIZED");
 
               }
 
-            })();
-
-          } else {
-
-            callback("UNAUTHORIZED");
-
-          }
-
-        } },
+            } },
 
         on: {
           AUTHORIZED: "authorized",
@@ -147,30 +148,6 @@ export const accountMachine = machine<
 
         states: {
           idle: {
-            invoke: { src: ({ login }) => (callback) => {
-
-              // expire から算出すべき
-              const minutes = 40;
-              const ms = minutes * 60 * 1000;
-
-              const id = setInterval(() => {
-
-                if (cookie.get(spotifyRefreshToken)) {
-
-                  login();
-
-                } else {
-
-                  callback("LOGOUT");
-
-                }
-
-              }, ms);
-
-              return () => clearInterval(id);
-
-            } },
-
             on: {
               LOGIN_OR_LOGOUT: "logout",
               LOGOUT: "logout"
@@ -180,17 +157,18 @@ export const accountMachine = machine<
           },
 
           logout: {
-            invoke: { src: ({ logout }) => (callback) => {
+            invoke: { src:
+                ({ logout }) => (callback) => {
 
-              (async () => {
+                  (async () => {
 
-                await logout();
-                cookie.remove(spotifyPremiumUser);
-                callback("WAITING");
+                    await logout();
+                    cookie.remove(spotifyPremiumUser);
+                    callback("WAITING");
 
-              })();
+                  })();
 
-            } },
+                } },
 
             on: { WAITING: `#${spotifyAccountId}.waiting` },
 

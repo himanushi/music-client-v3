@@ -7,8 +7,9 @@ import type { Sender } from "xstate";
 import {
   Machine as machine, assign, sendParent, State
 } from "xstate";
+import client from "~/graphql/client";
 import {
-  SpotifyTrack, Track
+  SpotifyLoginDocument, SpotifyTrack, Track
 } from "~/graphql/types";
 import { cookie } from "~/lib/cookie";
 import {
@@ -60,6 +61,16 @@ export type SpotifyPlayerStateEvent =
 
 export const spotifyPlayerId = "spotify-player";
 const playerName = "ゲーム音楽";
+
+const login = async () => {
+
+  await client.query({
+    fetchPolicy: "no-cache",
+    query: SpotifyLoginDocument,
+    variables: {}
+  });
+
+};
 
 const getSpotify = () => {
 
@@ -302,147 +313,177 @@ export const SpotifyPlayerMachine = machine<
       // eslint-disable-next-line max-lines-per-function
       connect: () => (callback: Sender<SpotifyPlayerStateEvent>) => {
 
-        const accessToken = cookie.get(spotifyAccessToken);
+        const refreshToken = cookie.get(spotifyRefreshToken);
 
-        if (!accessToken) {
+        if (!refreshToken) {
 
           callback("STOPPED");
           return;
 
         }
 
-        callback({
-          type: "SET_ACCESS_TOKEN",
-          accessToken
-        });
-
-        const player = new Spotify.Player({
-          name: playerName,
-          getOAuthToken: (cb) => {
-
-            cb(accessToken);
-
-          }
-        });
-
-        player.addListener("player_state_changed", (state) => {
-
-          // 正しい seek を設定
-          if (state) {
-
-            callback({
-              type: "SET_SEEK",
-              seek: state.position
-            });
-
-          }
-
-          if (
-            state &&
-            state.paused &&
-            state.track_window.previous_tracks.length === 0 &&
-            state.position === 0
-          ) {
-
-            callback("FINISHED");
-
-          } else if (
-            state &&
-            state.paused &&
-            state.track_window.previous_tracks.length === 0 &&
-            state.position !== 0
-          ) {
-
-            callback("PAUSED");
-
-          } else if (state && !state.paused) {
-
-            callback("PLAYING");
-
-          }
-
-        });
-
-        player.addListener("ready", ({ device_id }) => {
-
-          callback({
-            type: "SET_DEVICE_ID",
-            deviceId: device_id
-          });
-
-          callback("CONNECTED");
-
-        });
-
-        player.connect();
-
-        return () => player.disconnect();
-
-      },
-
-      disconnect: (context: SpotifyPlayerContext) => (
-        callback: Sender<SpotifyPlayerStateEvent>
-      ) => {
-
-        // access token の更新対応
-        const id = setInterval(() => {
-
-          const accessToken = cookie.get(spotifyAccessToken);
-
-          if (context.accessToken !== accessToken) {
-
-            callback({ type: "STOP" });
-
-          }
-
-        }, 60 * 1000);
-
-        return () => clearInterval(id);
-
-      },
-
-      load: ({
-        deviceId, track
-      }: SpotifyPlayerContext) => (
-        callback: Sender<SpotifyPlayerStateEvent>
-      ) => {
-
-        const id = track?.spotifyTracks?.find((st: SpotifyTrack) => st)?.
-          spotifyId;
-
-        if (!id || !deviceId) {
-
-          callback("FINISHED");
-          return;
-
-        }
+        let player: Spotify.SpotifyPlayer;
 
         (async () => {
 
-          const spotify = getSpotify();
-          if (spotify) {
+          await login();
 
-            await spotify.play({
-              device_id: deviceId,
-              uris: [`spotify:track:${id}`]
-            });
+          const accessToken = cookie.get(spotifyAccessToken);
 
-            await spotify.setVolume(30);
+          if (!accessToken) {
 
-            callback({
-              type: "SET_SEEK",
-              seek: 0
-            });
-
-          } else {
-
-            callback("FINISHED");
+            callback("STOPPED");
+            return;
 
           }
 
+          callback({
+            type: "SET_ACCESS_TOKEN",
+            accessToken
+          });
+
+          player = new Spotify.Player({
+            name: playerName,
+            getOAuthToken: (cb) => {
+
+              cb(accessToken);
+
+            }
+          });
+
+          player.addListener("player_state_changed", (state) => {
+
+            // 正しい seek を設定
+            if (state) {
+
+              callback({
+                type: "SET_SEEK",
+                seek: state.position
+              });
+
+            }
+
+            if (
+              state &&
+              state.paused &&
+              state.track_window.previous_tracks.length === 0 &&
+              state.position === 0
+            ) {
+
+              callback("FINISHED");
+
+            } else if (
+              state &&
+              state.paused &&
+              state.track_window.previous_tracks.length === 0 &&
+              state.position !== 0
+            ) {
+
+              callback("PAUSED");
+
+            } else if (state && !state.paused) {
+
+              callback("PLAYING");
+
+            }
+
+          });
+
+          player.addListener("ready", ({ device_id }) => {
+
+            callback({
+              type: "SET_DEVICE_ID",
+              deviceId: device_id
+            });
+
+            callback("CONNECTED");
+
+          });
+
+          player.connect();
+
         })();
 
-      }
+        // 1時間で Spotify の接続を切断しないとエラーになるため、55分後に切断し停止する。
+        // 1時間以内なら何分でもいいけど55分は適当な数字。
+        const timeoutId = setTimeout(() => {
+
+          player.disconnect();
+          callback("STOPPED");
+
+        }, 55 * 60 * 1000);
+
+        return () => {
+
+          clearTimeout(timeoutId);
+          player.disconnect();
+
+        };
+
+      },
+
+      disconnect:
+        (context: SpotifyPlayerContext) => (callback: Sender<SpotifyPlayerStateEvent>) => {
+
+          // access token の更新対応
+          const id = setInterval(() => {
+
+            const accessToken = cookie.get(spotifyAccessToken);
+
+            if (context.accessToken !== accessToken) {
+
+              callback({ type: "STOP" });
+
+            }
+
+          }, 60 * 1000);
+
+          return () => clearInterval(id);
+
+        },
+
+      load:
+        ({
+          deviceId, track
+        }: SpotifyPlayerContext) => (callback: Sender<SpotifyPlayerStateEvent>) => {
+
+          const id = track?.spotifyTracks?.find(
+            (st: SpotifyTrack) => st
+          )?.spotifyId;
+
+          if (!id || !deviceId) {
+
+            callback("FINISHED");
+            return;
+
+          }
+
+          (async () => {
+
+            const spotify = getSpotify();
+            if (spotify) {
+
+              await spotify.play({
+                device_id: deviceId,
+                uris: [`spotify:track:${id}`]
+              });
+
+              await spotify.setVolume(30);
+
+              callback({
+                type: "SET_SEEK",
+                seek: 0
+              });
+
+            } else {
+
+              callback("FINISHED");
+
+            }
+
+          })();
+
+        }
     }
   }
 );
