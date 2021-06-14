@@ -3,12 +3,10 @@ import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import Button from "~/components/button.svelte";
-import InputSelection from "~/components/input-selection.svelte";
 import InputText from "~/components/input-text.svelte";
 import Messages from "~/components/messages.svelte";
 import { UpsertPlaylistDocument } from "~/graphql/types";
 import type {
-  PlaylistPublicTypeEnum,
   UpsertPlaylistMutationVariables,
   UpsertPlaylistMutation
 } from "~/graphql/types";
@@ -21,7 +19,6 @@ const upsertPlaylist = mutation<
 
 let name = "";
 let description = "";
-let publicType: PlaylistPublicTypeEnum = "NON_OPEN";
 let messages: Record<string, string[]> = {};
 
 const create = async () => {
@@ -31,7 +28,7 @@ const create = async () => {
     await upsertPlaylist({ variables: { input: {
       description,
       name,
-      publicType,
+      publicType: "NON_OPEN",
       trackIds: []
     } } });
 
@@ -48,21 +45,6 @@ const create = async () => {
   }
 
 };
-
-const publicTypes = [
-  {
-    label: "非公開",
-    value: "NON_OPEN"
-  },
-  {
-    label: "公開",
-    value: "OPEN"
-  },
-  {
-    label: "匿名公開",
-    value: "ANONYMOUS_OPEN"
-  }
-];
 </script>
 
 <form on:submit|preventDefault>
@@ -80,12 +62,6 @@ const publicTypes = [
     class="w-80"
   />
 
-  <InputSelection
-    label="公開設定"
-    bind:value={publicType}
-    items={publicTypes}
-    class="w-80"
-  />
   <Messages messages={messages.publicType} />
 
   <Button class="text-center" on:click={create} messages={messages._}>
