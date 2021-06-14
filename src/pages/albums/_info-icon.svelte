@@ -27,7 +27,7 @@ div {
   @apply flex flex-row space-x-0.5;
 
   span {
-    @apply block text-white text-xs leading-4 w-4 h-4 text-center rounded-full;
+    @apply block text-white text-xs leading-4 w-4 h-4 text-center rounded-full pl-[0.055rem];
   }
 
   .apple {
