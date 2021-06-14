@@ -3,12 +3,13 @@ import Messages from "./messages.svelte";
 
 let className = "";
 export { className as class };
-export let messages: string[] | undefined;
+export let messages: string[] | undefined = undefined;
+export let disabled = false;
 </script>
 
 <div class={className}>
   <Messages type="error" {messages} />
-  <button on:click><slot /></button>
+  <button {disabled} on:click><slot /></button>
 </div>
 
 <style lang="scss">

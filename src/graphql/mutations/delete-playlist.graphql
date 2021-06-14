@@ -1,0 +1,5 @@
+mutation DeletePlaylist($input: DeletePlaylistInput!) {
+  deletePlaylist(input: $input) {
+    result
+  }
+}

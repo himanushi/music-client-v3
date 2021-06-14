@@ -1,5 +1,6 @@
 <script lang="ts">
 import { query } from "svelte-apollo";
+import DeleteButton from "./_delete-button.svelte";
 import EditButton from "./_edit-button.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
 import AddAppleSpotifyButton from "~/components/add-apple-spotify-button.svelte";
@@ -92,6 +93,7 @@ $: if ($playlistQuery.data) {
 
 {#if isMyPlaylist}
   <EditButton {id} />
+  <DeleteButton {id} />
 {/if}
 
 <style lang="scss">
