@@ -2,13 +2,13 @@
 import {
   getClient, mutation
 } from "svelte-apollo";
+import NoPlaylistMessage from "./toast-messages/no-playlist-message.svelte";
 import Selection from "~/components/add-playlist-selection.svelte";
 import type { selectionType } from "~/components/add-playlist-selection.svelte";
 import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import type { Props } from "~/components/toast-messages/added-playlist-message.svelte";
 import AddedPlaylistMessage from "~/components/toast-messages/added-playlist-message.svelte";
-import Message from "~/components/toast-messages/message.svelte";
 import { toasts } from "~/components/toasts.svelte";
 import {
   PlaylistsDocument,
@@ -97,11 +97,7 @@ const showMyPlaylist = async () => {
 
     toasts.open({
       closeMs: 5000,
-      component: Message,
-      props: {
-        text: "エラーが発生しました。",
-        type: "error"
-      }
+      component: NoPlaylistMessage
     });
 
   }

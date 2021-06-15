@@ -1,9 +1,16 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
+import ToastMessage from "./toast-message.svelte";
 </script>
 
-<span>
-  プレイリストが存在しません。
+<ToastMessage type="info">
+  プレイリストが存在しません。<br />
   <a href={$url("/playlist/new")}>こちら</a>
   で先にプレイリストを作成してください。
-</span>
+</ToastMessage>
+
+<style lang="scss">
+a {
+  @apply font-bold underline;
+}
+</style>

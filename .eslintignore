@@ -3,3 +3,4 @@ package-lock.json
 *.md
 src/graphql/types.ts
 .routify
+/build
