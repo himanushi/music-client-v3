@@ -21,7 +21,6 @@ export type SpotifyPlayerContext = {
   track?: Track;
   seek: number;
   deviceId?: string;
-  accessToken?: string;
 };
 
 export type SpotifyPlayerStateSchema = {
@@ -46,7 +45,6 @@ export type SpotifyPlayerStateEvent =
   | { type: "SET_TRACK"; track: Track }
   | { type: "SET_SEEK"; seek: number }
   | { type: "SET_DEVICE_ID"; deviceId: string }
-  | { type: "SET_ACCESS_TOKEN"; accessToken: string }
   | { type: "CHANGE_SEEK"; seek: number }
   | { type: "IDLE" }
   | { type: "LOAD" }
@@ -115,8 +113,6 @@ export const SpotifyPlayerMachine = machine<
 
       SET_DEVICE_ID: { actions: ["setDeviceId"] },
 
-      SET_ACCESS_TOKEN: { actions: ["setAccessToken"] },
-
       TICK: { actions: [
         "tick",
         sendParent(({ seek }) => ({
@@ -154,7 +150,6 @@ export const SpotifyPlayerMachine = machine<
           },
 
           paused: {
-            invoke: { src: "disconnect" },
             entry: [sendParent("PAUSED")],
             on: {
               PLAY: { actions: ["replay"] },
@@ -167,7 +162,6 @@ export const SpotifyPlayerMachine = machine<
           },
 
           playing: {
-            invoke: { src: "disconnect" },
             entry: [sendParent("PLAYING")],
             on: {
               PAUSE: { actions: ["pause"] },
@@ -213,8 +207,6 @@ export const SpotifyPlayerMachine = machine<
       setSeek: assign({ seek: ({ seek }, event) => "seek" in event ? event.seek : seek }),
 
       setDeviceId: assign({ deviceId: ({ deviceId }, event) => "deviceId" in event ? event.deviceId : deviceId }),
-
-      setAccessToken: assign({ accessToken: ({ accessToken }, event) => "accessToken" in event ? event.accessToken : accessToken }),
 
       // Spotify api で毎秒再生時間を取得する方法が多分ない
       tick: assign({ seek: ({
@@ -337,11 +329,6 @@ export const SpotifyPlayerMachine = machine<
 
           }
 
-          callback({
-            type: "SET_ACCESS_TOKEN",
-            accessToken
-          });
-
           player = new Spotify.Player({
             name: playerName,
             getOAuthToken: (cb) => {
@@ -371,15 +358,6 @@ export const SpotifyPlayerMachine = machine<
             ) {
 
               callback("FINISHED");
-
-            } else if (
-              state &&
-              state.paused &&
-              state.track_window.previous_tracks.length === 0 &&
-              state.position !== 0
-            ) {
-
-              callback("PAUSED");
 
             } else if (state && !state.paused) {
 
@@ -421,26 +399,6 @@ export const SpotifyPlayerMachine = machine<
         };
 
       },
-
-      disconnect:
-        (context: SpotifyPlayerContext) => (callback: Sender<SpotifyPlayerStateEvent>) => {
-
-          // access token の更新対応
-          const id = setInterval(() => {
-
-            const accessToken = cookie.get(spotifyAccessToken);
-
-            if (context.accessToken !== accessToken) {
-
-              callback({ type: "STOP" });
-
-            }
-
-          }, 60 * 1000);
-
-          return () => clearInterval(id);
-
-        },
 
       load:
         ({
