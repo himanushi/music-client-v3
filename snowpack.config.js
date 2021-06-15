@@ -6,6 +6,7 @@ module.exports = {
     "~": "./src"
   },
   devOptions: { tailwindConfig: "./tailwind.config.js" },
+  exclude: ["**/*.graphql"],
   mount: {
     ".routify": { url: "/" },
     public: {
