@@ -17,7 +17,8 @@ module.exports = {
   },
   optimize: {
     bundle: true,
-    minify: true
+    minify: true,
+    sourcemap: false
   },
   packageOptions: { knownEntrypoints: [
     "@roxi/routify",
