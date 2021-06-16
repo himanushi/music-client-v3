@@ -3,7 +3,6 @@ fragment CurrentUserFields on CurrentUser {
   name
   username
   registered
-  version
   publicInformations {
     id
     publicType
