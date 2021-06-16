@@ -672,7 +672,9 @@ export type PlaylistsQueryOrderEnum =
   /** 作成日順 */
   | 'NEW'
   /** 更新日順 */
-  | 'UPDATE';
+  | 'UPDATE'
+  /** 人気順 */
+  | 'POPULARITY';
 
 export type PlaylistsSortInputObject = {
   /** 並び順対象 */

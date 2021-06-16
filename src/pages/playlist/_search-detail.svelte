@@ -16,11 +16,15 @@ let keyword = $params[SearchParams.playlist.keyword];
 let favorite = $params[SearchParams.playlist.favorite] === "1";
 let username = $params[SearchParams.playlist.username];
 const isMine = $params[SearchParams.playlist.mine] === "1";
-const order = $params[SearchParams.playlist.order] || "NEW";
+const order = $params[SearchParams.playlist.order] || "POPULARITY";
 const direction = $params[SearchParams.playlist.direction] || "DESC";
 
 let orderValue = `${order}.${direction}`;
 const orderItems = [
+  {
+    label: "人気順",
+    value: "POPULARITY.DESC"
+  },
   {
     label: "追加日新しい順",
     value: "NEW.DESC"
