@@ -36,6 +36,10 @@ $afterPageLoad(() => {
 
   }
 
+  // Google Analytics
+  window.ga("set", "page", window.location.pathname);
+  window.ga("send", "pageview");
+
 });
 </script>
 
