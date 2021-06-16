@@ -149,6 +149,15 @@ export const itemsMachine = <
                     items
                   });
 
+                  if (items.length < limit) {
+
+                    callback({
+                      type: "SET_HAS_NEXT",
+                      hasNext: false
+                    });
+
+                  }
+
                   callback("ACTIVE");
 
                 });
@@ -182,14 +191,12 @@ export const itemsMachine = <
 
                     const resultItems = result.data.items as any[];
 
-                    if (resultItems.length > 0) {
+                    callback({
+                      type: "ADD_ITEMS",
+                      items: resultItems
+                    });
 
-                      callback({
-                        type: "ADD_ITEMS",
-                        items: resultItems
-                      });
-
-                    } else {
+                    if (resultItems.length < limit) {
 
                       callback({
                         type: "SET_HAS_NEXT",
