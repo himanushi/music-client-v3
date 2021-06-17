@@ -124,6 +124,11 @@ export const itemsMachine = <
                 variables, fetchPolicy
               }) => (callback) => {
 
+                callback({
+                  type: "SET_HAS_NEXT",
+                  hasNext: true
+                });
+
                 const watchQuery = client.watchQuery({
                   query: itemsDocument,
                   variables,
