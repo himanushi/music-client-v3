@@ -359,6 +359,15 @@ export const SpotifyPlayerMachine = machine<
 
               callback("FINISHED");
 
+            } else if (
+              state &&
+              state.paused &&
+              state.track_window.previous_tracks.length === 0 &&
+              state.position !== 0
+            ) {
+
+              callback("PAUSED");
+
             } else if (state && !state.paused) {
 
               callback("PLAYING");
