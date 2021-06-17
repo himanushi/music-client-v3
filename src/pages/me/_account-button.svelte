@@ -20,7 +20,7 @@ $: me = $query?.data?.me;
   <a href={$url("/me/login")}>ログイン</a>
   <a href={$url("/me/signup")}>登録する</a>
   <InfoMessage class="mx-12  text-gray-300" size="s">
-    ログインすると、お気に入り登録やプレイリスト作成と公開などが出来るようになります。
+    ログインすると、お気に入り登録、曲検索、プレイリスト作成と公開などが出来るようになります。
   </InfoMessage>
 {/if}
 
