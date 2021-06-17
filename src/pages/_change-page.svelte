@@ -4,6 +4,7 @@ import {
   afterPageLoad, beforeUrlChange
 } from "@roxi/routify";
 import { createEventDispatcher } from "svelte";
+import { modals } from "~/components/modals.svelte";
 import { currentPath } from "~/store/history";
 import { scrollLock } from "~/store/scroll-lock";
 
@@ -11,6 +12,15 @@ let content: HTMLElement;
 const dispatch = createEventDispatcher();
 
 $beforeUrlChange(() => {
+
+  // modal 対応
+  if ($modals.length > 0) {
+
+    modals.close();
+
+    return false;
+
+  }
 
   dispatch("pageChange");
 

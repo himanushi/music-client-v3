@@ -63,6 +63,8 @@ const showMyPlaylist = async () => {
         lists: playlists.map((playlsit) => ({
           onClick: async () => {
 
+            modals.close();
+
             await addPlaylist({
               refetchQueries: [
                 {
@@ -75,8 +77,6 @@ const showMyPlaylist = async () => {
                 trackIds: tracks.map((track) => track.id)
               } }
             });
-
-            modals.close();
 
             toasts.open<Props>({
               closeMs: 10000,

@@ -27,8 +27,8 @@ const showPlayer = () => {
 const go =
   (path: string, params: Record<string, string> = {}) => () => {
 
-    $goto(path, params);
     modals.close();
+    $goto(path, params);
 
   };
 
