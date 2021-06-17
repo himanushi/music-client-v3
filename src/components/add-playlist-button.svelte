@@ -54,6 +54,8 @@ const showMyPlaylist = async () => {
 
   const playlists = result?.data?.items;
 
+  modals.close();
+
   if (playlists.length > 0) {
 
     modals.open<selectionType>({
@@ -62,8 +64,6 @@ const showMyPlaylist = async () => {
         label: "プレイリストに追加",
         lists: playlists.map((playlsit) => ({
           onClick: async () => {
-
-            modals.close();
 
             await addPlaylist({
               refetchQueries: [
@@ -77,6 +77,8 @@ const showMyPlaylist = async () => {
                 trackIds: tracks.map((track) => track.id)
               } }
             });
+
+            modals.close();
 
             toasts.open<Props>({
               closeMs: 10000,
