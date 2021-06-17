@@ -64,7 +64,7 @@ $: if ($albumQuery.data) {
     </div>
     {#if album.status !== "ACTIVE"}
       <div class="name">
-        <Text class="text-lg text-red-300">ステータス : {album.status}</Text>
+        <Text class="text-lg text-red-300">Status : {album.status}</Text>
       </div>
     {/if}
     <div class="iamge">

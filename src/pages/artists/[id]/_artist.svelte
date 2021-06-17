@@ -54,6 +54,11 @@ $: if ($artistQuery.data) {
     <div class="separate">
       <Text class="text-white">Artist</Text>
     </div>
+    {#if artist.status !== "ACTIVE"}
+      <div class="name">
+        <Text class="text-lg text-red-300">Status : {artist.status}</Text>
+      </div>
+    {/if}
     <div class="iamge">
       <Image src={artist.artworkL?.url} class="h-80 w-80" />
     </div>

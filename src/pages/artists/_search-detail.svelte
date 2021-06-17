@@ -42,6 +42,38 @@ const orderItems = [
   }
 ];
 
+let statusValue = $params[SearchParams.artist.status] || "ACTIVE";
+const statusItems = [
+  {
+    label: "有効",
+    value: "ACTIVE"
+  },
+  {
+    label: "保留",
+    value: "PENDING"
+  },
+  {
+    label: "除外",
+    value: "IGNORE"
+  },
+  {
+    label: "有効 & 保留",
+    value: "ACTIVE-PENDING"
+  },
+  {
+    label: "有効 & 除外",
+    value: "ACTIVE-PENDING"
+  },
+  {
+    label: "保留 & 除外",
+    value: "PENDING-IGNORE"
+  },
+  {
+    label: "有効 & 保留 & 除外",
+    value: "ACTIVE-PENDING-IGNORE"
+  }
+];
+
 const onClick = () => {
 
   const parameters: SearchParamsType = {};
@@ -70,6 +102,11 @@ const onClick = () => {
     parameters[SearchParams.artist.direction] = _direction;
 
   }
+  if (statusValue !== "ACTIVE") {
+
+    parameters[SearchParams.artist.status] = statusValue;
+
+  }
   $goto("/artists", parameters);
 
 };
@@ -84,5 +121,12 @@ $: me = $query?.data?.me;
   <InputSelection label="並び順" bind:value={orderValue} items={orderItems} />
   {#if me && isAllowed(me, "changeFavorites")}
     <InputCheckbox label="お気に入り" bind:checked={favorite} />
+  {/if}
+  {#if me && isAllowed(me, "changeStatus")}
+    <InputSelection
+      label="ステータス"
+      bind:value={statusValue}
+      items={statusItems}
+    />
   {/if}
 </SearchDetail>
