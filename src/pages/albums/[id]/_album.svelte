@@ -9,7 +9,10 @@ import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { AlbumDocument } from "~/graphql/types";
 import type {
-  Album, AlbumQuery, ArtistsQueryVariables
+  Album,
+  AlbumQuery,
+  ArtistsQueryVariables,
+  StatusEnum
 } from "~/graphql/types";
 import {
   convertDate, convertTime, toMs
@@ -25,20 +28,33 @@ const albumQuery = query<AlbumQuery>(AlbumDocument, {
 });
 
 let album: Album | undefined;
+let variables: ArtistsQueryVariables | undefined;
 
 $: if ($albumQuery.data) {
 
   album = $albumQuery.data.album as Album;
+  let status: StatusEnum[] = ["ACTIVE"];
+  if (album.status !== "ACTIVE") {
+
+    status = [
+      "ACTIVE",
+      "IGNORE",
+      "PENDING"
+    ];
+
+  }
+  variables = {
+    conditions: {
+      albums: { id: [id] },
+      status
+    },
+    sort: {
+      order: "POPULARITY",
+      type: "DESC"
+    }
+  };
 
 }
-
-const variables: ArtistsQueryVariables = {
-  conditions: { albums: { id: [id] } },
-  sort: {
-    order: "POPULARITY",
-    type: "DESC"
-  }
-};
 </script>
 
 <div class="album">
@@ -46,6 +62,11 @@ const variables: ArtistsQueryVariables = {
     <div class="separate">
       <Text class="text-white">Album</Text>
     </div>
+    {#if album.status !== "ACTIVE"}
+      <div class="name">
+        <Text class="text-lg text-red-300">ステータス : {album.status}</Text>
+      </div>
+    {/if}
     <div class="iamge">
       <Image src={album.artworkL.url} class="h-80 w-80" />
     </div>
@@ -102,9 +123,11 @@ const variables: ArtistsQueryVariables = {
       <Text class="text-white">Artists</Text>
     </div>
 
-    <div class="artists">
-      <Artists {variables} />
-    </div>
+    {#if variables}
+      <div class="artists">
+        <Artists {variables} />
+      </div>
+    {/if}
   {/if}
 </div>
 

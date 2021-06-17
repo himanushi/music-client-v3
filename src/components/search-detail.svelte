@@ -8,7 +8,12 @@ import SearchIcon from "~/icons/search.svelte";
 export let title: string;
 export let onClick: () => void;
 
-const close = () => modals.close();
+const click = () => {
+
+  modals.close();
+  onClick();
+
+};
 </script>
 
 <div
@@ -20,12 +25,12 @@ const close = () => modals.close();
   }}
   class="modal"
 >
-  <form on:submit|preventDefault={close}>
+  <form on:submit|preventDefault>
     <div class="separate">
       <Text class="text-white">{title}</Text>
     </div>
     <slot />
-    <IconButton class="w-16 h-16" on:click={onClick}>
+    <IconButton class="w-16 h-16" on:click={click}>
       <SearchIcon class="w-10 h-10 mr-2" />
     </IconButton>
   </form>

@@ -7,7 +7,8 @@ import { ArtistDocument } from "~/graphql/types";
 import type {
   Artist,
   ArtistQuery,
-  AlbumsQueryVariables
+  AlbumsQueryVariables,
+  StatusEnum
 } from "~/graphql/types";
 import Albums from "~/pages/albums/_albums.svelte";
 
@@ -19,20 +20,33 @@ const artistQuery = query<ArtistQuery>(ArtistDocument, {
 });
 
 let artist: Artist | undefined;
+let variables: AlbumsQueryVariables | undefined;
 
 $: if ($artistQuery.data) {
 
   artist = $artistQuery.data.artist as Artist;
+  let status: StatusEnum[] = ["ACTIVE"];
+  if (artist.status !== "ACTIVE") {
+
+    status = [
+      "ACTIVE",
+      "IGNORE",
+      "PENDING"
+    ];
+
+  }
+  variables = {
+    conditions: {
+      artists: { id: [id] },
+      status
+    },
+    sort: {
+      order: "RELEASE",
+      type: "DESC"
+    }
+  };
 
 }
-
-const variables: AlbumsQueryVariables = {
-  conditions: { artists: { id: [id] } },
-  sort: {
-    order: "RELEASE",
-    type: "DESC"
-  }
-};
 </script>
 
 <div class="artist">
@@ -53,9 +67,11 @@ const variables: AlbumsQueryVariables = {
     <div class="separate">
       <Text class="text-white">Albums</Text>
     </div>
-    <div class="albums">
-      <Albums {variables} />
-    </div>
+    {#if variables}
+      <div class="albums">
+        <Albums {variables} />
+      </div>
+    {/if}
   {/if}
 </div>
 

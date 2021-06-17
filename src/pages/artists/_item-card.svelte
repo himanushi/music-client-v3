@@ -1,5 +1,6 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
+import InfoIcon from "./_info-icon.svelte";
 import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
 import type { Artist } from "~/graphql/types";
@@ -16,6 +17,9 @@ const path = `/artists/${item.id}`;
   </a>
   <span class="favorite">
     <Favorite type="artist" id={item.id} />
+  </span>
+  <span class="info">
+    <InfoIcon {item} />
   </span>
 </div>
 
@@ -34,6 +38,10 @@ div {
 
   .favorite {
     @apply absolute top-0 right-0;
+  }
+
+  .info {
+    @apply absolute bottom-7 left-2;
   }
 }
 </style>
