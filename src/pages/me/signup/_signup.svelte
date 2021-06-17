@@ -3,6 +3,7 @@ import { ApolloError } from "@apollo/client/core";
 import { goto } from "@roxi/routify";
 import { mutation } from "svelte-apollo";
 import Button from "~/components/button.svelte";
+import InputCheckbox from "~/components/input-checkbox.svelte";
 import InputText from "~/components/input-text.svelte";
 import Messages from "~/components/messages.svelte";
 import RecaptchaV2 from "~/components/recaptcha-v2.svelte";
@@ -22,6 +23,7 @@ let newPassword: string;
 let newPasswordConfirmation: string;
 let recaptcha: RecaptchaV2;
 let messages: Record<string, string[]> = {};
+let term: boolean;
 
 const mutate =
   mutation<SignupMutation, SignupMutationVariables>(SignupDocument);
@@ -95,10 +97,18 @@ const signup = async () => {
     class="w-80"
   />
 
+  <a target="_blank" href="/terms">利用規約はこちら</a>
+  <InputCheckbox label="利用規約に同意する" bind:checked={term} />
+
   <RecaptchaV2 bind:this={recaptcha} />
   <Messages class="text-center" type="error" messages={messages.recaptcha} />
 
-  <Button class="text-center" on:click={signup} messages={messages._}>
+  <Button
+    disabled={!term}
+    class="text-center"
+    on:click={signup}
+    messages={messages._}
+  >
     登録
   </Button>
 </form>
@@ -106,5 +116,9 @@ const signup = async () => {
 <style lang="scss">
 form {
   @apply text-white flex flex-col items-center space-y-5 py-5;
+
+  a {
+    @apply font-bold underline;
+  }
 }
 </style>
