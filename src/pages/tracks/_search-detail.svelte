@@ -15,19 +15,11 @@ import type { SearchParamsType } from "~/lib/params";
 let keyword = $params[SearchParams.track.keyword];
 let favorite = $params[SearchParams.track.favorite] === "1";
 let username = $params[SearchParams.track.username];
-const order = $params[SearchParams.track.order] || "NAME";
+const order = $params[SearchParams.track.order] || "NEW";
 const direction = $params[SearchParams.track.direction] || "DESC";
 
 let orderValue = `${order}.${direction}`;
 const orderItems = [
-  {
-    label: "名前降順",
-    value: "NAME.DESC"
-  },
-  {
-    label: "名前昇順",
-    value: "NAME.ASC"
-  },
   {
     label: "追加日新しい順",
     value: "NEW.DESC"
@@ -35,10 +27,6 @@ const orderItems = [
   {
     label: "追加日古い順",
     value: "NEW.ASC"
-  },
-  {
-    label: "人気順",
-    value: "POPULARITY.DESC"
   }
 ];
 
