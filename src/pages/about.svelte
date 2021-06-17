@@ -1,11 +1,18 @@
 <script lang="ts">
+import Button from "~/components/button.svelte";
 import Markdown from "~/components/markdown.svelte";
 import { markdown } from "~/lib/markdown";
+import {
+  currentVersion, reset
+} from "~/lib/version";
+
+let version = currentVersion() || "";
+version = (version.match(/.{30}/gu) || []).join("<br />");
 
 const html = markdown(`
 # このサイトについて
 ## 概要
-音楽サブスクリプション配信中のゲーム音楽を検索できるサイトです。非商用で公開しています。
+音楽サブスクリプション配信中のゲーム音楽を検索できるサイトです。
 
 ## 目的
 私が新しいゲーム音楽に出会うために公開しています。ユーザー同士でゲーム音楽を楽しく共有できるよう開発を進めています。
@@ -17,9 +24,17 @@ const html = markdown(`
 
 ## 問い合わせ
 [Twitter にてダイレクトメッセージをお願いします](https://twitter.com/vgm_net)
+
+#### ファイルバージョン
+${version}
+
+#### リセット
+再生されないなどの不具合がある場合は下のボタンをクリックしてください。
 `);
 </script>
 
 <Markdown class="m-7">
   {@html html}
 </Markdown>
+
+<Button on:click={reset} class="text-center mb-5">リセット</Button>
