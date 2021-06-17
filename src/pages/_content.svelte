@@ -15,11 +15,17 @@ let invisible = true;
     on:pageChange={() => invisible = true}
     on:pageLoad={() => invisible = false}
   />
-  <slot>contetnt</slot>
+  <div class="content">
+    <slot />
+  </div>
 </main>
 
-<style>
+<style lang="scss">
 main {
   @apply h-full overflow-auto;
+
+  .content {
+    @apply lg_mx-20 xl_mx-36 2xl_mx-60;
+  }
 }
 </style>
