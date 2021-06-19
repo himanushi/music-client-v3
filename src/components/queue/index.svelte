@@ -2,9 +2,10 @@
 import { goto } from "@roxi/routify";
 import IconButton from "../icon-button.svelte";
 import { modals } from "../modals.svelte";
-import AddPlaylistButton from "~/components//add-playlist-button.svelte";
+import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
+import { canPlay } from "~/components/play-button.svelte";
 import Text from "~/components/text.svelte";
 import Link from "~/icons/link.svelte";
 import MusicNote from "~/icons/music-note.svelte";
@@ -34,6 +35,8 @@ const decide = (
 };
 
 const play = (currentPlaybackNo: number) => () => {
+
+  canPlay.play();
 
   playerService.send({
     currentPlaybackNo,
@@ -97,7 +100,11 @@ const link = () => {
         </span>
       {:else}
         <span class="icon" on:click={play(index)}>
-          <IconButton class="h-7 w-7" on:click={play(index)}>
+          <IconButton
+            disabled={!$canPlay}
+            class="h-7 w-7"
+            on:click={play(index)}
+          >
             <Play class="h-7 w-7 text-white" />
           </IconButton>
         </span>
