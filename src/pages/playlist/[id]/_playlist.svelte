@@ -14,7 +14,7 @@ import type {
   Playlist, PlaylistQuery
 } from "~/graphql/types";
 import {
-  convertTime, toMs
+  convertDate, convertTime, toMs
 } from "~/lib/convert";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
 
@@ -60,11 +60,21 @@ const hashtags = [
       </div>
     {/if}
     <div class="description">
-      <Text class="text-sm text-gray-400">{playlist.description}</Text>
+      <Text class="text-gray-400">{playlist.description}</Text>
     </div>
     <div class="description">
-      <Text class="text-base text-gray-400">
+      <Text class="text-gray-400">
         再生時間 : {convertTime(toMs(playlist.items.map((item) => item.track)))}
+      </Text>
+    </div>
+    <div class="description">
+      <Text class="text-gray-400">
+        作成日 : {convertDate(playlist.createdAt)}
+      </Text>
+    </div>
+    <div class="description">
+      <Text class="text-gray-400">
+        更新日 : {convertDate(playlist.updatedAt)}
       </Text>
     </div>
     <div class="buttons">
@@ -125,7 +135,7 @@ const hashtags = [
   }
 
   .description {
-    @apply mt-2 text-center w-80;
+    @apply mt-2 text-center text-sm w-80;
   }
 
   .buttons {
