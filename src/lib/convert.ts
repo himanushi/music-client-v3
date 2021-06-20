@@ -13,20 +13,30 @@ export const convertTime = (ms: number) => {
   const hours = parseInt((ms / (1000 * 60 * 60)).toFixed(0), 10);
   const days = parseInt((ms / (1000 * 60 * 60 * 24)).toFixed(0), 10);
 
-  if (seconds < 60) {
+  let time = "";
 
-    return `${seconds}秒`;
+  if (days !== 0) {
 
-  } else if (minutes < 60) {
-
-    return `${minutes}分`;
-
-  } else if (hours < 24) {
-
-    return `${hours}時間`;
+    time += `${days}日`;
 
   }
-  return `${days}日`;
+  if (hours % 24) {
+
+    time += `${hours % 24}時間`;
+
+  }
+  if (minutes % 60) {
+
+    time += `${minutes % 60}分`;
+
+  }
+  if (seconds % 60) {
+
+    time += `${seconds % 60}秒`;
+
+  }
+
+  return time;
 
 };
 

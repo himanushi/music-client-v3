@@ -8,10 +8,14 @@ import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
+import TwitterButton from "~/components/twitter-button.svelte";
 import { PlaylistDocument } from "~/graphql/types";
 import type {
   Playlist, PlaylistQuery
 } from "~/graphql/types";
+import {
+  convertTime, toMs
+} from "~/lib/convert";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
 
 export let id = "";
@@ -30,6 +34,11 @@ $: if ($playlistQuery.data) {
   isMyPlaylist = playlist?.isMine || false;
 
 }
+
+const hashtags = [
+  "ゲーム音楽のプレイリスト",
+  "ゲーム音楽"
+];
 </script>
 
 <div class="playlist">
@@ -53,7 +62,17 @@ $: if ($playlistQuery.data) {
     <div class="description">
       <Text class="text-sm text-gray-400">{playlist.description}</Text>
     </div>
+    <div class="description">
+      <Text class="text-base text-gray-400">
+        再生時間 : {convertTime(toMs(playlist.items.map((item) => item.track)))}
+      </Text>
+    </div>
     <div class="buttons">
+      <TwitterButton
+        title={playlist.name}
+        path={`/playlist/${playlist.id}`}
+        {hashtags}
+      />
       <Favorite type="playlist" id={playlist.id} />
       <AddPlaylistButton
         class="w-10 h-10"
