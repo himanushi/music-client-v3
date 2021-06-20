@@ -8,10 +8,10 @@ export const convertDate = (date: string) => new Date(date).toLocaleDateString("
 
 export const convertTime = (ms: number) => {
 
-  const seconds = parseInt((ms / 1000).toFixed(0), 10);
-  const minutes = parseInt((ms / (1000 * 60)).toFixed(0), 10);
-  const hours = parseInt((ms / (1000 * 60 * 60)).toFixed(0), 10);
-  const days = parseInt((ms / (1000 * 60 * 60 * 24)).toFixed(0), 10);
+  const seconds = Math.floor(ms / 1000) % 60;
+  const minutes = Math.floor(ms / (1000 * 60)) % 60;
+  const hours = Math.floor(ms / (1000 * 60 * 60)) % 24;
+  const days = Math.floor(ms / (1000 * 60 * 60 * 24));
 
   let time = "";
 
@@ -20,19 +20,19 @@ export const convertTime = (ms: number) => {
     time += `${days}日`;
 
   }
-  if (hours % 24) {
+  if (hours) {
 
-    time += `${hours % 24}時間`;
-
-  }
-  if (minutes % 60) {
-
-    time += `${minutes % 60}分`;
+    time += `${hours}時間`;
 
   }
-  if (seconds % 60) {
+  if (minutes) {
 
-    time += `${seconds % 60}秒`;
+    time += `${minutes}分`;
+
+  }
+  if (seconds) {
+
+    time += `${seconds}秒`;
 
   }
 
