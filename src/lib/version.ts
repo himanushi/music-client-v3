@@ -32,7 +32,7 @@ export const checkVersion = async () => {
 
     if (version && version !== result.data) {
 
-      reset();
+      window.location.reload();
 
     }
 
