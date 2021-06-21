@@ -42,7 +42,12 @@ export const convertTime = (ms: number) => {
 
 export const toMs = (tracks: readonly Track[]) => {
 
-  const reducer = (accumulator: number, currentValue: number) => accumulator + currentValue;
-  return tracks.map((track) => track.durationMs).reduce(reducer);
+  if (tracks.length > 0) {
+
+    const reducer = (accumulator: number, currentValue: number) => accumulator + currentValue;
+    return tracks.map((track) => track.durationMs).reduce(reducer);
+
+  }
+  return 0;
 
 };
