@@ -4,6 +4,8 @@ import {
   onMount, onDestroy, getContext
 } from "svelte";
 import { interpret } from "xstate";
+import Message from "./toast-messages/message.svelte";
+import { toasts } from "./toasts.svelte";
 import Waypoint from "~/components/waypoint.svelte";
 import Loading from "~/icons/loading.svelte";
 import type { ParameterPrefix } from "~/lib/build-parameters";
@@ -52,6 +54,19 @@ $: if (service) {
 
 let items: any[];
 $: items = $service?.context.items || [];
+
+$: if (service && $service.matches("active") && items.length === 0) {
+
+  toasts.open({
+    closeMs: 5000,
+    component: Message,
+    props: {
+      text: "一致する検索結果はありませんでした",
+      type: "info"
+    }
+  });
+
+}
 
 const { getElement } = getContext("content");
 const elementScroll: HTMLElement = getElement();
