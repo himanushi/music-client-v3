@@ -34,15 +34,6 @@
     <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script type="module" src="/index.js"></script>
-    <script type="text/javascript">
-      // ref: https://css-tricks.com/the-trick-to-viewport-units-on-mobile
-      const resize = () => {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty("--vh", `${vh}px`);
-      };
-      window.addEventListener("resize", resize);
-      resize();
-    </script>
   </head>
   <body></body>
 </html>
