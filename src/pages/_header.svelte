@@ -27,5 +27,4 @@ header {
     @apply p-2 rounded;
   }
 }
-/* デザインはあとで */
 </style>

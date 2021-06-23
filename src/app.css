@@ -10,6 +10,8 @@ body {
 }
 
 body {
+  @apply flex flex-col inset-0;
+  @apply overflow-hidden;
   @apply bg-gray-800;
 }
 
