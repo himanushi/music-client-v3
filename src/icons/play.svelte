@@ -9,5 +9,14 @@ export { className as class };
   class={className}
   viewBox="0 0 24 24"
 >
-  <path d="M15 12.3301L9 16.6603L9 8L15 12.3301Z" fill="currentColor" />
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="0" stdDeviation="0.3" />
+    </filter>
+  </defs>
+  <path
+    d="M15 12.3301L9 16.6603L9 8L15 12.3301Z"
+    fill="currentColor"
+    filter="url(#shadow)"
+  />
 </svg>

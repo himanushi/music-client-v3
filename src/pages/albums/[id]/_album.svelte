@@ -116,6 +116,7 @@ $: if ($albumQuery.data) {
     <div class="tracks">
       {#each album.tracks as track, index (track.id)}
         <ItemCard
+          viewImage={false}
           name={album.name}
           item={track}
           items={album.tracks.map((trk) => trk)}
