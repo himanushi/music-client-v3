@@ -81,7 +81,7 @@ const elementScroll: HTMLElement = getElement();
 {/if}
 
 <Waypoint
-  threshold={0}
+  threshold={100}
   {elementScroll}
   on:loadMore={() => service.send("FETCH_MORE")}
 />
