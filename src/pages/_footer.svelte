@@ -13,6 +13,7 @@ import { playerService } from "~/machines/jukebox-machine";
 
 $: track = $playerService.context.currentTrack;
 $: player = $playerService.context.musicPlayerRef;
+$: disabled = player && $player.value === "loading";
 
 const play_or_pause = () => {
 
@@ -53,7 +54,7 @@ const showPlayer = () => {
 
       <span class="buttons">
         {#if player}
-          <IconButton class="w-10 h-10" on:click={play_or_pause}>
+          <IconButton {disabled} class="w-10 h-10" on:click={play_or_pause}>
             {#if $player.value === "playing"}
               <PuaseIcon class="text-gray-900 h-10 w-10" />
             {:else if $player.value === "loading"}
@@ -63,7 +64,7 @@ const showPlayer = () => {
             {/if}
           </IconButton>
 
-          <IconButton class="w-10 h-10" on:click={skip}>
+          <IconButton {disabled} class="w-10 h-10" on:click={skip}>
             <SkipIcon class="text-gray-900 h-10 w-10" />
           </IconButton>
         {/if}
