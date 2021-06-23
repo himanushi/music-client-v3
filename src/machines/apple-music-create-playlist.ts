@@ -48,6 +48,7 @@ export const Machine = machine<Context, Schema, Event>(
         actions: ["setContext"]
       } } },
       creating: { invoke: {
+        // eslint-disable-next-line max-lines-per-function
         src: ({
           name, description, tracks
         }) => {
@@ -70,8 +71,9 @@ export const Machine = machine<Context, Schema, Event>(
           const data = tracks.
             map((track) => {
 
-              const id = track.appleMusicTracks?.find((apple) => apple)?.
-                appleMusicId;
+              const id = track.appleMusicTracks?.find(
+                (apple) => apple
+              )?.appleMusicId;
 
               if (id) {
 

@@ -102,10 +102,15 @@ export const Machine = machine<Context, Schema, Event>(
             map((track) => {
 
               const id = track.spotifyTracks?.find((trak) => trak)?.spotifyId;
-              return `spotify:track:${id}`;
+              if (id) {
+
+                return `spotify:track:${id}`;
+
+              }
+              return undefined;
 
             }).
-            filter((track) => track);
+            filter((track) => track) as string[];
 
           return spotifyApi.addTracksToPlaylist(spotifyPlaylistId, trackIds);
 
