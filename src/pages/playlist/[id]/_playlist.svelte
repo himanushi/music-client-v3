@@ -64,6 +64,11 @@ const hashtags = [
     </div>
     <div class="description">
       <Text class="text-gray-400">
+        曲数: {playlist.items.length}曲
+      </Text>
+    </div>
+    <div class="description">
+      <Text class="text-gray-400">
         再生時間 : {convertTime(toMs(playlist.items.map((item) => item.track)))}
       </Text>
     </div>

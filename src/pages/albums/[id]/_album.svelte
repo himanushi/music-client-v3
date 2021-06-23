@@ -83,6 +83,11 @@ $: if ($albumQuery.data) {
     </div>
     <div class="description">
       <Text class="text-base text-gray-400">
+        曲数: {album.tracks.length}曲
+      </Text>
+    </div>
+    <div class="description">
+      <Text class="text-base text-gray-400">
         再生時間 : {convertTime(toMs(album.tracks))}
       </Text>
     </div>
