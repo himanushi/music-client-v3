@@ -55,7 +55,13 @@ $: if (service) {
 let items: any[];
 $: items = $service?.context.items || [];
 
-$: if (service && $service.matches("active") && items.length === 0) {
+let reported = false;
+$: if (
+  service &&
+  $service.matches("active") &&
+  items.length === 0 &&
+  !reported
+) {
 
   toasts.open({
     closeMs: 5000,
@@ -65,6 +71,8 @@ $: if (service && $service.matches("active") && items.length === 0) {
       type: "info"
     }
   });
+
+  reported = true;
 
 }
 
