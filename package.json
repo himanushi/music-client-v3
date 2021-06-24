@@ -3,7 +3,7 @@
     "start": "run-p route dev",
     "dev": "snowpack dev",
     "build": "rm -fr build && routify -b && snowpack build && . scripts/cache-buster.bash",
-    "lint": "prettier --write . && eslint --fix --debug --ext .js,.ts . && eslint --fix --debug --ext .svelte .",
+    "lint": "prettier --write . && eslint --fix --ext .js,.ts . && eslint --fix --ext .svelte .",
     "route": "routify -b",
     "routing": "routify",
     "generate": "npx graphql-codegen --config=codegen.yml"
