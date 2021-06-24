@@ -8,6 +8,7 @@ import DndSelection from "~/components/dnd-selection.svelte";
 import type { ItemsType } from "~/components/dnd-selection.svelte";
 import InputSelection from "~/components/input-selection.svelte";
 import InputText from "~/components/input-text.svelte";
+import InputTextarea from "~/components/input-textarea.svelte";
 import PlayButton from "~/components/play-button.svelte";
 import Text from "~/components/text.svelte";
 import {
@@ -121,7 +122,7 @@ $: me = $meq?.data?.me;
         bind:value={name}
         errorMessages={messages.name}
       />
-      <InputText
+      <InputTextarea
         label="説明"
         bind:value={description}
         errorMessages={messages.description}
