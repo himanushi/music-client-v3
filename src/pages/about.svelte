@@ -6,8 +6,7 @@ import {
   currentVersion, reset
 } from "~/lib/version";
 
-let version = currentVersion() || "";
-version = (version.match(/.{30}/gu) || []).join("<br />");
+const version = currentVersion() || "";
 
 const html = markdown(`
 # このサイトについて
