@@ -36,7 +36,7 @@ const id = uuid();
   }
 
   textarea {
-    @apply appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight;
+    @apply h-full appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight;
     @apply focus_border-teal-500;
   }
 }

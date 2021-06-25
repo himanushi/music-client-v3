@@ -124,6 +124,7 @@ $: me = $meq?.data?.me;
       />
       <InputTextarea
         label="説明"
+        class="h-80"
         bind:value={description}
         errorMessages={messages.description}
       />
