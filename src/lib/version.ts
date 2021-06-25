@@ -30,7 +30,7 @@ export const checkVersion = async () => {
 
     cookie.set(key, result.data);
 
-    if (version && version !== result.data) {
+    if (version && version.toString() !== result.data.toString()) {
 
       window.location.reload();
 
