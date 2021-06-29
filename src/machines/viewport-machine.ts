@@ -31,7 +31,10 @@ export const Machine = machine<{}, Schema, Event>({
 
   states: {
     idle: { entry: [() => window.addEventListener("resize", resize)] },
-    active: { entry: [resize] }
+    active: {
+      entry: [resize],
+      after: { 3000: { actions: [resize] } }
+    }
   }
 });
 

@@ -9,11 +9,11 @@ import { playerService } from "~/machines/jukebox-machine";
 
 const create = () => $goto("/playlist/new");
 
-let className = "bottom-5";
+let top = "65px";
 
 $: if ($playerService.context.currentTrack) {
 
-  className = "bottom-20";
+  top = "115px";
 
 }
 
@@ -22,7 +22,7 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "upsertPlaylist")}
-  <span class={className} on:click={create}>
+  <span style={`--tp:${top};`} on:click={create}>
     <IconButton class="w-8 h-8">
       <Plus class="w-8 h-8" />
     </IconButton>
@@ -31,7 +31,7 @@ $: me = $query?.data?.me;
 
 <style lang="scss">
 span {
-  @apply fixed right-24;
+  @apply fixed right-24 calc-top;
   @apply flex items-center justify-center;
   @apply h-10 w-10 rounded-full bg-white;
   @apply shadow;

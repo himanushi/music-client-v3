@@ -70,11 +70,11 @@ const remove = () => {
 
 };
 
-let className = "bottom-5";
+let top = "65px";
 
 $: if ($playerService.context.currentTrack) {
 
-  className = "bottom-20";
+  top = "115px";
 
 }
 
@@ -83,7 +83,7 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "deletePlaylist")}
-  <span class={className} on:click={remove}>
+  <span style={`--tp:${top};`} on:click={remove}>
     <IconButton class="w-6 h-6">
       <Trash class="w-6 h-6" />
     </IconButton>
@@ -92,7 +92,7 @@ $: me = $query?.data?.me;
 
 <style lang="scss">
 span {
-  @apply fixed right-24;
+  @apply fixed right-24 calc-top;
   @apply flex items-center justify-center;
   @apply h-10 w-10 rounded-full bg-red-400;
   @apply shadow;
