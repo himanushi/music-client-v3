@@ -2,6 +2,7 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
+import isMobile from "ismobilejs";
 import {
   Machine as machine,
   SpawnedActorRef,
@@ -87,7 +88,10 @@ const selectPlayer = (context: MusicPlayerContext) => {
   const refreshToken = cookie.get(spotifyRefreshToken);
   const premiumUser = cookie.get(spotifyPremiumUser) === "true";
 
+  // スマホには対応していない
   if (
+    !isMobile(window.navigator).phone &&
+    !isMobile(window.navigator).tablet &&
     premiumUser &&
     refreshToken &&
     context.track?.spotifyTracks?.find((track) => track)?.spotifyId
