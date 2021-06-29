@@ -5,8 +5,7 @@
 html,
 body {
   @apply h-screen;
-  /* ref: https://css-tricks.com/the-trick-to-viewport-units-on-mobile */
-  height: calc(var(--vh, 1vh) * 100);
+  @apply calc-height;
 }
 
 body {
