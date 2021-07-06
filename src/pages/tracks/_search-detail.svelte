@@ -27,6 +27,10 @@ const orderItems = [
   {
     label: "追加日古い順",
     value: "NEW.ASC"
+  },
+  {
+    label: "人気順",
+    value: "POPULARITY.DESC"
   }
 ];
 
