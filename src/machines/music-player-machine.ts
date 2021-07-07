@@ -2,7 +2,6 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
-import isMobile from "ismobilejs";
 import {
   Machine as machine,
   SpawnedActorRef,
@@ -13,7 +12,6 @@ import {
 } from "xstate";
 import { sendParent } from "xstate/lib/actions";
 import { Track } from "~/graphql/types";
-import { cookie } from "~/lib/cookie";
 import {
   AppleMusicPlayerMachine,
   AppleMusicPlayerState,
@@ -24,15 +22,6 @@ import {
   PreviewPlayerState,
   PreviewPlayerStateEvent
 } from "~/machines/preview-player-machine";
-import {
-  spotifyPremiumUser,
-  spotifyRefreshToken
-} from "~/machines/spotify-account-machine";
-import {
-  SpotifyPlayerMachine,
-  SpotifyPlayerState,
-  SpotifyPlayerStateEvent
-} from "~/machines/spotify-player-machine";
 
 export type MusicPlayerContext = {
   previewPlayerRef?: SpawnedActorRef<
@@ -42,10 +31,6 @@ export type MusicPlayerContext = {
   appleMusicPlayerRef?: SpawnedActorRef<
     AppleMusicPlayerStateEvent,
     AppleMusicPlayerState
-  >;
-  spotifyPlayerRef?: SpawnedActorRef<
-    SpotifyPlayerStateEvent,
-    SpotifyPlayerState
   >;
   track?: Track;
   duration: number;
@@ -81,25 +66,8 @@ export type MusicPlayerEvent =
 
 const previewPlayerId = "preview";
 const appleMusicPlayerId = "apple-music-player";
-const spotifyPlayerId = "spotify-player";
 
 const selectPlayer = (context: MusicPlayerContext) => {
-
-  const refreshToken = cookie.get(spotifyRefreshToken);
-  const premiumUser = cookie.get(spotifyPremiumUser) === "true";
-
-  // スマホには対応していない
-  if (
-    !isMobile(window.navigator).phone &&
-    !isMobile(window.navigator).tablet &&
-    premiumUser &&
-    refreshToken &&
-    context.track?.spotifyTracks?.find((track) => track)?.spotifyId
-  ) {
-
-    return spotifyPlayerId;
-
-  }
 
   let appleAuth = false;
 
@@ -255,7 +223,6 @@ export const MusicPlayerMachine = machine<
     ),
 
     initPlayers: assign({
-      spotifyPlayerRef: (_) => spawn(SpotifyPlayerMachine, spotifyPlayerId),
       appleMusicPlayerRef: (_) => spawn(AppleMusicPlayerMachine, appleMusicPlayerId),
       previewPlayerRef: (_) => spawn(PreviewPlayerMachine, previewPlayerId)
     }),
@@ -266,7 +233,6 @@ export const MusicPlayerMachine = machine<
 
       context.previewPlayerRef?.send({ type: "PAUSE" });
       context.appleMusicPlayerRef?.send({ type: "PAUSE" });
-      context.spotifyPlayerRef?.send({ type: "PAUSE" });
 
     },
 
@@ -321,7 +287,6 @@ export const MusicPlayerMachine = machine<
 
       context.previewPlayerRef?.send({ type: "STOP" });
       context.appleMusicPlayerRef?.send({ type: "STOP" });
-      context.spotifyPlayerRef?.send({ type: "STOP" });
 
     },
 

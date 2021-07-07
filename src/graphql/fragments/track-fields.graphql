@@ -22,11 +22,6 @@ fragment TrackFields on Track {
     name
     appleMusicId
   }
-  spotifyTracks {
-    id
-    name
-    spotifyId
-  }
   itunesTracks {
     id
     name

@@ -2,7 +2,6 @@
 import { query } from "svelte-apollo";
 import AppleMusicButton from "./_apple-music-button.svelte";
 import ItunesButton from "./_itunes-button.svelte";
-import SpotifyButton from "./_spotify-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
@@ -104,9 +103,6 @@ $: if ($albumQuery.data) {
       {/if}
       {#if album.itunesAlbum}
         <ItunesButton id={album.itunesAlbum.appleMusicId} />
-      {/if}
-      {#if album.spotifyAlbum}
-        <SpotifyButton id={album.spotifyAlbum.spotifyId} />
       {/if}
     </div>
 

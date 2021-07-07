@@ -18,8 +18,5 @@ query Albums(
     itunesAlbum {
       id
     }
-    spotifyAlbum {
-      id
-    }
   }
 }

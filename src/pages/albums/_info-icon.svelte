@@ -11,9 +11,6 @@ export let item: Album;
   {#if item.itunesAlbum}
     <span class="itunes">iT</span>
   {/if}
-  {#if item.spotifyAlbum}
-    <span class="spotify">S</span>
-  {/if}
   {#if item.status === "PENDING"}
     <span class="pendding">PE</span>
   {/if}
@@ -35,9 +32,6 @@ div {
   }
   .itunes {
     @apply bg-blue-500;
-  }
-  .spotify {
-    @apply bg-green-500;
   }
   .pendding {
     @apply bg-yellow-400 text-black;

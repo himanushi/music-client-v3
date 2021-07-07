@@ -25,10 +25,6 @@ query Album($id: TTID!) {
       id
       appleMusicId
     }
-    spotifyAlbum {
-      id
-      spotifyId
-    }
     tracks {
       ...TrackFields
     }

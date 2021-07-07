@@ -1,7 +1,6 @@
 <script lang="ts">
 import AccountButton from "./_account-button.svelte";
 import AppleMusicButton from "./_apple-music-button.svelte";
-import SpotifyButton from "./_spotify-button.svelte";
 import InfoMessage from "~/components/info-message.svelte";
 import Separate from "~/components/separate.svelte";
 import Text from "~/components/text.svelte";
@@ -22,10 +21,8 @@ $: me = $query?.data?.me;
 
   <Separate text="Music Services" />
   <AppleMusicButton />
-  <SpotifyButton />
   <InfoMessage class="mx-12 text-gray-300" size="s">
-    ログインすると、フル再生や音楽サービスにプレイリスト追加などが出来るようになります。Spotify
-    の場合は PC かつ Premium プランのみフル再生が可能です。
+    ログインすると、フル再生や音楽サービスにプレイリスト追加などが出来るようになります。
   </InfoMessage>
 </div>
 

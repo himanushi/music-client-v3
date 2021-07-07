@@ -3,7 +3,6 @@ import { query } from "svelte-apollo";
 import DeleteButton from "./_delete-button.svelte";
 import EditButton from "./_edit-button.svelte";
 import AddAppleMusicPlaylistButton from "~/components/add-apple-music-playlist-button.svelte";
-import AddAppleSpotifyButton from "~/components/add-apple-spotify-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
 import Image from "~/components/square-image.svelte";
@@ -97,12 +96,6 @@ const hashtags = [
 
     <div class="services">
       <AddAppleMusicPlaylistButton
-        name={playlist.name}
-        description={`${location.origin}/playlist/${playlist.id}`}
-        tracks={playlist.items.map((it) => it.track)}
-      />
-
-      <AddAppleSpotifyButton
         name={playlist.name}
         description={`${location.origin}/playlist/${playlist.id}`}
         tracks={playlist.items.map((it) => it.track)}
