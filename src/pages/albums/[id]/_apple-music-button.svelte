@@ -2,9 +2,19 @@
 import { url } from "@roxi/routify";
 
 export let id: string;
+
+let token = "";
+if (import.meta.env.SNOWPACK_PUBLIC_APPLE_AFFILIATE_TOKEN) {
+
+  token = `at=${import.meta.env.SNOWPACK_PUBLIC_APPLE_AFFILIATE_TOKEN}`;
+
+}
 </script>
 
-<a href={$url(`https://music.apple.com/jp/album/${id}`)} target="_blank">
+<a
+  href={$url(`https://music.apple.com/jp/album/${id}?app=music&${token}`)}
+  target="_blank"
+>
   Apple Music で聴く
 </a>
 
