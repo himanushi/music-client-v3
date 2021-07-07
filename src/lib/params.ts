@@ -35,6 +35,7 @@ export const SearchParams = {
     ids: "ti",
     keyword: "tq",
     order: "to",
+    random: "tr",
     status: "ts",
     username: "tu"
   }

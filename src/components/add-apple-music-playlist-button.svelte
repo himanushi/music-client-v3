@@ -1,4 +1,5 @@
 <script lang="ts">
+import JoinAppleMusicButton from "./join-apple-music-button.svelte";
 import Message from "~/components/toast-messages/message.svelte";
 import { toasts } from "~/components/toasts.svelte";
 import type { Track } from "~/graphql/types";
@@ -8,8 +9,11 @@ import { service } from "~/machines/apple-music-create-playlist";
 export let name: string;
 export let description: string;
 export let tracks: Track[];
+let disabled = false;
 
 const addPlaylist = () => {
+
+  disabled = true;
 
   service.send({
     description,
@@ -31,6 +35,8 @@ $: if ($service.matches("done")) {
     }
   });
 
+  disabled = false;
+
 } else if ($service.matches("error")) {
 
   toasts.open({
@@ -42,12 +48,18 @@ $: if ($service.matches("done")) {
     }
   });
 
+  disabled = false;
+
 }
 </script>
 
 {#if tracks.length > 0 && accountService && $accountService.matches("authorized")}
-  <button on:click={addPlaylist}> Apple Music に追加 </button>
+  <button {disabled} on:click={addPlaylist}>
+    {disabled ? "追加中..." : "Apple Music に追加"}
+  </button>
 {/if}
+
+<JoinAppleMusicButton />
 
 <style lang="scss">
 button {

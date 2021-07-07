@@ -870,6 +870,8 @@ export type TracksConditionsInputObject = {
   readonly status?: Maybe<ReadonlyArray<StatusEnum>>;
   /** お気に入り */
   readonly favorite?: Maybe<Scalars['Boolean']>;
+  /** ランダム取得 */
+  readonly random?: Maybe<Scalars['Boolean']>;
 };
 
 export type TracksQueryOrderEnum =

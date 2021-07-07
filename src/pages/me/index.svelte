@@ -2,6 +2,7 @@
 import AccountButton from "./_account-button.svelte";
 import AppleMusicButton from "./_apple-music-button.svelte";
 import InfoMessage from "~/components/info-message.svelte";
+import JoinAppleMusicButton from "~/components/join-apple-music-button.svelte";
 import Separate from "~/components/separate.svelte";
 import Text from "~/components/text.svelte";
 import { meQuery } from "~/lib/me";
@@ -21,6 +22,7 @@ $: me = $query?.data?.me;
 
   <Separate text="Music Services" />
   <AppleMusicButton />
+  <JoinAppleMusicButton />
   <InfoMessage class="mx-12 text-gray-300" size="s">
     ログインすると、フル再生や音楽サービスにプレイリスト追加などが出来るようになります。
   </InfoMessage>

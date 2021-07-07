@@ -75,6 +75,11 @@ $: me = $query?.data?.me;
             <MusicNote class="h-5 w-5" /><Text>曲</Text>
           </li>
         {/if}
+        {#if me && isAllowed(me, "tracks")}
+          <li class="clickable" on:click={go("/tracks/random")}>
+            <PlaylistSearch class="h-5 w-5" /><Text>おまかせプレイリスト</Text>
+          </li>
+        {/if}
         {#if me && isAllowed(me, "playlists")}
           <li class="clickable" on:click={go("/playlist")}>
             <PlaylistSearch class="h-5 w-5" /><Text>みんなのプレイリスト</Text>
@@ -123,11 +128,11 @@ nav {
     @apply bg-gray-900 text-white text-base h-full p-5;
 
     h5 {
-      @apply m-2 text-base text-gray-500 border-b-2 border-gray-600;
+      @apply m-1 text-base text-gray-500 border-b-2 border-gray-600;
     }
 
     li {
-      @apply p-2 rounded flex flex-row items-center space-x-2;
+      @apply p-2 text-sm rounded flex flex-row items-center space-x-2;
     }
   }
 }
