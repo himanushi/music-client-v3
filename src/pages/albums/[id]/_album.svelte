@@ -4,6 +4,10 @@ import AppleMusicButton from "./_apple-music-button.svelte";
 import ItunesButton from "./_itunes-button.svelte";
 import AddPlaylistButton from "~/components/add-playlist-button.svelte";
 import Favorite from "~/components/favorite.svelte";
+import AmazonMusic from "~/components/search-buttons/amazon-music.svelte";
+import LineMusic from "~/components/search-buttons/line-music.svelte";
+import Spotify from "~/components/search-buttons/spotify.svelte";
+import YoutubeMusic from "~/components/search-buttons/youtube-music.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
 import { AlbumDocument } from "~/graphql/types";
@@ -104,6 +108,10 @@ $: if ($albumQuery.data) {
       {#if album.itunesAlbum}
         <ItunesButton id={album.itunesAlbum.appleMusicId} />
       {/if}
+      <Spotify name={album.name} />
+      <AmazonMusic name={album.name} />
+      <YoutubeMusic name={album.name} />
+      <LineMusic name={album.name} />
     </div>
 
     <div class="separate">
@@ -152,7 +160,7 @@ $: if ($albumQuery.data) {
   }
 
   .services {
-    @apply mt-2 space-x-2;
+    @apply mt-2 space-x-2 text-center;
   }
 
   .tracks {

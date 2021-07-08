@@ -12,16 +12,22 @@ if (appleAffiliateToken) {
 }
 </script>
 
-<a
-  href={$url(`https://music.apple.com/jp/album/${id}?app=music${token}`)}
-  target="_blank"
->
-  Apple Music で聴く
-</a>
+<div>
+  <a
+    href={$url(`https://music.apple.com/jp/album/${id}?app=music${token}`)}
+    target="_blank"
+  >
+    Apple Music で聴く
+  </a>
+</div>
 
 <style lang="scss">
-a {
-  @apply rounded p-2;
-  @apply bg-red-500 hover_bg-red-400 active_bg-red-300;
+div {
+  @apply p-2;
+  a {
+    @apply rounded p-2;
+    @apply bg-pink-500 hover_bg-pink-400 active_bg-pink-300;
+    @apply text-white;
+  }
 }
 </style>

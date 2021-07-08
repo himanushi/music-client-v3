@@ -20,7 +20,7 @@ if (appleAffiliateToken) {
 <style lang="scss">
 a {
   @apply rounded p-2;
-  @apply bg-red-500 hover_bg-red-400 active_bg-red-300;
-  @apply text-black;
+  @apply bg-pink-500 hover_bg-pink-400 active_bg-pink-300;
+  @apply text-white;
 }
 </style>
