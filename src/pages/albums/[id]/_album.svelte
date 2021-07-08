@@ -160,7 +160,7 @@ $: if ($albumQuery.data) {
   }
 
   .services {
-    @apply mt-2 space-x-2 text-center;
+    @apply mt-2 text-center;
   }
 
   .tracks {
