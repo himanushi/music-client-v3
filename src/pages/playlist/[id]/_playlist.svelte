@@ -15,6 +15,7 @@ import type {
 import {
   convertDate, convertTime, toMs
 } from "~/lib/convert";
+import { title } from "~/lib/variable";
 import ItemCard from "~/pages/tracks/_item-card.svelte";
 
 export let id = "";
@@ -35,8 +36,8 @@ $: if ($playlistQuery.data) {
 }
 
 const hashtags = [
-  "ゲーム音楽のプレイリスト",
-  "ゲーム音楽"
+  `${title}のプレイリスト`,
+  title || ""
 ];
 </script>
 

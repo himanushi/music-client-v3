@@ -5,6 +5,7 @@ import {
 } from "@roxi/routify";
 import { createEventDispatcher } from "svelte";
 import { modals } from "~/components/modals.svelte";
+import { googleAnalyticsId } from "~/lib/variable";
 import { currentPath } from "~/store/history";
 import { scrollLock } from "~/store/scroll-lock";
 
@@ -47,8 +48,12 @@ $afterPageLoad(() => {
   }
 
   // Google Analytics
-  window.ga("set", "page", window.location.pathname);
-  window.ga("send", "pageview");
+  if (googleAnalyticsId) {
+
+    window.ga("set", "page", window.location.pathname);
+    window.ga("send", "pageview");
+
+  }
 
 });
 </script>

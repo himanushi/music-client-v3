@@ -3,6 +3,7 @@ import {
   onDestroy, onMount
 } from "svelte";
 import { cookie } from "~/lib/cookie";
+import { recaptchaKey } from "~/lib/variable";
 
 let widgetId = 0;
 
@@ -32,13 +33,17 @@ const expiredCallback = () => {
 
 onMount(() => {
 
-  resetCookie();
-  widgetId = grecaptcha.render("g-recaptcha", {
-    callback,
-    "expired-callback": expiredCallback,
-    sitekey: import.meta.env.SNOWPACK_PUBLIC_RECAPTCHA_KEY,
-    theme: "dark"
-  });
+  if (recaptchaKey) {
+
+    resetCookie();
+    widgetId = grecaptcha.render("g-recaptcha", {
+      callback,
+      "expired-callback": expiredCallback,
+      sitekey: recaptchaKey,
+      theme: "dark"
+    });
+
+  }
 
 });
 

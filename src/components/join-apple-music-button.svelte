@@ -1,10 +1,12 @@
 <script lang="ts">
+import { appleAffiliateToken } from "~/lib/variable";
+
 import { accountService } from "~/machines/apple-music-account-machine";
 
 let token = "";
-if (import.meta.env.SNOWPACK_PUBLIC_APPLE_AFFILIATE_TOKEN) {
+if (appleAffiliateToken) {
 
-  token = `?at=${import.meta.env.SNOWPACK_PUBLIC_APPLE_AFFILIATE_TOKEN}`;
+  token = `?at=${appleAffiliateToken}`;
 
 }
 </script>

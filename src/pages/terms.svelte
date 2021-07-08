@@ -1,10 +1,11 @@
 <script lang="ts">
 import Markdown from "~/components/markdown.svelte";
 import { markdown } from "~/lib/markdown";
+import { title } from "~/lib/variable";
 
 const html = markdown(`
 # 利用規約
-この利用規約(以下、「当規約」といいます。)は、ゲーム音楽( https://video-game-music.net/ )(以下「当ページ」と言います。)で提供するサービス(以下、「当サービス」といいます。)の利用条件を定めるものです。ユーザーの皆さまには、当規約に従っていただきます。
+この利用規約(以下、「当規約」といいます。)は、${title}( ${window.location.origin} )(以下「当ページ」と言います。)で提供するサービス(以下、「当サービス」といいます。)の利用条件を定めるものです。ユーザーの皆さまには、当規約に従っていただきます。
 
 ## 第1条(当規約の適用)
 当規約は、ユーザーと当ページの当サービスの利用に関わる一切の関係に適用されます。

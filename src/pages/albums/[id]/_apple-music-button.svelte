@@ -1,18 +1,19 @@
 <script lang="ts">
 import { url } from "@roxi/routify";
+import { appleAffiliateToken } from "~/lib/variable";
 
 export let id: string;
 
 let token = "";
-if (import.meta.env.SNOWPACK_PUBLIC_APPLE_AFFILIATE_TOKEN) {
+if (appleAffiliateToken) {
 
-  token = `at=${import.meta.env.SNOWPACK_PUBLIC_APPLE_AFFILIATE_TOKEN}`;
+  token = `&at=${appleAffiliateToken}`;
 
 }
 </script>
 
 <a
-  href={$url(`https://music.apple.com/jp/album/${id}?app=music&${token}`)}
+  href={$url(`https://music.apple.com/jp/album/${id}?app=music${token}`)}
   target="_blank"
 >
   Apple Music で聴く

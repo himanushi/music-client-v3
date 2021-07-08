@@ -4,10 +4,13 @@ import {
   HttpLink,
   InMemoryCache
 } from "@apollo/client/core";
+import { graphqlUrl } from "~/lib/variable";
+
+const uri = graphqlUrl ? graphqlUrl : "http://localhost:3000/graphql";
 
 const httpLink = new HttpLink({
   credentials: "include",
-  uri: import.meta.env.SNOWPACK_PUBLIC_GRAPHQL_URI
+  uri
 });
 
 const headersLink = new ApolloLink((operation, forward) => forward(operation));

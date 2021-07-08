@@ -4,6 +4,7 @@ import Sidebar from "./_sidebar.svelte";
 import IconButton from "~/components/icon-button.svelte";
 import { modals } from "~/components/modals.svelte";
 import MenuIcon from "~/icons/menu.svelte";
+import { title } from "~/lib/variable";
 
 const showSidebar = () => modals.open(Sidebar);
 </script>
@@ -14,7 +15,7 @@ const showSidebar = () => modals.open(Sidebar);
   </IconButton>
 
   <h1 class="clickable">
-    <a href={$url("./albums")}>ゲーム音楽</a>
+    <a href={$url("./albums")}>{title}</a>
   </h1>
 </header>
 
