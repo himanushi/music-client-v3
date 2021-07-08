@@ -2,7 +2,7 @@
   "scripts": {
     "start": "run-p route dev",
     "dev": "snowpack dev",
-    "build": "rm -fr build && routify -b && snowpack build && . scripts/cache-buster.bash",
+    "build": "rm -fr build && routify -b && snowpack build && . scripts/cache-buster.bash && . scripts/rename-index.bash",
     "lint": "prettier --write . && eslint --fix --ext .js,.ts . && eslint --fix --ext .svelte .",
     "route": "routify -b",
     "routing": "routify",

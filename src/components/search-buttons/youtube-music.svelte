@@ -2,6 +2,7 @@
 import SearchButton from "./search-button.svelte";
 
 export let name: string;
+name = name.replaceAll(/\s/giu, "+");
 </script>
 
 <SearchButton
