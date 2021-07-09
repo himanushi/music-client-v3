@@ -95,6 +95,8 @@ const selectPlayer = (context: MusicPlayerContext) => {
 
 };
 
+const id = "music-player";
+
 export const MusicPlayerMachine = machine<
   MusicPlayerContext,
   MusicPlayerSchema,
@@ -106,7 +108,7 @@ export const MusicPlayerMachine = machine<
       seek: 0
     },
 
-    id: "musicPlayer",
+    id,
 
     initial: "idle",
 

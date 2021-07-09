@@ -1,6 +1,7 @@
 // xstate では順序を見やすくするため object key sort は無効にする
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
+/* eslint-disable max-lines-per-function */
 
 import { Howl } from "howler";
 import {
@@ -76,9 +77,12 @@ export const PreviewPlayerMachine = machine<
 
       loading: {
         entry: [
-          "stop",
-          send("PLAYING")
+          sendParent("LOADING"),
+          "stop"
         ],
+
+        after: { 0: { actions: [send("PLAYING")] } },
+
         exit: [
           "setPlayer",
           "play"
@@ -92,83 +96,83 @@ export const PreviewPlayerMachine = machine<
         invoke: {
           id: "playingListener",
 
-          // eslint-disable-next-line max-lines-per-function
-          src: ({ player }: PreviewPlayerContext) => (callback) => {
+          src:
+            ({ player }: PreviewPlayerContext) => (callback) => {
 
-            if (player) {
+              if (player) {
 
-              player.on("pause", () => callback("PAUSED"));
+                player.on("pause", () => callback("PAUSED"));
 
-              player.on("end", () => callback("FINISHED"));
+                player.on("end", () => callback("FINISHED"));
 
-              // ref: https://stackoverflow.com/questions/45802988/typescript-use-correct-version-of-settimeout-node-vs-window
-              let timeoutID: ReturnType<typeof setTimeout>;
-              const volume = 0.3;
-              const fadeouttime = 2000;
+                // ref: https://stackoverflow.com/questions/45802988/typescript-use-correct-version-of-settimeout-node-vs-window
+                let timeoutID: ReturnType<typeof setTimeout>;
+                const volume = 0.3;
+                const fadeouttime = 2000;
 
-              const fadeIn = () => {
+                const fadeIn = () => {
 
-                if (player.volume() === 0) {
+                  if (player.volume() === 0) {
 
-                  player.fade(0, volume, fadeouttime);
+                    player.fade(0, volume, fadeouttime);
 
-                } else {
+                  } else {
 
-                  player.volume(volume);
+                    player.volume(volume);
 
-                }
+                  }
 
-              };
+                };
 
-              const setScheduleFadeOut = () => {
+                const setScheduleFadeOut = () => {
 
-                const seek = player.seek() as number;
+                  const seek = player.seek() as number;
 
-                const time = (player.duration() - seek) as number;
+                  const time = (player.duration() - seek) as number;
 
-                const ms = time * 1000;
+                  const ms = time * 1000;
 
-                const timeout = ms - fadeouttime;
+                  const timeout = ms - fadeouttime;
 
-                timeoutID = setTimeout(() => {
+                  timeoutID = setTimeout(() => {
 
-                  player.fade(volume, 0, fadeouttime);
+                    player.fade(volume, 0, fadeouttime);
 
-                }, timeout);
+                  }, timeout);
 
-              };
+                };
 
-              player.on("play", () => {
+                player.on("play", () => {
 
-                fadeIn();
-                setScheduleFadeOut();
+                  fadeIn();
+                  setScheduleFadeOut();
 
-              });
+                });
 
-              player.on("seek", () => {
+                player.on("seek", () => {
 
-                clearTimeout(timeoutID);
-                setScheduleFadeOut();
+                  clearTimeout(timeoutID);
+                  setScheduleFadeOut();
 
-              });
+                });
+
+                return () => {
+
+                  clearTimeout(timeoutID);
+                  player.off("play");
+                  player.off("pause");
+                  player.off("end");
+                  player.off("seek");
+
+                };
+
+              }
 
               return () => {
-
-                clearTimeout(timeoutID);
-                player.off("play");
-                player.off("pause");
-                player.off("end");
-                player.off("seek");
-
+                // 何もしない
               };
 
             }
-
-            return () => {
-              // 何もしない
-            };
-
-          }
         },
         on: {
           FINISHED: "finished",
@@ -186,7 +190,7 @@ export const PreviewPlayerMachine = machine<
     on: {
       CHANGE_SEEK: { actions: ["changeSeek"] },
 
-      LOAD: { target: "loading" },
+      LOAD: "loading",
 
       PLAY: {
         actions: ["play"],

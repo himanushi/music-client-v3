@@ -127,7 +127,9 @@ export const AppleMusicPlayerMachine = machine<
 
       loading: {
         initial: "stopping",
-        entry: [sendParent("LOADING")],
+
+        after: { 0: { actions: [sendParent("LOADING")] } },
+
         states: {
           stopping: { invoke: {
             src: async () => {
