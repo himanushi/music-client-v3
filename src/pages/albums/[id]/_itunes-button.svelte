@@ -14,7 +14,7 @@ if (appleAffiliateToken) {
 
 <div>
   <a
-    href={$url(`itmss://music.apple.com/jp/album/${id}?app=music${token}`)}
+    href={$url(`itmss://music.apple.com/jp/album/${id}?app=itunes${token}`)}
     target="_blank"
   >
     iTunes で聴く
