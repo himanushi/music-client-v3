@@ -2,9 +2,14 @@
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
+import { assign } from "xstate";
 import {
   interpret, Machine as machine, send, Sender
 } from "xstate";
+
+export type accountContext = {
+  config?: MusicKit.Config;
+};
 
 export type accountSchema = {
   states: {
@@ -18,18 +23,28 @@ export type accountEvent =
   | { type: "SET_TOKEN"; config: MusicKit.Config }
   | { type: "LOGIN_OR_LOGOUT" }
   | { type: "LOGIN" }
-  | { type: "LOGOUT" };
+  | { type: "LOGOUT" }
+  | { type: "RENEW" };
 
-export const accountMachine = machine<{}, accountSchema, accountEvent>(
+export const accountMachine = machine<
+  accountContext,
+  accountSchema,
+  accountEvent
+>(
   {
     id: "apple-music-account",
 
     initial: "idle",
 
+    context: { config: undefined },
+
     states: {
       idle: {
         on: {
-          SET_TOKEN: { actions: ["setToken"] },
+          SET_TOKEN: { actions: [
+            "setConfig",
+            "setToken"
+          ] },
           LOGIN: "authorized",
           LOGOUT: "unauthorized"
         },
@@ -68,7 +83,8 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
 
         on: {
           LOGIN_OR_LOGOUT: { actions: "logout" },
-          LOGOUT: "unauthorized"
+          LOGOUT: "unauthorized",
+          RENEW: { actions: "renew" }
         },
 
         meta: { label: "ログアウト" }
@@ -116,6 +132,19 @@ export const accountMachine = machine<{}, accountSchema, accountEvent>(
     login: () => MusicKit.getInstance().authorize(),
 
     logout: () => MusicKit.getInstance().unauthorize(),
+
+    renew: ({ config }) => {
+
+      if (config) {
+
+        MusicKit.configure(config);
+        MusicKit.getInstance().api.storefrontId = "jp";
+
+      }
+
+    },
+
+    setConfig: assign({ config: (_, event) => "config" in event ? event.config : undefined }),
 
     setToken: send((_, event) => {
 

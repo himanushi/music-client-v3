@@ -5,6 +5,7 @@
 import {
   Machine as machine, assign, sendParent, State
 } from "xstate";
+import { accountService } from "./apple-music-account-machine";
 import { Track } from "~/graphql/types";
 
 export type AppleMusicPlayerContext = {
@@ -140,6 +141,8 @@ export const AppleMusicPlayerMachine = machine<
 
               }
 
+              accountService.send({ type: "RENEW" });
+
               MusicKit.getInstance().player.volume = 0.3;
 
             },
@@ -264,8 +267,9 @@ export const AppleMusicPlayerMachine = machine<
 
     setPlayer: (context) => {
 
-      const id = context.track?.appleMusicTracks?.find((track) => track)?.
-        appleMusicId;
+      const id = context.track?.appleMusicTracks?.find(
+        (track) => track
+      )?.appleMusicId;
 
       if (id) {
 
