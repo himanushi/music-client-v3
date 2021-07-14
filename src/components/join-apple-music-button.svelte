@@ -1,4 +1,5 @@
 <script lang="ts">
+import isMobile from "ismobilejs";
 import { appleAffiliateToken } from "~/lib/variable";
 import { accountService } from "~/machines/apple-music-account-machine";
 
@@ -11,11 +12,15 @@ if (appleAffiliateToken) {
 
 let href = "";
 
-if ((/Mac|iPhone|iPod|iPad|Win/iu).test(navigator.platform)) {
+if ((/Mac|Win/iu).test(navigator.platform)) {
 
   href = `itmss://music.apple.com/deeplink?app=music&p=subscribe${token}`;
 
-} else if ((/Android/iu).test(navigator.platform)) {
+} else if (isMobile(window.navigator).apple.device) {
+
+  href = `musics://music.apple.com/deeplink?app=music&p=subscribe${token}`;
+
+} else if (isMobile(window.navigator).android.device) {
 
   href = `https://music.apple.com/deeplink?app=music&p=subscribe${token}`;
 
