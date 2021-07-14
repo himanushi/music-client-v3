@@ -25,11 +25,20 @@ $: me = $query?.data?.me;
   <JoinAppleMusicButton />
   <InfoMessage class="mx-12 text-gray-300" size="s">
     ログインすると、フル再生や音楽サービスにプレイリスト追加などが出来るようになります。
+    Windows の場合は事前に、
+    <a href="https://support.apple.com/ja-jp/HT210384" target="_blank">
+      iTunes for Windows
+    </a>
+    をインストールをしてください。
   </InfoMessage>
 </div>
 
 <style lang="scss">
 div {
   @apply flex flex-col items-center space-y-6 text-white pb-4;
+}
+
+a {
+  @apply underline font-bold;
 }
 </style>
