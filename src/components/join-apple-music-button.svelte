@@ -15,14 +15,13 @@ if (isMobile(window.navigator).apple.device) {
 
   href = `musics://music.apple.com/deeplink?app=music&p=subscribe${token}`;
 
-} else if (isMobile(window.navigator).windows.device) {
+} else if (isMobile(window.navigator).android.device) {
 
-  href = `https://music.apple.com/jp/browse?p=subscribe${token}`;
+  href = `https://music.apple.com/deeplink?app=music&p=subscribe${token}`;
 
 } else {
 
-  // Android など
-  href = `https://music.apple.com/deeplink?app=music&p=subscribe${token}`;
+  href = `https://music.apple.com/jp/browse?p=subscribe${token}`;
 
 }
 </script>
