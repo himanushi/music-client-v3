@@ -12,13 +12,13 @@ if (appleAffiliateToken) {
 
 let href = "";
 
-if ((/Mac|Win/iu).test(navigator.platform)) {
-
-  href = `itmss://music.apple.com/deeplink?app=music&p=subscribe${token}`;
-
-} else if (isMobile(window.navigator).apple.device) {
+if (isMobile(window.navigator).apple.device) {
 
   href = `musics://music.apple.com/deeplink?app=music&p=subscribe${token}`;
+
+} else if ((/Mac|Win/iu).test(navigator.platform)) {
+
+  href = `itmss://music.apple.com/deeplink?app=music&p=subscribe${token}`;
 
 } else if (isMobile(window.navigator).android.device) {
 
