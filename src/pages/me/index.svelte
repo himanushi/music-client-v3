@@ -56,4 +56,8 @@ $: me = $query?.data?.me;
 div {
   @apply flex flex-col items-center space-y-6 text-white pb-4;
 }
+
+a {
+  @apply underline font-bold;
+}
 </style>
