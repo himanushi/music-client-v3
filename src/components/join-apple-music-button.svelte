@@ -6,13 +6,16 @@ import { accountService } from "~/machines/apple-music-account-machine";
 let token = "";
 if (appleAffiliateToken) {
 
-  token = `?at=${appleAffiliateToken}`;
+  token = `&at=${appleAffiliateToken}`;
 
 }
 </script>
 
 {#if accountService && $accountService.matches("unauthorized")}
-  <a target="_blank" href={`https://music.apple.com/jp${token}`}>
+  <a
+    target="_blank"
+    href={`https://music.apple.com/deeplink?app=music&p=subscribe${token}`}
+  >
     Apple Music に加入
   </a>
 {/if}
