@@ -1,5 +1,5 @@
 <script lang="ts">
-import JoinAppleMusicButton from "./join-apple-music-button.svelte";
+import SettingAppleMusicButton from "./setting-apple-music-button.svelte";
 import Message from "~/components/toast-messages/message.svelte";
 import { toasts } from "~/components/toasts.svelte";
 import type { Track } from "~/graphql/types";
@@ -59,7 +59,7 @@ $: if ($service.matches("done")) {
   </button>
 {/if}
 
-<JoinAppleMusicButton />
+<SettingAppleMusicButton />
 
 <style lang="scss">
 button {
