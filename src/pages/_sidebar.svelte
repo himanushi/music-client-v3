@@ -125,7 +125,7 @@ nav {
   }
 
   main {
-    @apply bg-gray-900 text-white text-base h-full p-5;
+    @apply bg-gray-900 text-white text-base h-full p-5 overflow-y-scroll;
 
     h5 {
       @apply m-1 text-base text-gray-500 border-b-2 border-gray-600;
