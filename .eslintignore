@@ -4,4 +4,3 @@ package-lock.json
 src/graphql/types.ts
 .routify
 /build
-action-cable.js
