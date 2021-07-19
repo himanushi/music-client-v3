@@ -11,11 +11,11 @@ export let id: string;
 
 const edit = () => $goto("/playlist/:id/edit", { id });
 
-let top = "80px";
+let className = "bottom-4";
 
 $: if ($playerService.context.currentTrack) {
 
-  top = "130px";
+  className = "bottom-20";
 
 }
 
@@ -24,7 +24,7 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "upsertPlaylist")}
-  <span style={`--tp:${top};`} on:click={edit}>
+  <span class={className} on:click={edit}>
     <IconButton class="w-8 h-8">
       <Pen class="w-8 h-8" />
     </IconButton>
@@ -33,7 +33,7 @@ $: me = $query?.data?.me;
 
 <style lang="scss">
 span {
-  @apply fixed right-5 calc-top;
+  @apply fixed right-5;
   @apply flex items-center justify-center;
   @apply h-14 w-14 rounded-full bg-white;
   @apply shadow;

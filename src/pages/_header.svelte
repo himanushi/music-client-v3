@@ -21,6 +21,7 @@ const showSidebar = () => modals.open(Sidebar);
 
 <style lang="scss">
 header {
+  @apply fixed z-20 w-full top-0;
   @apply flex flex-row items-center p-2;
   @apply bg-gray-900 text-white;
 

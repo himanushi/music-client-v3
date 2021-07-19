@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { DocumentNode } from "@apollo/client";
 import {
-  onMount, onDestroy, getContext
+  onMount, onDestroy
 } from "svelte";
 import { interpret } from "xstate";
 import Message from "./toast-messages/message.svelte";
@@ -76,8 +76,7 @@ $: if (
 
 }
 
-const { getElement } = getContext("content");
-const elementScroll: HTMLElement = getElement();
+const elementScroll: HTMLElement = window as unknown as HTMLElement;
 </script>
 
 {#each items as item, index (`${item.id}_${index}`)}

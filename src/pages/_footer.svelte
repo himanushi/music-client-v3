@@ -75,6 +75,7 @@ const showPlayer = () => {
 
 <style lang="scss">
 footer {
+  @apply fixed z-10 w-full bottom-0;
   @apply flex flex-row;
   @apply bg-teal-600;
 

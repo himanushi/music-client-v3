@@ -2,15 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
 body {
-  @apply h-screen;
-  @apply calc-height;
-}
-
-body {
-  @apply flex flex-col inset-0;
-  @apply overflow-hidden;
   @apply bg-gray-800;
 }
 

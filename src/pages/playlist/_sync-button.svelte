@@ -8,11 +8,11 @@ import { playerService } from "~/machines/jukebox-machine";
 
 export let onClick: () => void;
 
-let top = "65px";
+let className = "bottom-4";
 
 $: if ($playerService.context.currentTrack) {
 
-  top = "115px";
+  className = "bottom-20";
 
 }
 
@@ -31,7 +31,7 @@ $: me = $query?.data?.me;
 </script>
 
 {#if me && isAllowed(me, "upsertPlaylist")}
-  <span style={`--tp:${top};`}>
+  <span class={className}>
     <IconButton {disabled} on:click={click} class="w-8 h-8">
       <Sync class="w-8 h-8" />
     </IconButton>
@@ -40,7 +40,7 @@ $: me = $query?.data?.me;
 
 <style lang="scss">
 span {
-  @apply fixed right-40 calc-top;
+  @apply fixed right-40;
   @apply flex items-center justify-center;
   @apply h-10 w-10 rounded-full bg-white;
   @apply shadow;

@@ -94,6 +94,6 @@ const args = (props?: {}) => {
 
 <style lang="scss">
 div {
-  @apply absolute z-10;
+  @apply fixed z-30 top-0;
 }
 </style>

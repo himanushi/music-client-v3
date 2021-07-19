@@ -1,21 +1,10 @@
 const colors = require("tailwindcss/colors");
-const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   mode: "jit",
   plugins: [
     require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
-    plugin(({ addUtilities }) => {
-
-      const newUtilities = {
-        ".calc-height": { height: "calc(var(--vh, 1vh) * 100)" },
-        ".calc-top": { top: "calc(calc(var(--vh, 1vh) * 100) - var(--tp, 0px))" }
-      };
-
-      addUtilities(newUtilities);
-
-    })
+    require("@tailwindcss/typography")
   ],
   purge: {
     content: [

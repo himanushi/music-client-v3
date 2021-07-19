@@ -1,13 +1,8 @@
-<script lang="ts">
-import { setContext } from "svelte";
+<script>
 import ChangePage from "./_change-page.svelte";
-
-let content: HTMLElement;
-
-setContext("content", { getElement: () => content });
 </script>
 
-<main data-routify="scroll-lock" bind:this={content}>
+<main data-routify="scroll-lock">
   <ChangePage />
   <div class="content">
     <slot />
@@ -17,6 +12,7 @@ setContext("content", { getElement: () => content });
 <style lang="scss">
 main {
   @apply h-full overflow-auto;
+  @apply py-16;
 
   .content {
     @apply lg_mx-20 xl_mx-36 2xl_mx-60;

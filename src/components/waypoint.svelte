@@ -18,7 +18,13 @@ let element: HTMLElement;
 
 const calcOffset = (event: Event) => {
 
-  const targetElement = event.target as HTMLElement;
+  let targetElement = event.target as HTMLElement | Document;
+
+  if ("documentElement" in targetElement) {
+
+    targetElement = targetElement.documentElement;
+
+  }
 
   return (
     targetElement.scrollHeight -

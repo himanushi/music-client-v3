@@ -5,11 +5,11 @@ import { playerService } from "~/machines/jukebox-machine";
 
 export let onClick: () => void;
 
-let top = "80px";
+let className = "bottom-4";
 
 $: if ($playerService.context.currentTrack) {
 
-  top = "130px";
+  className = "bottom-20";
 
 }
 
@@ -24,7 +24,7 @@ const click = () => {
 };
 </script>
 
-<span style={`--tp:${top};`}>
+<span class={className}>
   <IconButton {disabled} on:click={click} class="w-10 h-10">
     <Sync class="w-10 h-10" />
   </IconButton>
@@ -32,7 +32,7 @@ const click = () => {
 
 <style lang="scss">
 span {
-  @apply fixed right-5 calc-top;
+  @apply fixed right-5;
   @apply flex items-center justify-center;
   @apply h-10 w-10 rounded-full bg-white;
   @apply shadow;
