@@ -1,0 +1,7 @@
+mutation DeleteRadio($input: DeleteRadioInput!) {
+  deleteRadio(input: $input) {
+    playlist {
+      ...PlaylistFields
+    }
+  }
+}

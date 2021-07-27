@@ -1,0 +1,16 @@
+fragment RadioFields on Radio {
+  id
+  name
+  description
+  startDatetime
+  status
+  trackNumber
+  durationMs
+  isMine
+  tracks {
+    ...TrackFields
+  }
+  track {
+    ...TrackFields
+  }
+}

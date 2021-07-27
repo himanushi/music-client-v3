@@ -1,0 +1,7 @@
+mutation CreateRadio($input: CreateRadioInput!) {
+  createRadio(input: $input) {
+    radio {
+      ...RadioFields
+    }
+  }
+}
