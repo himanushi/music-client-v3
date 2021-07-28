@@ -7,6 +7,7 @@ import Player from "~/components/player.svelte";
 import Text from "~/components/text.svelte";
 import ChevronLeft from "~/icons/chevron-left.svelte";
 import Disc from "~/icons/disc.svelte";
+import Live from "~/icons/live.svelte";
 import MusicNote from "~/icons/music-note.svelte";
 import Music from "~/icons/music.svelte";
 import PlaylistSearch from "~/icons/playlist-search.svelte";
@@ -73,6 +74,11 @@ $: me = $query?.data?.me;
         {#if me && isAllowed(me, "tracks")}
           <li class="clickable" on:click={go("/tracks")}>
             <MusicNote class="h-5 w-5" /><Text>曲</Text>
+          </li>
+        {/if}
+        {#if me && isAllowed(me, "radios")}
+          <li class="clickable" on:click={go("/radios")}>
+            <Live class="h-5 w-5" /><Text>ラジオ</Text>
           </li>
         {/if}
         {#if me && isAllowed(me, "tracks")}
