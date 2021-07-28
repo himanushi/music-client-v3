@@ -19,12 +19,14 @@ export type Schema = {
     idle: {};
     waiting: {};
     prepare: {};
-    active: {};
+    adjust: {};
+    seeking: {};
   };
 };
 
 export type Event =
-  | { type: "ACTIVE" }
+  | { type: "ADJUST" }
+  | { type: "SEEKING" }
   | { type: "SET_ID"; id: string }
   | { type: "SET_RADIO"; radio: Radio };
 
@@ -41,17 +43,28 @@ export const Machine = machine<Context, Schema, Event>(
         actions: ["setId"],
         target: "waiting"
       } } },
+
+      // MusicKit 読み込み時間を考慮
       waiting: { after: { 1000: "prepare" } },
+
       prepare: {
         exit: ["pause"],
         invoke: { src: "listen" },
         on: {
-          ACTIVE: "active",
-          SET_RADIO: { actions: ["setRadio"] }
+          ADJUST: "adjust",
+          SET_RADIO: { actions: "setRadio" }
         }
       },
 
-      active: { after: { DELAY_SEEK: { actions: ["changeSeek"] } } }
+      adjust: {
+        invoke: { src: "adjustSeeking" },
+        on: { SEEKING: "seeking" }
+      },
+
+      seeking: { after: { 0: {
+        actions: "changeSeek",
+        target: "idle"
+      } } }
     }
   },
   {
@@ -60,15 +73,8 @@ export const Machine = machine<Context, Schema, Event>(
 
         if (radio) {
 
-          let delay = Math.floor(radio.durationMs / 15);
-          if (delay < 5000) {
-
-            delay = 5000;
-
-          }
-
           playerService.send({
-            seek: radio.durationMs + delay,
+            seek: radio.durationMs,
             type: "CHANGE_SEEK"
           });
 
@@ -79,37 +85,53 @@ export const Machine = machine<Context, Schema, Event>(
       setId: assign({ id: (_, event) => "id" in event ? event.id : undefined }),
       setRadio: assign({ radio: (_, event) => "radio" in event ? event.radio : undefined })
     },
-    delays: { DELAY_SEEK: ({ radio }) => {
+    services: {
+      // シークしても問題なく読み込みが可能か調整
+      adjustSeeking:
+        ({ radio }) => (send) => {
 
-      if (!radio) {
+          if (!radio) {
 
-        return 0;
+            return send("SEEKING");
 
-      }
+          }
 
-      const id = radio.tracks[radio.trackNumber - 1].appleMusicTracks?.find(
-        (track) => track
-      )?.appleMusicId;
+          const currentTrack = radio.tracks[radio.trackNumber - 1];
+          const id = currentTrack.appleMusicTracks?.find(
+            (track) => track
+          )?.appleMusicId;
 
-      // Apple Music
-      if (id) {
+          const isAppleMusic = Boolean(id);
+          const adjustProgress = Math.floor(
+            radio.durationMs / currentTrack.durationMs * 100
+          );
 
-        const delay = Math.floor(radio.durationMs / 15);
-        if (delay > 5000) {
+          const intervalId = setInterval(() => {
 
-          return delay;
+            if (isAppleMusic) {
 
-        }
-        return 5000;
+              if (
+                MusicKit.getInstance().player.currentBufferedProgress >
+                adjustProgress
+              ) {
 
-      }
+                send("SEEKING");
 
-      // Preview
-      return 0;
+              }
 
-    } },
-    services: { listen:
-        ({ id }) => (callback) => {
+            } else {
+
+              send("SEEKING");
+
+            }
+
+          }, 500);
+
+          return () => clearInterval(intervalId);
+
+        },
+      listen:
+        ({ id }) => (send) => {
 
           if (!id) {
 
@@ -129,7 +151,7 @@ export const Machine = machine<Context, Schema, Event>(
 
               const radio = result.data.radio as Radio;
 
-              callback({
+              send({
                 radio,
                 type: "SET_RADIO"
               });
@@ -150,12 +172,13 @@ export const Machine = machine<Context, Schema, Event>(
                 }
               ]);
 
-              callback("ACTIVE");
+              send("ADJUST");
 
             }
 
           })();
 
-        } }
+        }
+    }
   }
 );

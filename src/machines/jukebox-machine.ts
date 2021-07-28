@@ -95,6 +95,7 @@ export type JukeboxEvent =
   | { type: "PLAY" }
   | { type: "PLAY_OR_PAUSE" }
   | { type: "CHANGE_PLAYBACK_NO"; currentPlaybackNo: number }
+  | { type: "CHANGE_SEEK"; seek: number }
   | { type: "NEXT_PLAY" }
   | { type: "PREVIOUS_PLAY" }
   | { type: "PLAYING" }
@@ -227,6 +228,8 @@ export const JukeboxMachine = machine<
         target: "loading"
       },
 
+      CHANGE_SEEK: { actions: ["changeSeekToPlayer"] },
+
       MOVE: { actions: [
         "moveTracks",
         "memory"
@@ -309,6 +312,23 @@ export const JukeboxMachine = machine<
         return {};
 
       }),
+
+      changeSeekToPlayer: send(
+        (_, event) => {
+
+          if ("seek" in event) {
+
+            return {
+              seek: event.seek,
+              type: "CHANGE_SEEK"
+            };
+
+          }
+          return { type: "" };
+
+        },
+        { to: "musicPlayer" }
+      ),
 
       initMusicPlayer: assign({ musicPlayerRef: (_) => spawn(MusicPlayerMachine, "musicPlayer") }),
 
