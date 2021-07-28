@@ -1,0 +1,13 @@
+query Radios(
+  $cursor: CursorInputObject
+  $sort: RadiosSortInputObject
+  $conditions: RadiosConditionsInputObject
+) {
+  items: radios(cursor: $cursor, sort: $sort, conditions: $conditions) {
+    id
+    name
+    track {
+      ...TrackFields
+    }
+  }
+}
