@@ -9,6 +9,7 @@ export const ParameterPrefixKeys = {
   album: "b",
   artist: "a",
   playlist: "p",
+  radio: "r",
   track: "t"
 };
 

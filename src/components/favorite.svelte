@@ -15,7 +15,7 @@ import {
 
 export let size: "s" | "m" = "m";
 export let id: string;
-export let type: "album" | "artist" | "track" | "playlist";
+export let type: "album" | "artist" | "track" | "playlist" | "radio";
 
 const iconSize = size === "m" ? "h-8 w-8" : "h-5 w-5";
 const buttonSize = size === "m" ? "h-10 w-10" : "h-8 w-8";

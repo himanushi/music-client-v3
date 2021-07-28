@@ -15,6 +15,6 @@ export let disabled = false;
 <style lang="scss">
 button {
   @apply p-2 rounded;
-  @apply bg-teal-500 focus_bg-teal-400 active_bg-teal-300;
+  @apply bg-teal-500 focus_bg-teal-400 active_bg-teal-300 disabled_bg-gray-600 disabled_cursor-not-allowed;
 }
 </style>

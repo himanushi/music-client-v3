@@ -29,6 +29,13 @@ export const SearchParams = {
     status: "ps",
     username: "pu"
   },
+  radio: {
+    direction: "rd",
+    favorite: "rf",
+    ids: "ri",
+    keyword: "rq",
+    order: "ro"
+  },
   track: {
     direction: "td",
     favorite: "tf",

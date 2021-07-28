@@ -10,10 +10,7 @@ import Playlist from "~/icons/playlist.svelte";
 
 const close = () => modals.close();
 let tabIndex = 0;
-const tabs = [
-  Player,
-  Queue
-];
+const tabs = [Player, Queue];
 
 $: musicClass = tabIndex === 0 ? "text-teal-400" : "text-white";
 $: playlistClass = tabIndex === 1 ? "text-teal-400" : "text-white";
@@ -24,7 +21,7 @@ $: playlistClass = tabIndex === 1 ? "text-teal-400" : "text-white";
   transition:fly={{
     duration: 400,
     opacity: 100,
-    y: document.body.clientHeight
+    y: document.documentElement.clientHeight,
   }}
   class="player"
 >
@@ -32,11 +29,11 @@ $: playlistClass = tabIndex === 1 ? "text-teal-400" : "text-white";
     <svelte:component this={tabs[tabIndex]} />
   </div>
   <div class="buttons">
-    <IconButton class="h-12 w-12" on:click={() => tabIndex = 0}>
+    <IconButton class="h-12 w-12" on:click={() => (tabIndex = 0)}>
       <MusicNote class={`h-10 w-10 ${musicClass}`} />
     </IconButton>
 
-    <IconButton class="h-12 w-12" on:click={() => tabIndex = 1}>
+    <IconButton class="h-12 w-12" on:click={() => (tabIndex = 1)}>
       <Playlist class={`h-10 w-10 ${playlistClass}`} />
     </IconButton>
 
