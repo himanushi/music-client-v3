@@ -1,8 +1,9 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 
 import {
-  assign, Machine as machine
+  assign, interpret, Machine as machine
 } from "xstate";
 import { playerService } from "./jukebox-machine";
 import client from "~/graphql/client";
@@ -166,6 +167,10 @@ export const Machine = machine<Context, Schema, Event>(
                   type: "SET_LINK"
                 },
                 {
+                  isRadio: true,
+                  type: "SET_IS_RADIO"
+                },
+                {
                   currentPlaybackNo: radio.trackNumber - 1,
                   tracks: radio.tracks.map((track) => track),
                   type: "REPLACE_AND_PLAY"
@@ -182,3 +187,5 @@ export const Machine = machine<Context, Schema, Event>(
     }
   }
 );
+
+export const radioService = interpret(Machine).start();

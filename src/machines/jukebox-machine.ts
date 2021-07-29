@@ -27,6 +27,7 @@ export type JukeboxContext = {
   currentTrack?: Track;
   repeat: boolean;
   musicPlayerRef?: SpawnedActorRef<MusicPlayerEvent, MusicPlayerState>;
+  isRadio: boolean;
 };
 
 export type JukeboxSchema = {
@@ -76,6 +77,7 @@ export type JukeboxEvent =
   // Queue
   | { type: "SET_NAME"; name: string }
   | { type: "SET_LINK"; link: string }
+  | { type: "SET_IS_RADIO"; isRadio: boolean }
   | {
       type: "REPLACE_AND_PLAY";
       tracks: JukeboxContext["tracks"];
@@ -146,7 +148,8 @@ export const JukeboxMachine = machine<
       name: "",
       link: "/",
       repeat: false,
-      tracks: []
+      tracks: [],
+      isRadio: false
     },
 
     id,
@@ -155,22 +158,37 @@ export const JukeboxMachine = machine<
 
     invoke: {
       id: "mediaController",
-      src: () => (callback) => {
+      src:
+        ({ isRadio }) => (callback) => {
 
-        if (navigator.mediaSession) {
+          if (navigator.mediaSession) {
 
-          navigator.mediaSession.setActionHandler("play", () => callback("PLAY")
-          );
-          navigator.mediaSession.setActionHandler("pause", () => callback("PAUSE")
-          );
-          navigator.mediaSession.setActionHandler("nexttrack", () => callback("NEXT_PLAY")
-          );
-          navigator.mediaSession.setActionHandler("previoustrack", () => callback("PREVIOUS_PLAY")
-          );
+            if (isRadio) {
+
+              navigator.mediaSession.setActionHandler("play", null);
+              navigator.mediaSession.setActionHandler("pause", null);
+              navigator.mediaSession.setActionHandler("nexttrack", null);
+              navigator.mediaSession.setActionHandler("previoustrack", null);
+              navigator.mediaSession.setActionHandler("stop", () => callback("STOP")
+              );
+
+            } else {
+
+              navigator.mediaSession.setActionHandler("play", () => callback("PLAY")
+              );
+              navigator.mediaSession.setActionHandler("pause", () => callback("PAUSE")
+              );
+              navigator.mediaSession.setActionHandler("nexttrack", () => callback("NEXT_PLAY")
+              );
+              navigator.mediaSession.setActionHandler("previoustrack", () => callback("PREVIOUS_PLAY")
+              );
+              navigator.mediaSession.setActionHandler("stop", null);
+
+            }
+
+          }
 
         }
-
-      }
     },
 
     states: {
@@ -291,6 +309,8 @@ export const JukeboxMachine = machine<
       SET_NAME: { actions: ["setName"] },
 
       SET_LINK: { actions: ["setLink"] },
+
+      SET_IS_RADIO: { actions: ["setIsRadio"] },
 
       STOPPED: "stopped"
     }
@@ -448,6 +468,8 @@ export const JukeboxMachine = machine<
 
       setLink: assign({ link: (_, event) => "link" in event ? event.link : "/" }),
 
+      setIsRadio: assign({ isRadio: (_, event) => "isRadio" in event ? event.isRadio : false }),
+
       setTrack: send(
         ({ currentTrack }) => ({
           track: currentTrack,
@@ -459,6 +481,12 @@ export const JukeboxMachine = machine<
       stop: send("STOP", { to: "musicPlayer" }),
 
       memory: (context) => {
+
+        if (context.isRadio) {
+
+          return undefined;
+
+        }
 
         const json = JSON.stringify(context);
 
