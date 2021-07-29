@@ -17,6 +17,7 @@ export type Context = {
 
 export type Schema = {
   states: {
+    initialize: {};
     idle: {};
     waiting: {};
     prepare: {};
@@ -31,22 +32,60 @@ export type Event =
   | { type: "SET_ID"; id: string }
   | { type: "SET_RADIO"; radio: Radio };
 
+const machineId = "radio";
+
+// JSON から復元
+const getData = (name: keyof Context, context: Context) => {
+
+  const json = localStorage.getItem(machineId);
+  if (!json) {
+
+    return context[name];
+
+  }
+
+  try {
+
+    const data = JSON.parse(json)[name];
+    if (data) {
+
+      return data;
+
+    }
+    return context[name];
+
+  } catch (error) {
+
+    return context[name];
+
+  }
+
+};
+
 export const Machine = machine<Context, Schema, Event>(
   {
     context: {},
 
-    id: "radio",
+    id: machineId,
 
-    initial: "idle",
+    initial: "initialize",
 
     states: {
+      initialize: {
+        entry: "remember",
+        after: { 0: "idle" }
+      },
+
       idle: { on: { SET_ID: {
         actions: ["setId"],
         target: "waiting"
       } } },
 
       // MusicKit 読み込み時間を考慮
-      waiting: { after: { 1000: "prepare" } },
+      waiting: {
+        entry: "memory",
+        after: { 1000: "prepare" }
+      },
 
       prepare: {
         exit: ["pause"],
@@ -84,7 +123,24 @@ export const Machine = machine<Context, Schema, Event>(
       },
       pause: () => playerService.send("PAUSE"),
       setId: assign({ id: (_, event) => "id" in event ? event.id : undefined }),
-      setRadio: assign({ radio: (_, event) => "radio" in event ? event.radio : undefined })
+      setRadio: assign({ radio: (_, event) => "radio" in event ? event.radio : undefined }),
+      memory: (context) => {
+
+        const json = JSON.stringify(context);
+
+        try {
+
+          localStorage.setItem(machineId, json);
+
+        } catch (error) {
+          // unable to save to localStorage
+        }
+
+      },
+      remember: assign({
+        id: (context) => getData("id", context),
+        radio: (context) => getData("radio", context)
+      })
     },
     services: {
       // シークしても問題なく読み込みが可能か調整

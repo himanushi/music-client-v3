@@ -482,12 +482,6 @@ export const JukeboxMachine = machine<
 
       memory: (context) => {
 
-        if (context.isRadio) {
-
-          return undefined;
-
-        }
-
         const json = JSON.stringify(context);
 
         try {
@@ -506,14 +500,15 @@ export const JukeboxMachine = machine<
         currentPlaybackNo: (context) => getData("currentPlaybackNo", context),
         name: (context) => getData("name", context),
         link: (context) => getData("link", context),
+        isRadio: (context) => getData("isRadio", context),
         repeat: (context) => getData("repeat", context)
       })
     },
 
     guards: {
       canNextPlay: ({
-        repeat, tracks, currentPlaybackNo
-      }) => repeat || currentPlaybackNo + 1 !== tracks.length,
+        isRadio, repeat, tracks, currentPlaybackNo
+      }) => isRadio || repeat || currentPlaybackNo + 1 !== tracks.length,
       canPreviousPlay: ({ currentPlaybackNo }) => currentPlaybackNo !== 0,
       canPlay: ({ currentTrack }) => Boolean(currentTrack)
     }
