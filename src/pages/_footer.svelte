@@ -87,7 +87,7 @@ const showPlayer = () => {
               </IconButton>
             {:else}
               <IconButton {disabled} class="w-10 h-10" on:click={live}>
-                <LiveIcon class="text-gray-900 h-10 w-10" />
+                <LiveIcon class="text-gray-900 h-8 w-8 mb-1" />
               </IconButton>
             {/if}
           {:else}
