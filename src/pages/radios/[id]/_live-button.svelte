@@ -1,33 +1,15 @@
 <script lang="ts">
-import {
-  onDestroy, onMount
-} from "svelte";
-import { interpret } from "xstate";
 import Text from "~/components/text.svelte";
 import Live from "~/icons/live.svelte";
-import { Machine } from "~/machines/radio-machine";
+import { radioService } from "~/machines/radio-machine";
 
 export let id: string;
 
 let disabled = false;
 
-const service = interpret(Machine);
-
-onMount(() => {
-
-  service.start();
-
-});
-
-onDestroy(() => {
-
-  service.stop();
-
-});
-
 const live = () => {
 
-  service.send({
+  radioService.send({
     id,
     type: "SET_ID"
   });

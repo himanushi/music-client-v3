@@ -48,6 +48,10 @@ const onClick = () => {
       type: "SET_LINK"
     },
     {
+      isRadio: false,
+      type: "SET_IS_RADIO"
+    },
+    {
       currentPlaybackNo: index,
       tracks: tracks.map((track) => track),
       type: "REPLACE_AND_PLAY"

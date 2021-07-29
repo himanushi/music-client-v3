@@ -5,11 +5,14 @@ import { modals } from "~/components/modals.svelte";
 import Player from "~/components/player.svelte";
 import Image from "~/components/square-image.svelte";
 import Text from "~/components/text.svelte";
+import LiveIcon from "~/icons/live.svelte";
 import LoadingIcon from "~/icons/loading.svelte";
 import PuaseIcon from "~/icons/pause.svelte";
 import PlayIcon from "~/icons/play.svelte";
 import SkipIcon from "~/icons/skip.svelte";
+import StopIcon from "~/icons/stop.svelte";
 import { playerService } from "~/machines/jukebox-machine";
+import { radioService } from "~/machines/radio-machine";
 
 $: track = $playerService.context.currentTrack;
 $: player = $playerService.context.musicPlayerRef;
@@ -24,6 +27,25 @@ const play_or_pause = () => {
 const skip = () => {
 
   playerService.send("NEXT_PLAY");
+
+};
+
+const stop = () => {
+
+  playerService.send("PAUSE");
+
+};
+
+const live = () => {
+
+  if ($radioService.context.id) {
+
+    radioService.send({
+      id: $radioService.context.id,
+      type: "SET_ID"
+    });
+
+  }
 
 };
 
@@ -53,20 +75,36 @@ const showPlayer = () => {
       </span>
 
       <span class="buttons">
-        {#if player}
-          <IconButton {disabled} class="w-10 h-10" on:click={play_or_pause}>
+        {#if player && $playerService}
+          {#if $playerService.context.isRadio}
             {#if $player.value === "playing"}
-              <PuaseIcon class="text-gray-900 h-10 w-10" />
+              <IconButton {disabled} class="w-10 h-10" on:click={stop}>
+                <StopIcon class="text-gray-900 h-10 w-10" />
+              </IconButton>
             {:else if $player.value === "loading"}
-              <LoadingIcon />
+              <IconButton class="w-10 h-10">
+                <LoadingIcon />
+              </IconButton>
             {:else}
-              <PlayIcon class="text-gray-900 h-10 w-10" />
+              <IconButton {disabled} class="w-10 h-10" on:click={live}>
+                <LiveIcon class="text-gray-900 h-10 w-10" />
+              </IconButton>
             {/if}
-          </IconButton>
+          {:else}
+            <IconButton {disabled} class="w-10 h-10" on:click={play_or_pause}>
+              {#if $player.value === "playing"}
+                <PuaseIcon class="text-gray-900 h-10 w-10" />
+              {:else if $player.value === "loading"}
+                <LoadingIcon />
+              {:else}
+                <PlayIcon class="text-gray-900 h-10 w-10" />
+              {/if}
+            </IconButton>
 
-          <IconButton {disabled} class="w-10 h-10" on:click={skip}>
-            <SkipIcon class="text-gray-900 h-10 w-10" />
-          </IconButton>
+            <IconButton {disabled} class="w-10 h-10" on:click={skip}>
+              <SkipIcon class="text-gray-900 h-10 w-10" />
+            </IconButton>
+          {/if}
         {/if}
       </span>
     {/key}
