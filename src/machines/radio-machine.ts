@@ -19,7 +19,6 @@ export type Schema = {
   states: {
     initialize: {};
     idle: {};
-    waiting: {};
     prepare: {};
     adjust: {};
     seeking: {};
@@ -78,17 +77,11 @@ export const Machine = machine<Context, Schema, Event>(
 
       idle: { on: { SET_ID: {
         actions: ["setId"],
-        target: "waiting"
+        target: "prepare"
       } } },
 
-      // MusicKit 読み込み時間を考慮
-      waiting: {
-        entry: "memory",
-        after: { 1000: "prepare" }
-      },
-
       prepare: {
-        exit: ["pause"],
+        entry: "memory",
         invoke: { src: "listen" },
         on: {
           ADJUST: "adjust",
@@ -121,7 +114,6 @@ export const Machine = machine<Context, Schema, Event>(
         }
 
       },
-      pause: () => playerService.send("PAUSE"),
       setId: assign({ id: (_, event) => "id" in event ? event.id : undefined }),
       setRadio: assign({ radio: (_, event) => "radio" in event ? event.radio : undefined }),
       memory: (context) => {
