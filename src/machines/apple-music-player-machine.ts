@@ -5,7 +5,6 @@
 import {
   Machine as machine, assign, sendParent, State
 } from "xstate";
-import { accountService } from "./apple-music-account-machine";
 import { Track } from "~/graphql/types";
 
 export type AppleMusicPlayerContext = {
@@ -50,14 +49,11 @@ const setEvents = (callback: any, events: string[][]) => {
 
   };
 
-  MusicKit.getInstance().player.addEventListener(
-    "playbackStateDidChange",
-    didChange
-  );
+  MusicKit.getInstance().addEventListener("playbackStateDidChange", didChange);
 
   return () => {
 
-    MusicKit.getInstance().player.removeEventListener(
+    MusicKit.getInstance().removeEventListener(
       "playbackStateDidChange",
       didChange
     );
@@ -128,7 +124,7 @@ export const AppleMusicPlayerMachine = machine<
       loading: {
         initial: "stopping",
 
-        after: { 0: { actions: [sendParent("LOADING")] } },
+        entry: [sendParent("LOADING")],
 
         states: {
           stopping: { invoke: {
@@ -139,13 +135,11 @@ export const AppleMusicPlayerMachine = machine<
                   MusicKit.getInstance().playbackState
               ) {
 
-                await MusicKit.getInstance().player.stop();
+                await MusicKit.getInstance().stop();
 
               }
 
-              accountService.send({ type: "RENEW" });
-
-              MusicKit.getInstance().player.volume = 0.3;
+              MusicKit.getInstance().volume = 0.3;
 
             },
 
@@ -236,10 +230,7 @@ export const AppleMusicPlayerMachine = machine<
         }
       },
 
-      stopped: {
-        entry: [sendParent("STOPPED")],
-        exit: ["setPlayer"]
-      },
+      stopped: { entry: [sendParent("STOPPED")] },
 
       finished: { entry: [sendParent("FINISHED")] }
     }
@@ -249,7 +240,7 @@ export const AppleMusicPlayerMachine = machine<
 
       if ("seek" in event) {
 
-        MusicKit.getInstance().player.seekToTime(event.seek / 1000);
+        MusicKit.getInstance().seekToTime(event.seek / 1000);
 
       }
 
@@ -257,29 +248,13 @@ export const AppleMusicPlayerMachine = machine<
 
     pause: () => {
 
-      MusicKit.getInstance().player.pause();
+      MusicKit.getInstance().pause();
 
     },
 
     play: () => {
 
-      MusicKit.getInstance().player.play();
-
-    },
-
-    setPlayer: (context) => {
-
-      const id = context.track?.appleMusicTracks?.find(
-        (track) => track
-      )?.appleMusicId;
-
-      if (id) {
-
-        return MusicKit.getInstance().setQueue({ songs: [id] });
-
-      }
-
-      return undefined;
+      MusicKit.getInstance().play();
 
     },
 
@@ -288,9 +263,8 @@ export const AppleMusicPlayerMachine = machine<
     stop: () => {
 
       if (
-        MusicKit.PlaybackStates[
-          MusicKit.getInstance().player.playbackState
-        ] === "playing"
+        MusicKit.PlaybackStates[MusicKit.getInstance().playbackState] ===
+          "playing"
       ) {
 
         MusicKit.getInstance().stop();
@@ -301,7 +275,7 @@ export const AppleMusicPlayerMachine = machine<
 
     tick: assign({ seek: () => {
 
-      const seek = MusicKit.getInstance().player.currentPlaybackTime;
+      const seek = MusicKit.getInstance().currentPlaybackTime;
       return Math.floor(seek * 1000);
 
     } })
@@ -317,3 +291,4 @@ export type AppleMusicPlayerState = State<
     context: AppleMusicPlayerContext;
   }
 >;
+// result = await MusicKit.getInstance().api.music("v1/me/library/search", {term:"Where Angel Fear To Tread", types: ["library-songs"]})

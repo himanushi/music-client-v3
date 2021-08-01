@@ -4,7 +4,7 @@
 
 import { assign } from "xstate";
 import {
-  interpret, Machine as machine, send, Sender
+  interpret, Machine as machine, Sender
 } from "xstate";
 
 export type accountContext = {
@@ -14,6 +14,7 @@ export type accountContext = {
 export type accountSchema = {
   states: {
     idle: {};
+    checking: {};
     authorized: {};
     unauthorized: {};
   };
@@ -23,8 +24,7 @@ export type accountEvent =
   | { type: "SET_TOKEN"; config: MusicKit.Config }
   | { type: "LOGIN_OR_LOGOUT" }
   | { type: "LOGIN" }
-  | { type: "LOGOUT" }
-  | { type: "RENEW" };
+  | { type: "LOGOUT" };
 
 export const accountMachine = machine<
   accountContext,
@@ -39,12 +39,42 @@ export const accountMachine = machine<
     context: { config: undefined },
 
     states: {
-      idle: {
+      idle: { on: { SET_TOKEN: {
+        actions: "setConfig",
+        target: "checking"
+      } } },
+
+      checking: {
+        invoke: { src:
+            ({ config }) => (callback) => {
+
+              if (config) {
+
+                (async () => {
+
+                  await MusicKit.configure(config);
+                  MusicKit.getInstance().storefrontId = "jp";
+
+                  if (MusicKit.getInstance().isAuthorized) {
+
+                    callback({ type: "LOGIN" });
+
+                  } else {
+
+                    callback({ type: "LOGOUT" });
+
+                  }
+
+                })();
+
+              } else {
+
+                callback({ type: "LOGOUT" });
+
+              }
+
+            } },
         on: {
-          SET_TOKEN: { actions: [
-            "setConfig",
-            "setToken"
-          ] },
           LOGIN: "authorized",
           LOGOUT: "unauthorized"
         },
@@ -83,8 +113,7 @@ export const accountMachine = machine<
 
         on: {
           LOGIN_OR_LOGOUT: { actions: "logout" },
-          LOGOUT: "unauthorized",
-          RENEW: { actions: "renew" }
+          LOGOUT: "unauthorized"
         },
 
         meta: { label: "ログアウト" }
@@ -133,45 +162,7 @@ export const accountMachine = machine<
 
     logout: () => MusicKit.getInstance().unauthorize(),
 
-    renew: ({ config }) => {
-
-      if (config) {
-
-        MusicKit.configure(config);
-        MusicKit.getInstance().api.storefrontId = "jp";
-
-      }
-
-    },
-
-    setConfig: assign({ config: (_, event) => "config" in event ? event.config : undefined }),
-
-    setToken: send((_, event) => {
-
-      try {
-
-        MusicKit.getInstance();
-
-      } catch (error) {
-
-        if ("config" in event) {
-
-          MusicKit.configure(event.config);
-          MusicKit.getInstance().api.storefrontId = "jp";
-
-        }
-
-      }
-
-      if (MusicKit.getInstance().isAuthorized) {
-
-        return { type: "LOGIN" };
-
-      }
-
-      return { type: "LOGOUT" };
-
-    })
+    setConfig: assign({ config: (_, event) => "config" in event ? event.config : undefined })
   } }
 );
 
