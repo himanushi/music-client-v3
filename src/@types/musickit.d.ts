@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 
-// version: "1.1932.0-0"
+// version: "3.2130.7-prerelease"
 declare namespace MusicKit {
   interface Config {
     developerToken: string;
@@ -31,12 +31,15 @@ declare namespace MusicKit {
     privateEnabled: boolean;
     siriInitiated: boolean;
     storefrontId: string;
+    readonly storefrontCountryCode: string;
     storekit: StoreKit;
     subscribeFamilyURL: string;
     subscribeIndividualURL: string;
     subscribeStudentURL: string;
     subscribeURL: string;
     version: string;
+    volume: number;
+    currentPlaybackTime: number;
 
     addEventListener(eventName: string, callback: (result: any) => any): void;
     removeEventListener(
@@ -47,6 +50,7 @@ declare namespace MusicKit {
     authorize(): Promise<string>;
     changeToMediaAtIndex(e): Promise;
     cleanup(): Promise;
+    clearQueue(): Promise;
     deferPlayback(): Promise;
     me(): Promise;
     pause(): Promise;
@@ -174,7 +178,6 @@ declare namespace MusicKit {
     queue: Queue;
     repeatMode: 0 | 1 | 2;
     shuffleMode: number;
-    volume: number;
     formattedCurrentPlaybackDuration: {
       hours: NaN | number;
       minutes: NaN | number;
