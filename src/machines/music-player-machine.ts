@@ -193,7 +193,7 @@ export const MusicPlayerMachine = machine<
         "resetSeek",
         "setTrack",
         "setDuration",
-        "setTrackToPlayer"
+        "setDataToPlayer"
       ] },
 
       STOP: { actions: [
@@ -267,15 +267,32 @@ export const MusicPlayerMachine = machine<
 
     setTrack: assign({ track: (_, event) => "track" in event ? event.track : undefined }),
 
-    setTrackToPlayer: send(
-      (_, event) => {
+    setDataToPlayer: send(
+      (context, event) => {
 
         if ("track" in event) {
 
-          return {
-            track: event.track,
-            type: "SET_TRACK"
-          };
+          const player = selectPlayer(context);
+
+          if (player === previewPlayerId && event.track?.previewUrl) {
+
+            return {
+              data: event.track?.previewUrl,
+              type: "SET_DATA"
+            };
+
+          } else if (player === appleMusicPlayerId) {
+
+            const appleMusicId = event.track.appleMusicTracks?.find(
+              (track) => track
+            )?.appleMusicId;
+
+            return {
+              data: appleMusicId,
+              type: "SET_DATA"
+            };
+
+          }
 
         }
 

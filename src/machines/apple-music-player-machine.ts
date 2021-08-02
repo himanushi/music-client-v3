@@ -5,10 +5,9 @@
 import {
   Machine as machine, assign, sendParent, State
 } from "xstate";
-import { Track } from "~/graphql/types";
 
 export type AppleMusicPlayerContext = {
-  track?: Track;
+  id?: string;
   seek: number;
 };
 
@@ -63,7 +62,7 @@ const setEvents = (callback: any, events: string[][]) => {
 };
 
 export type AppleMusicPlayerStateEvent =
-  | { type: "SET_TRACK"; track: Track }
+  | { type: "SET_DATA"; data: string }
   | { type: "CHANGE_SEEK"; seek: number }
   | { type: "LOAD" }
   | { type: "WAITING" }
@@ -102,7 +101,7 @@ export const AppleMusicPlayerMachine = machine<
 
       PLAYING: "playing",
 
-      SET_TRACK: { actions: ["setTrack"] },
+      SET_DATA: { actions: ["setData"] },
 
       STOP: {
         actions: ["stop"],
@@ -149,9 +148,7 @@ export const AppleMusicPlayerMachine = machine<
           queueing: { invoke: {
             src: async (context) => {
 
-              const id = context.track?.appleMusicTracks?.find(
-                (track) => track
-              )?.appleMusicId;
+              const { id } = context;
 
               if (id) {
 
@@ -258,7 +255,7 @@ export const AppleMusicPlayerMachine = machine<
 
     },
 
-    setTrack: assign({ track: (_, event) => "track" in event ? event.track : undefined }),
+    setData: assign({ id: (_, event) => "data" in event ? event.data : undefined }),
 
     stop: () => {
 

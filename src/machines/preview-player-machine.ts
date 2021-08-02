@@ -7,11 +7,10 @@ import { Howl } from "howler";
 import {
   Machine as machine, assign, send, sendParent, State
 } from "xstate";
-import { Track } from "~/graphql/types";
 
-const setPlayer = (track: Track) => {
+const setPlayer = (previewUrl?: string) => {
 
-  if (!track || !track.previewUrl) {
+  if (!previewUrl) {
 
     return undefined;
 
@@ -21,7 +20,7 @@ const setPlayer = (track: Track) => {
     autoplay: false,
     html5: true,
     preload: false,
-    src: track.previewUrl,
+    src: previewUrl,
     volume: 0
   });
 
@@ -30,7 +29,7 @@ const setPlayer = (track: Track) => {
 };
 
 export type PreviewPlayerContext = {
-  track?: Track;
+  previewUrl?: string;
   player?: Howl;
   seek: number;
 };
@@ -47,7 +46,7 @@ export type PreviewPlayerStateSchema = {
 };
 
 export type PreviewPlayerStateEvent =
-  | { type: "SET_TRACK"; track: Track }
+  | { type: "SET_DATA"; data: string }
   | { type: "CHANGE_SEEK"; seek: number }
   | { type: "LOAD" }
   | { type: "PLAY" }
@@ -199,7 +198,7 @@ export const PreviewPlayerMachine = machine<
 
       PLAYING: "playing",
 
-      SET_TRACK: { actions: ["setTrack"] },
+      SET_DATA: { actions: ["setData"] },
 
       STOP: {
         actions: ["stop"],
@@ -246,9 +245,9 @@ export const PreviewPlayerMachine = machine<
 
     },
 
-    setPlayer: assign({ player: ({ track }) => track ? setPlayer(track) : undefined }),
+    setPlayer: assign({ player: ({ previewUrl }) => setPlayer(previewUrl) }),
 
-    setTrack: assign({ track: (_, event) => "track" in event ? event.track : undefined }),
+    setData: assign({ previewUrl: (_, event) => "data" in event ? event.data : undefined }),
 
     stop: ({ player }) => {
 
