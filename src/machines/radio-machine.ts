@@ -151,18 +151,12 @@ export const Machine = machine<Context, Schema, Event>(
           )?.appleMusicId;
 
           const isAppleMusic = Boolean(id);
-          const adjustProgress = Math.floor(
-            radio.durationMs / currentTrack.durationMs * 100
-          );
 
           const intervalId = setInterval(() => {
 
             if (isAppleMusic) {
 
-              if (
-                MusicKit.getInstance().player.currentBufferedProgress >
-                adjustProgress
-              ) {
+              if (MusicKit.getInstance().isPlaying) {
 
                 send("SEEKING");
 

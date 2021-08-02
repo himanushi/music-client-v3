@@ -40,6 +40,8 @@ declare namespace MusicKit {
     version: string;
     volume: number;
     currentPlaybackTime: number;
+    currentBufferedProgress: number;
+    isPlaying: boolean;
 
     addEventListener(eventName: string, callback: (result: any) => any): void;
     removeEventListener(
@@ -162,7 +164,6 @@ declare namespace MusicKit {
     bitrate: number;
     canSupportDRM: boolean;
     continuous: boolean;
-    currentBufferedProgress: number;
     currentPlaybackDuration: NaN | number;
     currentPlaybackProgress: number;
     currentPlaybackTime: number;
