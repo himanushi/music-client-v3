@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // xstate では順序を見やすくするため object key sort は無効にする
 /* eslint-disable sort-keys */
 /* eslint-disable sort-keys-fix/sort-keys-fix */
@@ -35,11 +36,14 @@ export type MusicPlayerContext = {
   track?: Track;
   duration: number;
   seek: number;
+  currentPlayer: string;
+  data: string;
 };
 
 export type MusicPlayerSchema = {
   states: {
     idle: {};
+    playerSelecting: {};
     loading: {};
     playing: {};
     paused: {};
@@ -48,10 +52,18 @@ export type MusicPlayerSchema = {
   };
 };
 
+const previewPlayerId = "preview";
+const appleMusicPlayerId = "apple-music-player";
+
 export type MusicPlayerEvent =
   | { type: "SET_TRACK"; track: Track }
   | { type: "SET_DURATION"; duration: number }
   | { type: "SET_SEEK"; seek: number }
+  | { type: "SET_DATA"; data: string }
+  | {
+      type: "SET_CURRENT_PLAYER";
+      currentPlayer: typeof previewPlayerId | typeof appleMusicPlayerId;
+    }
   | { type: "CHANGE_SEEK"; seek: number }
   | { type: "LOAD" }
   | { type: "LOADING" }
@@ -64,36 +76,7 @@ export type MusicPlayerEvent =
   | { type: "FINISHED" }
   | { type: "TICK" };
 
-const previewPlayerId = "preview";
-const appleMusicPlayerId = "apple-music-player";
-
-const selectPlayer = (context: MusicPlayerContext) => {
-
-  let appleAuth = false;
-
-  try {
-
-    appleAuth = MusicKit.getInstance().isAuthorized;
-
-  } catch (error) {
-
-    // eslint-disable-next-line no-console
-    console.error(error.message);
-
-  }
-
-  if (
-    appleAuth &&
-    context.track?.appleMusicTracks?.find((track) => track)?.appleMusicId
-  ) {
-
-    return appleMusicPlayerId;
-
-  }
-
-  return previewPlayerId;
-
-};
+const selectPlayer = (context: MusicPlayerContext) => context.currentPlayer;
 
 const id = "music-player";
 
@@ -105,7 +88,9 @@ export const MusicPlayerMachine = machine<
   {
     context: {
       duration: 0,
-      seek: 0
+      seek: 0,
+      currentPlayer: previewPlayerId,
+      data: ""
     },
 
     id,
@@ -119,6 +104,70 @@ export const MusicPlayerMachine = machine<
       ] },
 
       idle: { entry: ["initPlayers"] },
+
+      playerSelecting: {
+        invoke: { src: (context) => (callback) => {
+
+          const appleAuth = MusicKit.getInstance().isAuthorized;
+          const appleMusicTrack = context.track?.appleMusicTracks?.find(
+            (track) => track
+          );
+          const appleMusicId = appleMusicTrack?.appleMusicId;
+          const itunesTrack = context.track?.itunesTracks?.find(
+            (track) => track
+          );
+          const itunesId = itunesTrack?.appleMusicId;
+
+          if (appleAuth && appleMusicId) {
+
+            callback({
+              type: "SET_CURRENT_PLAYER",
+              currentPlayer: appleMusicPlayerId
+            });
+            callback({
+              type: "SET_DATA",
+              data: appleMusicId
+            });
+
+          } else if (appleAuth && itunesId) {
+
+            callback({
+              type: "SET_CURRENT_PLAYER",
+              currentPlayer: appleMusicPlayerId
+            });
+            callback({
+              type: "SET_DATA",
+              data: itunesId
+            });
+
+          } else if (context.track?.previewUrl) {
+
+            callback({
+              type: "SET_CURRENT_PLAYER",
+              currentPlayer: previewPlayerId
+            });
+            callback({
+              type: "SET_DATA",
+              data: context.track?.previewUrl
+            });
+
+          }
+
+          callback("LOADING");
+
+        } },
+        on: {
+          LOADING: "loading",
+          SET_CURRENT_PLAYER: { actions: "setCurrentPlayer" },
+          SET_DATA: { actions: "setData" }
+        },
+        exit: [
+          "setDuration",
+          "setDataToPlayer",
+          "stopToPlayers",
+          "loadToPlayer"
+        ]
+      },
 
       loading: {
         // 30秒間再生できない音楽はスキップ
@@ -177,13 +226,7 @@ export const MusicPlayerMachine = machine<
         "changeSeekToPlayer"
       ] },
 
-      LOAD: {
-        actions: [
-          "stopToPlayers",
-          "loadToPlayer"
-        ],
-        target: "loading"
-      },
+      LOAD: "playerSelecting",
 
       LOADING: "loading",
 
@@ -191,9 +234,7 @@ export const MusicPlayerMachine = machine<
 
       SET_TRACK: { actions: [
         "resetSeek",
-        "setTrack",
-        "setDuration",
-        "setDataToPlayer"
+        "setTrack"
       ] },
 
       STOP: { actions: [
@@ -267,32 +308,19 @@ export const MusicPlayerMachine = machine<
 
     setTrack: assign({ track: (_, event) => "track" in event ? event.track : undefined }),
 
+    setCurrentPlayer: assign({ currentPlayer: (_, event) => "currentPlayer" in event ? event.currentPlayer : previewPlayerId }),
+
+    setData: assign({ data: (_, event) => "data" in event ? event.data : "" }),
+
     setDataToPlayer: send(
-      (context, event) => {
+      (context) => {
 
-        if ("track" in event) {
+        if (context.data) {
 
-          const player = selectPlayer(context);
-
-          if (player === previewPlayerId && event.track?.previewUrl) {
-
-            return {
-              data: event.track?.previewUrl,
-              type: "SET_DATA"
-            };
-
-          } else if (player === appleMusicPlayerId) {
-
-            const appleMusicId = event.track.appleMusicTracks?.find(
-              (track) => track
-            )?.appleMusicId;
-
-            return {
-              data: appleMusicId,
-              type: "SET_DATA"
-            };
-
-          }
+          return {
+            data: context.data,
+            type: "SET_DATA"
+          };
 
         }
 
