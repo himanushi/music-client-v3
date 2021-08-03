@@ -118,42 +118,76 @@ export const MusicPlayerMachine = machine<
           );
           const itunesId = itunesTrack?.appleMusicId;
 
-          if (appleAuth && appleMusicId) {
+          (async () => {
 
-            callback({
-              type: "SET_CURRENT_PLAYER",
-              currentPlayer: appleMusicPlayerId
-            });
-            callback({
-              type: "SET_DATA",
-              data: appleMusicId
-            });
+            if (appleAuth && appleMusicId) {
 
-          } else if (appleAuth && itunesId) {
+              callback({
+                type: "SET_CURRENT_PLAYER",
+                currentPlayer: appleMusicPlayerId
+              });
+              callback({
+                type: "SET_DATA",
+                data: appleMusicId
+              });
 
-            callback({
-              type: "SET_CURRENT_PLAYER",
-              currentPlayer: appleMusicPlayerId
-            });
-            callback({
-              type: "SET_DATA",
-              data: itunesId
-            });
+            } else if (appleAuth && itunesId && itunesTrack) {
 
-          } else if (context.track?.previewUrl) {
+              const result = await MusicKit.getInstance().api.music(
+                "v1/me/library/search",
+                {
+                  term: itunesTrack?.name,
+                  types: ["library-songs"],
+                  limit: 25
+                }
+              );
 
-            callback({
-              type: "SET_CURRENT_PLAYER",
-              currentPlayer: previewPlayerId
-            });
-            callback({
-              type: "SET_DATA",
-              data: context.track?.previewUrl
-            });
+              const results = result.data.results["library-songs"].data;
+              let player = previewPlayerId as
+                  | typeof previewPlayerId
+                  | typeof appleMusicPlayerId;
+              let data = context.track?.previewUrl as string;
 
-          }
+              for (let index = 0; index < results.length; index += 1) {
 
-          callback("LOADING");
+                if (
+                  results[index].attributes.playParams.purchasedId ===
+                    itunesId
+                ) {
+
+                  player = appleMusicPlayerId;
+                  data = results[index].id;
+                  break;
+
+                }
+
+              }
+
+              callback({
+                type: "SET_CURRENT_PLAYER",
+                currentPlayer: player
+              });
+              callback({
+                type: "SET_DATA",
+                data
+              });
+
+            } else if (context.track?.previewUrl) {
+
+              callback({
+                type: "SET_CURRENT_PLAYER",
+                currentPlayer: previewPlayerId
+              });
+              callback({
+                type: "SET_DATA",
+                data: context.track?.previewUrl
+              });
+
+            }
+
+            callback("LOADING");
+
+          })();
 
         } },
         on: {
@@ -162,9 +196,9 @@ export const MusicPlayerMachine = machine<
           SET_DATA: { actions: "setData" }
         },
         exit: [
+          "stopToPlayers",
           "setDuration",
           "setDataToPlayer",
-          "stopToPlayers",
           "loadToPlayer"
         ]
       },

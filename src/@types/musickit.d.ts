@@ -89,6 +89,7 @@ declare namespace MusicKit {
   }
 
   interface API {
+    music(endpoint: string, params: Record<string, any>): APIResult;
     developerToken: string;
     enablePlayEquivalencies: boolean;
     headers: any;
@@ -104,6 +105,28 @@ declare namespace MusicKit {
 
     song(appleId: string): Promise<Song>;
     songs(appleIds: string[]): Promise<Song[]>;
+  }
+
+  interface APIResult {
+    data: {
+      results: {
+        "library-songs": {
+          data: APIResultData[];
+        };
+      };
+    };
+  }
+
+  interface APIResultData {
+    id: string;
+    type: string;
+    href: string;
+    attributes: {
+      name: string;
+      playParams: {
+        purchasedId?: string;
+      };
+    };
   }
 
   interface BaseProperty {

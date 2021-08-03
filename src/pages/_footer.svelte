@@ -94,7 +94,7 @@ const showPlayer = () => {
             <IconButton {disabled} class="w-10 h-10" on:click={play_or_pause}>
               {#if $player.value === "playing"}
                 <PuaseIcon class="text-gray-900 h-10 w-10" />
-              {:else if $player.value === "loading"}
+              {:else if $player.value === "loading" || $player.value === "playerSelecting"}
                 <LoadingIcon />
               {:else}
                 <PlayIcon class="text-gray-900 h-10 w-10" />

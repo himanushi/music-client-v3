@@ -15,7 +15,9 @@ import { playerService } from "~/machines/jukebox-machine";
 
 $: player = $playerService.context.musicPlayerRef;
 
-$: disabled = player && $player.value === "loading";
+$: disabled =
+  player &&
+  ($player.value === "loading" || $player.value === "playerSelecting");
 
 const playOrPause = () => {
 
