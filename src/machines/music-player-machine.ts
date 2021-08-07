@@ -136,7 +136,7 @@ export const MusicPlayerMachine = machine<
               const result = await MusicKit.getInstance().api.music(
                 "v1/me/library/search",
                 {
-                  term: itunesTrack?.name,
+                  term: itunesTrack.name.replaceAll(",", " "),
                   types: ["library-songs"],
                   limit: 25
                 }
