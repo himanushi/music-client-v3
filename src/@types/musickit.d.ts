@@ -110,7 +110,7 @@ declare namespace MusicKit {
   interface APIResult {
     data: {
       results: {
-        "library-songs": {
+        "library-songs"?: {
           data: APIResultData[];
         };
       };

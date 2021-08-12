@@ -142,7 +142,8 @@ export const MusicPlayerMachine = machine<
                 }
               );
 
-              const results = result.data.results["library-songs"].data;
+              const results =
+                  result.data.results["library-songs"]?.data || [];
               let player = previewPlayerId as
                   | typeof previewPlayerId
                   | typeof appleMusicPlayerId;
